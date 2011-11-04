@@ -34,7 +34,12 @@ def cancel (request, r_id):
         elif UserProfile.objects.get_profile (request.user.username).is_club ( ):
             return redirect ('reservations.views.club_view') 
     else:
-        raise Http404
+        #
+        # TODO voting for banning a user goes here
+        #
+        if UserProfile.objects.get_profile (request.user.username).is_club ( ):
+            Reservation.objects.delete (r)
+            return redirect ('reservations.views.club_view') 
     
     
 @login_required
