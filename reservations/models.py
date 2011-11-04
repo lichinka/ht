@@ -10,6 +10,17 @@ from clubs.models import Vacancy
 
 
 class ReservationManager (models.Manager):
+    def delete (self, r):
+        """
+        Deletes the received reservation object, or the whole
+        series if it is part of a repetition one.-
+        """
+        if r.repeat_series is None:
+            r.delete ( )
+        else:
+            Reservation.objects.filter (repeat_series=r.repeat_series) \
+                               .delete ( )
+            
     def get_by_date (self, for_date):
         """
         Returns a query set containing all reservations 

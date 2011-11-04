@@ -6,5 +6,6 @@ from django.conf.urls.defaults import patterns
 urlpatterns = patterns ('reservations.views',
                         (r'^search$', 'search'),
                         (r'^club_view$', 'club_view'),
+                        (r'^cancel/(?P<r_id>\d+)/$', 'cancel'),
                         (r'^player_edit/(?P<v_id>\d+)/(?P<ordinal_date>\d+)/$', 'player_edit'),
                         (r'^club_edit/(?P<vid>\d+)/(?P<ordinal_date>\d+)/$', 'club_edit'))
