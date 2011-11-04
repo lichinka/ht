@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block anonymous_content %}
+
+	{% if form.errors %}
+		<p>{% trans 'Wrong email address or password' %}</p>
+	{% endif %}
+	
+	<div id="form">
+		<form method="post" action="{% url 'accounts.views.login' %}">
+			{% csrf_token %}
+		
+            <div id="form_elem">
+                <label for="id_username">{% trans 'User name' %}</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            
+            <div id="form_elem">
+                <label for="id_password">{% trans 'Password' %}</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+			
+			<input type="hidden" name="next" {% if not next %}
+												value="/"
+											 {% else %}
+											 	value="{{ next }}"
+											 {% endif %} />
+			<div id="form_action">
+				<input type="submit" value="{% trans 'Login' %}" class="button"/>
+			</div>
+		</form>
+	</div>
+{% endblock %}

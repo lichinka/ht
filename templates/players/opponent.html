@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load availability %}
+
+
+
+{% block anonymous_content %}
+	<div id="header_photo">
+		<img src="{{ STATIC_PREFIX }}img/ball_closeup.jpg">
+		<br>
+	</div>
+
+    {% if form.errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+
+	<div id="form">
+        <form method="post" action="{% url 'players.views.search_opponent' %}">
+            {% csrf_token %}
+
+		    <div id="form_elem">
+			    {{ form.when.errors }}
+			    <label for="id_when">{% trans 'I would like to play on' %}</label>
+			    {{ form.when }}
+	        </div>
+
+		    <div id="form_elem">
+			    {{ form.where.errors }}
+			    <label for="id_where">{% trans 'near' %}</label>
+			    {{ form.where }}
+	        </div>
+
+            <div id="form_action">
+                <input type="submit" value="{% trans 'Search' %}" class="button"/>
+            </div>
+        </form>
+	</div>
+	
+	<article>
+		<div id="opponent_panels">
+			<header>
+				{% if not players_qset %}
+					<script>
+                        function oppByCity( ) 
+                        {
+                            document.forms[0].when.value='XX';
+                            document.forms[0].submit ( );
+                            return;
+                        }
+					</script>
+					<h3>{% trans 'No players found to play on the selected days' %}.</h3>
+					<h3>{% trans 'Try to find' %}
+						<a href="javascript:oppByCity();">
+							{% trans 'players nearby' %}
+						</a>
+					</h3>
+				{% endif %}
+			</header>
+			
+			{% for player in players_qset.iterator %}
+				<div id="{% cycle 'opponent_panels_left' 'opponent_panels_left' 'opponent_panels_right' 'opponent_panels_right' %}">
+					<div id="opponent_panel">
+						<div id="opponent_panel_title">
+			        		<a href="{% url 'ranking.views.display_matches' player.user_profile.user.id %}">
+			        			<img src="{{ STATIC_PREFIX }}img/tennis_player.jpg">
+				        		{{ player.user_profile.user.username }}
+			        		</a>
+			        	</div>
+						<div id="opponent_panel_content">
+							{% availability player.user_profile.user 1 0 %}
+		        		</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</article>
+{% endblock %}

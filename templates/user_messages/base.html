@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block user_content %}
+	<ol id="message_menu">
+    	<li {% block inbox_current %}{% endblock %}> 
+			<a href="{% url user_messages_inbox %}">
+				<span>{% trans "Inbox" %}</span>
+			</a>
+    	</li>
+    	<li {% block sent_current %}{% endblock %}>
+			<a href="{% url user_messages_outbox %}">
+				<span>{% trans "Sent" %}</span>
+			</a>
+    	</li>
+    	<li {% block trash_current %}{% endblock %}>
+			<a href="{% url user_messages_trash %}">
+				<span>{% trans "Trash" %}</span>
+			</a>
+    	</li>
+	</ol>
+	
+	{% block content %} 
+	{% endblock %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load url from future %}
+
+<dl id="comments">
+  {% for comment in comment_list %}
+    <dt id="c{{ comment.id }}">
+        {{ comment.submit_date }} - {{ comment.name }}
+    </dt>
+    <dd>
+        <p>{{ comment.comment }}</p>
+        <p>
+        	{% if comment.photo %}
+        		<img src="{{ comment.photo.url }}" border=1>
+        	{% endif %}
+        </p>
+    </dd>
+  {% endfor %}
+</dl>

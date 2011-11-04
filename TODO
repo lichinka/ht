@@ -1,0 +1,84 @@
++ Club profile does not look good in Chrome.
++ Translate everything.
++ Implement the reservation system.
+    + When canceling a reservation: if the user that created the reservation is the same as the one canceling it,
+      then delete the database record; otherwise mark the reservation as canceled and act accordingly (banning, fakture, ...)
+    + Implement the club-side of the reservation system.
+        + When deleting objects, catch the ProtectedError exception to not accidentally delete reservations.
+        + Add 'CourtSetup' to allow clubs to quickly switch between different court
+          configurations (eg. summer, winter, bad weather, tournament, ...)
+            - Cancel the related reservations when switching court setups.
+                - Send a customizable message to the users whose reservations were canceled.
+            - Relocate related reservations in (possibly) other available courts in the newly activated court setup.
+        - In "Court properties": add the possibility to create maintenance periods for the courts,
+          possibly as a new model with foreign key to Reservation.
+        + Implement the reservation view for clubs, based on the view for court setups.
+            - After adding the field on the user profile, include an option for voting on a user
+              before banning, used when the player doesn't show up for the reserved term.
+    + Implement the user-side of the reservation system.
+    	- Always sort the search results by distance, to avoid showing a page with no search hits.
+    	- Featured clubs: show those clubs that pay to be there.
+        - Fast reservation: when searching for a court, display a list of clubs where the user 
+          has already played (sorted by frequency), with three links beside each club: dopoldne,
+          popoldne in zvecer. These links then display the reservation table of that part of the day.
+        - Give the option to send the player a reservation reminder via mail.
+        - Give the option to send other player(s) the reservation summary via "Invitation"
+            - If the opponent is not a member, try to catch him/her.
++ Add a logo in the club's profile.
++ Add an avatar in the player's profile. Maybe extending them from UserProfile?
+- Always test that the club is owner of the object being changed BEFORE updating it (courts, court_setups, ...) 
+- Always test that the player is owner of the object being changed BEFORE updating it (profile, availability, ads, ...) 
+- Write the test for 'edit_court_setup' view, checking for form errors when saving data.
+- When registering new users, make sure that they give info about the terms they are willing to play with others (search opponent!)
+- In the reservation search result, beside the club name, change the "more ..." button to "directions ...", "show on map ...", ...
+- In the reservation tables (all of them) highlight the column in a similar fashion as the row is.
+- En la vista de edit court setup:
+    - when deactivating a court, check if it has reservations attached.
+- En la vista del club (reservas):
+    - agregar el boton de imprimir.
+    - en el formulario de edicion de reservas, agreagar un boton para enviar un mensaje al usuario que hizo la reserva.
+    - despues de grabar cambios en una reserva, volver a la fecha donde aparece la reserva cambiada.
+    - mostrar la confiabilidad del usuario que reservo la cancha con una escala de colores sobre las letras, fondo o alguna otra marca.
+    - agregar un boton para ir al dia de hoy.
+- Implement a public club profile page, including:
+    - all club's data,
+    - club's avatar,
+    - club's tloris with court numbers,
+    - a google map to show the actual location,
+    - club's photos,
+    - a custom text.
++ Create the profile page for a player.
+    - Add a panel for the "Notifications" settings (ie. forwarding message via mail or SMS).
+	- Create template tags for each of the panels in the profile page.
+	- Make the profile editable as per panel.
+	   - Correct the 'next' value for 'edit_player_profile' so that it will go back to the profile page.
+	   - Change the "Invitations" panel with the "Buddies" panel.
+- On the club profile, implement a calendar with customizable up-coming events.
+    - For the player's side, implement a "sign-up for event" option.
+- Implement deletion confirmation for courts, court setups, ...
+- Implement the tournament system for clubs.
+- When searching for an opponent, display a list of past opponents or "buddies" (catched via
+  "Invitation" messages sent when a reservation is made), ordered by the number of times the 
+  opponent has been invited.
+- Create subclasses of the UserMessage for Invitation, Challenge, Reservation 
+  (from a friend, canceled due to weather, ...), Ads-Comment, ...
+- Connect the 'Send invitation' to the messages app. Turn the 'recipient' and 'subject' fields to labels (i.e. read-only).
+- Disagree (or appeal) a displayed result of a match (in case one of the players doesn't agree).
+- Create a template tag for displaying the vacancies of a given player/user.
+- Display the "last seen on" beside every player when looking for an opponent.
+- Check that the size of uploaded images does not exceed a defined threshold.
+- Implement the ads system.
+- Add a test to check if the logged-in user is active where needed.
+- Add 'breadcrumbs' left-aligned on the menu bar.
+- Connect the 'lang' option in template 'base.html' to the project settings.LANG.
+- Publish player's availability for play in FB and TWT via a link to HT.si.
+- On the welcome page, display a map for players, clubs, current matches and so on (like in
+  MimoVrste, where balloons show up whenever someone searches the page)
+
+Mobile
+------
+- Look for an opponent.
+- Enter a match result.
+- Instant messaging for certain message types.
+- Use camera to read credit from the club.
+- Make/search reservations.

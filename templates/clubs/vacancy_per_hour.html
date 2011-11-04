@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load url from future %}
+
+{% for hour in hour_list %}
+	<td>
+	    {% if hour.vacancy.price and not hour.reservation %}
+	        <a href="{% url 'reservations.views.player_edit' hour.vacancy.id ordinal_date %}"
+	           class="small_button"
+   			   title="{% trans 'Make reservation' %}">
+	            {{ hour.vacancy.price }}
+	        </a>
+		{% else %}
+	        <p>- - -</p>
+		{% endif %}
+	</td>
+{% endfor %}

@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+
+<div class="panel">
+	<div class="panel_title">
+		<img src="{{ STATIC_PREFIX }}img/availability.png">
+		<h2>{% trans 'Availability' %}</h2>
+	</div>
+	<div class="panel_content">
+	    <ul>
+	        {% for vacancy in vacancy_list %}
+	        	<li>
+	            	{{ vacancy.get_day_display }}
+	            	{{ vacancy.get_from_to_display }}
+	            	{{ vacancy.get_hour_display }},
+	            	
+	            	{% if vacancy.from_to == 'F' %}
+	            		{% trans 'and later' %},
+	            	{% endif %}
+	            	
+	            	{% trans 'in' %}
+	            	{{ vacancy.city }}.
+	            
+	            	{% if delete %}	
+	            		<a href="{% url 'players.views.delete_vacancy' vacancy.id %}">
+		            		{% trans 'Delete' %}
+	            		</a>
+	            	{% endif %}
+	            	{% if invite %}
+	            		<a href="{% url 'players.views.invite_player' vacancy.id %}">
+		            		{% trans 'Invite' %}
+	            		</a>
+					{% endif %}            	
+	            </li>
+	        {% empty %}
+	           <p>{% trans 'Tell us when you have time, so that other people will be able to invite you for a match!' %}</p>
+	        {% endfor %}
+	    </ul>
+	</div>
+	<div class="panel_buttons">
+		<a href="{% url 'players.views.edit_vacancy' %}" class="button">
+			{% trans 'Edit' %}
+		</a>
+	</div>
+</div>

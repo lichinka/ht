@@ -1,0 +1,59 @@
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load markup %}
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+	<meta charset="utf-8"/>
+
+	<title>
+		{% trans "::: HT :::" %}
+	</title>
+
+	<!-- Main style sheet for the whole site -->
+	<link rel="stylesheet" href="{{ STATIC_PREFIX }}style.css"/>
+
+	<!-- Modernizr library -->
+	<script src="{{ STATIC_PREFIX }}modernizr.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+
+<body>
+	<header>
+		<hgroup>
+			<h1>::: Wiki ::: edit article</h1>
+		</hgroup>
+	</header>
+	<nav id="wiki">
+		<ul>
+			<li>First</li>
+			<li>Second</li>
+			<li>Third</li>
+		</ul>
+	</nav>
+	{% if article %}
+		<article id="wiki">
+			<header>
+				<h1>{{ article.title }}</h1>
+				<hr>
+			</header>
+			{{ article.text|markdown:"safe,wikilinks,tables,footnotes" }}
+		</article>
+	{% endif %}
+	<article id="wiki">
+	</article>
+	<article id="wiki">
+		<form action="/wiki/edit" method="post">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" name="preview" value="{% trans 'Preview' %}"/>
+			<input type="submit" name="save" value="{% trans 'Save' %}"/>
+		</form>
+	</article>
+	<footer>
+		<p>Copyright MyFut</p>
+	</footer>
+</body>
+</html>
+

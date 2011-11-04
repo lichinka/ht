@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block user_content %}
+	
+    <h2>{% trans 'Court' %} {{ court.number }}</h2>
+    <h4>- {{ court.court_setup }} -</h4>
+    
+    {% if form.errors %}
+        <p>{{ form.non_field_errors }}</p>
+    {% endif %}
+
+    {% if form.errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+    
+    <div id="form">
+        <form method="post" action="{% url 'clubs.views.edit_court_properties' court_setup_id court.id %}">
+            {% csrf_token %}
+            
+            <div id="form_elem">  
+                <label for="id_number">{% trans 'Number' %}</label>
+                {{ form.number }}
+                {{ form.number.errors }}
+            </div>
+
+            <div id="form_elem">  
+                <label for="id_indoor">{% trans 'Indoor' %}</label>
+                {{ form.indoor }}
+                {{ form.indoor.errors }}
+            </div>
+
+            <div id="form_elem">  
+                <label for="id_light">{% trans 'Light' %}</label>
+                {{ form.light }}
+                {{ form.light.errors }}
+            </div>
+
+            <div id="form_elem">  
+                <label for="id_surface">{% trans 'Surface' %}</label>
+                {{ form.surface }}
+                {{ form.surface.errors }}
+            </div>
+
+            <div id="form_elem">  
+                <label for="id_single_only">{% trans 'Single only?' %}</label>
+                {{ form.single_only }}
+                {{ form.single_only.errors }}
+            </div>
+
+            <div id="form_elem">  
+                <label for="id_is_available">{% trans 'Is available?' %}</label>
+                {{ form.is_available }}
+                {{ form.is_available.errors }}
+            </div>
+
+            {{ form.court_setup }}
+            
+            <div id="form_action">
+                <input type="submit" class="button" value="{% trans 'Save' %}"/>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

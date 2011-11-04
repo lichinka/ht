@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load url from future %}
+
+{% for court in court_list %}
+	<td>
+		<a href="{% url 'reservations.views.club_edit' court.vacancy.id ordinal_date %}" 
+			{% if court.reservation %}
+	            class="small_button" 
+				title="{% trans 'Reserved' %}">
+				{{ court.reservation.description }}
+			{% else %}	
+				class="small_empty_button" 
+				title="{% trans 'Make reservation' %}">.
+			{% endif %}
+		</a>
+	</td>
+{% endfor %}

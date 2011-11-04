@@ -1,0 +1,37 @@
+{% extends "user_messages/base.html" %} 
+{% load i18n %}
+
+{% block sent_current %}
+	class="current"
+{% endblock %}
+
+{% block content %}
+	{% if message_list %} 
+		<div id="message_list">
+			{% for message in message_list %} 
+				<div id="message">
+					<div id="message_left">
+						<img src="{{ STATIC_PREFIX }}img/tennis_player.jpg">
+						{{ message.recipient }}
+					</div>
+					<div id="message_right">
+						<div id="message_right_title">
+							<h1>{{ message.subject }}</h1>
+							<span style="float:right;">
+								{{ message.sent_at|date:_("DATETIME_FORMAT") }}
+								<a href="{% url user_messages_delete message.id %}">
+									<img src="{{ STATIC_PREFIX }}img/trash.png" alt="{% trans 'Delete' %}">
+								</a>
+							</span>
+					    </div>
+					    <div id="message_right_content">
+							<p>{{ message.body }}</p>
+						</div>
+				    </div>
+			    </div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<p>{% trans "No messages" %}</p>
+	{% endif %}
+{% endblock %}

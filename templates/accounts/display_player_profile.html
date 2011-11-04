@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+{% load availability %}
+{% load invitations %}
+{% load played_matches %}
+{% load account_tags %}
+
+
+
+{% block user_content %}
+	<div class="profile_panels_left">
+		{% availability user %}
+		
+		{% played_matches user %}
+		
+		{% player_information user %}
+	</div>
+	
+	<div class="profile_panels_right">
+		{% display_invitations user %}
+		
+		<div class="panel">
+			<div class="panel_title">
+				<img src="{{ STATIC_PREFIX }}img/ads_activity.png">
+				<h2>{% trans 'Ads' %}</h2>
+			</div>
+			<div class="panel_content">
+				<p>
+				    {% trans "The ads you publish, including the comments people post on them, are displayed here." %}
+				</p>
+				<p>
+				    {% trans "You may also follow other people's ads that may interest you. Try finding that racquet you always dreamed about!" %}
+				</p>
+			</div>
+			<div class="panel_buttons">
+			    <a href="#" class="button">{% trans 'Search' %}</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block anonymous_content %}
+	<article>
+		{% if rank_list %}
+			<header>
+				<h2>{% trans 'Current ranking' %}</h2>
+			</header>
+			<ul>
+			{% for rank in rank_list %}
+				<li>
+					<a href="{% url 'ranking.views.display_matches' rank.player.user_profile.user.id %}">
+						{{ rank.player.user_profile.user.username }}
+	        		</a>
+					{{ rank.points }}
+				</li>
+			{% endfor %}
+			</ul>		
+		{% else %}
+			<header>
+				<h3>{% trans 'No data for the ranking yet' %}</h3>
+			</header>
+		{% endif %}
+		<p>
+			{% trans 'The ranking is calculated based on the amount of points achieved by each player.' %}
+		</p>
+		<p>
+			{% trans 'A player gets one point for every game she/he wins. For example, after a match resulting' %}
+			{% trans 'in 7:6, 6:2, the winner gets 13 points, whereas the loser gets 8 points.' %}
+		</p>
+		<p>
+			{% trans 'All matches reported to HT are taken into account.' %}
+		</p>
+	</article>
+{% endblock %}

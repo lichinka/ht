@@ -1,0 +1,40 @@
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+	<meta charset="utf-8"/>
+
+	<title>
+		{% trans "::: HT :::" %}
+	</title>
+
+	<!-- Main style sheet for the whole site -->
+	<link rel="stylesheet" href="{{ STATIC_PREFIX }}style.css"/>
+</head>
+
+<body>
+	<div id="container">
+        <h1>{% trans 'Welcome!' %}</h1>
+		<div id="topspace">
+			<br>
+		</div>
+        <div id="header_photo">
+            <img src="{{ STATIC_PREFIX }}img/rogelio.jpg">
+            <br>
+        </div>
+        
+		<div id="site_sections">
+			<br/><br/>
+			<a href="{% url 'accounts.views.login' %}" class="button">
+				{% trans 'Login' %}
+			</a>
+		</div>
+	</div>
+</body>
+</html>
+

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block user_content %}
+	<h1>{% trans 'Confirm reservation' %}</h1>
+	
+    <div id="form">	
+		{% if form.errors %}
+    	    {{ form.non_field_errors }}
+		{% endif %}
+		
+		<form method="post" action="{% url 'reservations.views.player_edit' form.instance.vacancy.id ordinal_date %}">
+			{% csrf_token %}
+		    
+		    <div id="form_elem">
+			    <label for="id_for_date">{% trans 'Date' %}</label>
+			    {{ form.for_date }}
+			    {{ form.for_date.errors }}
+	        </div>
+		    	
+		    <div id="form_elem">
+		        <label for="id_from">{% trans 'From' %}</label>
+		        {{ form.instance.vacancy.get_available_from_display }}
+	        </div>
+	        
+		    <div id="form_elem">
+		        <label for="id_to">{% trans 'To' %}</label>
+		        {{ form.instance.vacancy.get_available_to_display }}
+	        </div>
+	        
+		    <div id="form_elem">
+		        <label for="id_club">{% trans 'Club' %}</label>
+		        {{ form.instance.vacancy.court.court_setup.club.user.first_name }}
+		        {{ form.instance.vacancy.court.court_setup.club.user.last_name }}
+	        </div>
+	        
+		    <div id="form_elem">
+		        <label for="id_court">{% trans 'Court' %}</label>
+		        {{ form.instance.vacancy.court.number }}
+	        </div>
+	        
+		    <span style="display:none;">
+		        {{ form.description }}
+	        </span>
+	       
+	       	{{ form.pk }} 
+	        {{ form.created_on }}
+	        {{ form.user }}
+	        {{ form.vacancy }}
+	        
+	        <div id="form_action"> 
+			    <input type="submit" value="{% trans 'Confirm' %}" class="button"/>
+			</div>
+		</form>
+	</div>
+    	
+{% endblock %}

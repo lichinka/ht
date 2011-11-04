@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+
+
+
+{% block anonymous_content %}
+	<div id="header_photo">
+		<img src="{{ STATIC_PREFIX }}img/ball_closeup.jpg">
+	</div>
+{% endblock %}
+
+{% block user_content %}
+{% endblock %}

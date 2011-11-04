@@ -1,0 +1,42 @@
+{% load i18n %}
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+
+<div class="panel">
+    {% if player %}
+		<div class="panel_title">
+			<img src="{{ STATIC_PREFIX }}img/personal_information.png">
+			<h2>{% trans 'Personal information' %}</h2>
+		</div>
+		<div class="panel_content">
+			<ul>
+				<li>
+					{{ player.user.first_name }}
+					{{ player.user.last_name }}
+					
+					{% if player.male %}
+				        {% trans '(Male)' %}
+				    {% else %}
+				        {% trans '(Female)' %}
+				    {% endif %}
+				</li>
+				<li>
+				  {% if player.right_handed %}
+				      {% trans 'Right-handed' %}
+				  {% else %}
+				      {% trans 'Left-handed' %}
+				  {% endif %}
+				</li>  
+				<li>{{ player.get_level_display }}</li>
+				<li>{{ player.user.email }}</li>
+			</ul>
+		</div>
+		<div class="panel_buttons">
+			<a href="{% url 'accounts.views.edit_player_profile' %}" class="button">
+			   {% trans 'Edit' %}
+			</a>
+		</div>
+	{% endif %}
+</div>

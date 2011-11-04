@@ -1,0 +1,41 @@
+{% extends "base.html" %} 
+{% load i18n %}
+{% load url from future %}
+
+
+
+{% block user_content %}
+	<h1>{% trans 'Feedback' %}</h1>
+	
+    {% if form.errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+            
+	<div id="form">
+	        {% if success_url %}
+		      <form action="{% url 'user_messages.views.feedback' %}?next={{ success_url }}" method="post">
+		    {% else %}
+		      <form action="{% url 'user_messages.views.feedback' %}" method="post">
+		    {% endif %}
+			{% csrf_token %}
+		
+		    <div id="form_elem">
+		        {{ form.body.errors }}
+		        <label for="id_body">{% trans 'Thank you for sharing your opinions and comments with us!' %}</label>
+		        {{ form.body }}
+		    </div>
+		    
+			<span style="display:none;">
+			   {{ form.recipient }}
+			   {{ form.subject }}
+			</span>
+			
+			<div id="form_action">
+			    <input type="submit" class="button" value="{% trans 'Send' %}"/>
+			</div>
+			<div id="form_action">
+			    <a href="{{ success_url }}" class="button">{% trans 'Cancel' %}</a>
+			</div>
+		</form>
+	</div>
+{% endblock %}

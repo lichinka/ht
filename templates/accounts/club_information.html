@@ -1,0 +1,23 @@
+{% load i18n %} 
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<div class="panel">
+	{% if club %}
+		<div class="panel_title">
+			<img src="{{ STATIC_PREFIX }}img/personal_information.png">
+			<h2>{% trans 'Institutional data' %}</h2>
+		</div>
+		<div class="panel_content">
+			<ul>
+				<li>{{ club.company }}</li>
+				<li>{{ club.address }}, {{ club.city }}</li>
+				<li>{{ club.phone }}</li>
+			</ul>
+		</div>
+		<div class="panel_buttons">
+		    <a href="#" class="button">{% trans 'Edit' %}</a>
+		</div>
+	{% endif %}
+</div>

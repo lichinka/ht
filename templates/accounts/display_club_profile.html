@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load account_tags %}
+{% load court_tags %}
+
+
+{% block user_content %}
+	<div class="profile_panels_left">
+		{% club_information user %}
+	</div>
+	
+	<div class="profile_panels_right">
+    	{% court_setup user %}			
+	</div>
+{% endblock %}

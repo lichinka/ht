@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+
+
+{% block anonymous_content %}
+	<h1>{% trans 'There has been an internal error' %}</h1>
+	<br/><br/>
+	<div id="header_photo">
+		<img src="{{ STATIC_PREFIX }}img/rogelio.jpg">
+	</div>
+{% endblock %}
+
+{% block user_content %}
+	<h3>{% trans 'Leave us a message so we will able to track the problem down.' %}</h3>
+	<br/><br/>
+	<h3>{% trans 'Thank you for helping us improve the portal!' %}</h3>
+{% endblock %}

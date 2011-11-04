@@ -1,0 +1,59 @@
+{% load i18n %}
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<script>
+	/**
+	 * change the target addresses of the Activate and Edit buttons dynamically
+	 */
+	$(document).ready (function ( ) {
+		$(".panel_content input[type=radio][name=court_setup]").click (function ( ) {
+			court_setup_id = this.value;
+			$(".panel_buttons a#activate_court_setup").
+				each (function ( ) {
+					this.href = "{% url 'clubs.views.toggle_active_court_setup' 666 %}";	
+					this.href = this.href.replace (666, court_setup_id);
+				});
+			$(".panel_buttons a#edit_court_setup").
+				each (function ( ) {
+					this.href = "{% url 'clubs.views.edit_court_setup' 666 %}";	
+					this.href = this.href.replace (666, court_setup_id);
+				});
+		});
+	});
+</script>
+
+<div class="panel">
+	<div class="panel_title">
+		<img src="{{ STATIC_PREFIX }}img/matches.png">
+		<h2>{% trans 'Court setups' %}</h2>
+	</div>
+	<div class="panel_content">
+		<fieldset>
+		<ul>
+	        {% for setup in court_setup_list %}
+	        	<li>
+		        	<label>
+		        		<input type="radio" name="court_setup" value="{{ setup.id }}">
+			                {% if setup.is_active %}
+			                    <b>{{ setup.name }}</b>
+			                    <i>{% trans "(active)" %}</i>
+			                {% else %}
+			                    {{ setup.name }}
+			                {% endif %}
+		            </label>
+	            </li>
+	        {% endfor %}
+		</ul>
+		</fieldset>
+	</div>
+	<div class="panel_buttons">
+	    <a href="#" class="button" id="activate_court_setup">
+	    	{% trans 'Activate' %}
+	    </a>
+	    <a href="#" class="button" id="edit_court_setup">
+	    	{% trans 'Edit' %}
+	    </a>
+	</div>
+</div>

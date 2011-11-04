@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block anonymous_content %}
+	<h1>{{ title }}</h1>
+	
+    <div id="form">
+    	<p>
+    		{{ body }}
+    	</p>
+	</div>
+    	
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block anonymous_content %}
+
+	{% if form.errors %}
+		{{ form.non_field_errors }}
+	{% endif %}
+
+    <div id="form">
+		<form method="post" action="{% url 'accounts.views.edit_player_profile' %}">
+		    {% csrf_token %}
+		    
+            <div id="form_elem">
+                <label for="id_first_name">{% trans 'First name' %}</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+            
+            <div id="form_elem">
+                <label for="id_last_name">{% trans 'Last name' %}</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            
+            <div id="form_elem">
+                <label for="id_level">{% trans 'Game level' %}</label>
+                {{ form.level }}
+                {{ form.level.errors }}
+            </div>
+            
+            <div id="form_elem">
+                <label for="id_male">{% trans 'Male?' %}</label>
+                {{ form.male }}
+                {{ form.male.errors }}
+            </div>
+            
+            <div id="form_elem">
+                <label for="id_right_handed">{% trans 'Right handed?' %}</label>
+                {{ form.right_handed }}
+                {{ form.right_handed.errors }}
+            </div>
+            
+            {{ form.user }}
+            {{ form.next }}
+            
+			<div id="form_action">
+			    <input type="submit" value="{% trans 'Save' %}" class="button"/>
+			</div>
+		</form>
+	</div>	
+{% endblock %}

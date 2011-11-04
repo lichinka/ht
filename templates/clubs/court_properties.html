@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<p>
+	<img src={% if court.surface == 'CL' %}
+			     "{{ STATIC_PREFIX }}img/clay.png"
+			 {% else %}{% if court.surface == 'CE' %}
+			     "{{ STATIC_PREFIX }}img/cement.png"
+			 {% else %}{% if court.surface == 'GR' %}
+			     "{{ STATIC_PREFIX }}img/grass.png"
+			 {% else %}{% if court.surface == 'RU' %}
+			     "{{ STATIC_PREFIX }}img/cement.png"
+			 {% else %}{% if court.surface == 'CA' %}
+			     "{{ STATIC_PREFIX }}img/carpet.png"
+			 {% endif %}{% endif %}{% endif %}{% endif %}{% endif %} title="{{ court.get_surface_display }}"/>
+	{% if court.light %}
+	   <img src="{{ STATIC_PREFIX }}img/light.png" title="{% trans "Artificial light" %}"/>
+	{% else %}
+	   <img src="{{ STATIC_PREFIX }}img/no_light.png" title="{% trans "No artificial light" %}"/>
+	{% endif %}
+	{% if court.indoor %}
+	   <img src="{{ STATIC_PREFIX }}img/indoor.png" title="{% trans "Indoor" %}"/>
+	{% else %}
+	   <img src="{{ STATIC_PREFIX }}img/outdoor.png" title="{% trans "Outdoor" %}"/>
+	{% endif %}
+</p>

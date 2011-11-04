@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load availability %}
+
+{% block user_content %}
+
+	{% availability user %}
+
+	{% if form.errors %}
+		<p>{% trans 'You have an error' %}</p>
+	{% endif %}
+	<form method="post" action="{% url 'players.views.add_vacancy' %}">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="{% trans 'Add' %}"/>
+	</form>
+
+{% endblock %}

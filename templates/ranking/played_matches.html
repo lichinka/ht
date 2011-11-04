@@ -1,0 +1,49 @@
+{% load i18n comments %}
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+
+
+<div class="panel">
+	<div class="panel_title">
+		<img src="{{ STATIC_PREFIX }}img/matches.png">
+		<h2>{% trans 'Matches' %}</h2>
+	</div>
+	<div class="panel_content">
+		<ul>
+			{% for match in match_qset.iterator %}
+				{% get_comment_count for match as comment_count %}
+				<li>
+					{{ match }}
+					&nbsp;
+					<a href="{% url 'ranking.views.comment_match' match.id %}">
+						{% trans 'Comments' %}({{ comment_count }})
+					</a>
+					&nbsp;
+					{% if user.is_authenticated %}
+						{% with user.get_profile.player_profile as player %}
+							{% if player == match.loser %}
+								<a href="{% url 'ranking.views.challenge_result' match.winner.id match.id %}">
+									{% trans 'Challenge' %}
+								</a>
+							{% endif %}
+							{% if player == match.winner %}
+								<a href="{% url 'ranking.views.challenge_result' match.loser.id match.id %}">
+									{% trans 'Challenge' %}
+								</a>
+							{% endif %}
+						{% endwith %}
+					{% endif %}
+				</li>
+			{% empty %}
+				<p>{% trans 'Write in the result of every match you play against another HT members, and you will appear on our ranking!' %}</p>
+			{% endfor %}
+		</ul>		
+	</div>
+	<div class="panel_buttons">
+		<a href="{% url 'ranking.views.enter_result' %}" class="button">
+		   {% trans 'Add' %}
+		</a>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+
+
+
+{% block anonymous_content %}
+	<div id="header_photo">
+		<img src="{{ STATIC_PREFIX }}img/rogelio.jpg">
+		<br>
+	</div>
+	
+	<div id="site_sections">
+		<article>
+			<div id="section">
+				<a href="{% url 'players.views.search_opponent' %}">
+					<img src="{{ STATIC_PREFIX }}img/find_partner.png">
+				</a>
+			</div>
+			<div id="section">
+				<a href="{% url 'reservations.views.search' %}">
+					<img src="{{ STATIC_PREFIX }}img/find_court.png">
+				</a>
+			</div>
+			<div id="section">
+				<a href="#">
+					<img src="{{ STATIC_PREFIX }}img/ads.png">
+				</a>
+			</div>
+			<div id="section">
+				<a href="#">
+					<img src="{{ STATIC_PREFIX }}img/wiki.png">
+				</a>
+			</div>
+		</article>
+	</div>
+{% endblock %}
+
+{% block user_content %}
+{% endblock %}

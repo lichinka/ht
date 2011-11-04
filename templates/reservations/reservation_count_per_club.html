@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load url from future %}
+
+<article>
+	<header>
+	</header>
+    <ul>
+        <li>
+            <a href='#'>{% trans 'Today' %}</a>
+            {{ today_count }}
+        </li>
+        <li>
+            <a href='#'>{% trans 'Tomorrow' %}</a>
+            {{ tomorrow_count }}
+        </li>
+        <li>
+            <a href='#'>{% trans 'Next week' %}</a>
+            {{ week_count }}
+        </li>
+    </ul>
+</article>

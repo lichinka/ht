@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load url from future %}
+
+<ul>
+    {% if user.is_authenticated %}
+        {% if profile %}
+			<li>
+				<a href="{% url 'accounts.views.display_profile' %}">
+					{% trans 'Profile' %}
+				</a>
+			</li>
+            {% if profile.is_club %}
+				<li>
+					<a href="{% url 'reservations.views.club_view' %}">
+						{% trans 'Reservations' %}
+					</a>
+				</li>
+			{% endif %}
+		{% endif %}
+	{% endif %}
+</ul>

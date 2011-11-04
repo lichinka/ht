@@ -1,0 +1,77 @@
+[
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "root", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2011-10-19 13:58:11", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$91fbd$e5b852f4610f52abcde58e6f7fff05257a4faa6d", 
+            "email": "webmaster@hocemtenis.si", 
+            "date_joined": "2011-10-19 13:57:33"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "lucas", 
+            "first_name": "Lucas", 
+            "last_name": "Benedi\u010di\u010d", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2011-10-19 13:58:37", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$b8ee3$1016782dc0d2b08efbcef12d3e4e1bee048271be", 
+            "email": "lucas.benedicic@mobitel.si", 
+            "date_joined": "2011-10-19 13:58:37"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "tazal", 
+            "first_name": "Teni\u0161ka Akademija \u017dalec", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2011-10-19 13:59:01", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$27af8$02020183a1bedd0a5eee1057a2f8d98cb6c5f478", 
+            "email": "tenisvolk@t-2.si", 
+            "date_joined": "2011-10-19 13:59:01"
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "accounts.playerprofile", 
+        "fields": {
+            "right_handed": true, 
+            "male": true, 
+            "user": 2, 
+            "level": "I"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "accounts.clubprofile", 
+        "fields": {
+            "city": 41, 
+            "company": "Toma\u017e s.p.", 
+            "user": 3, 
+            "phone": "333333", 
+            "address": "Naslov kluba 221"
+        }
+    }
+]

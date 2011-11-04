@@ -1,0 +1,89 @@
+{% load i18n %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+{% load inbox %}
+{% load account_tags %}
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+	<meta charset="utf-8"/>
+
+	<title>
+		{% trans "::: HT :::" %}
+	</title>
+
+	<!-- Main style sheet for the whole site -->
+	<link rel="stylesheet" href="{{ STATIC_PREFIX }}style.css"/>
+
+	<!-- JS libraries -->
+	<script src="{{ STATIC_PREFIX }}js/jquery-1.6.4.min.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="{{ STATIC_PREFIX }}js/modernizr.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+
+<body>
+    <div id="feedback">
+        <a href="{% url 'user_messages.views.feedback' %}"></a>
+    </div>
+	<div id="container">
+		<div id="topspace">
+			&nbsp;
+		</div>
+		<div id="header">
+			<div id="header_left">
+				<a href={% url 'ht.views.home' %}>
+					<img src="{{ STATIC_PREFIX}}img/header_left.png">
+				</a>
+			</div>
+			<div id="header_right">
+				{% if user.is_authenticated %}
+					<div id="header_right_top">
+						<a href="{% url 'accounts.views.logout' %}">
+							{% if user.first_name %}
+								{{ user.first_name }} {{ user.last_name }}
+							{% else %}
+								{{ user.username }}
+							{% endif %}
+							&nbsp;
+							<img src="{{ STATIC_PREFIX }}img/logout.png" />
+						</a>
+					</div>
+					<div id="header_right_middle">
+						<a href="{% url 'user_messages.views.inbox' %}">
+							{% inbox_count %}
+							&nbsp;
+							<img src="{{ STATIC_PREFIX }}img/inbox.png" />
+						</a>
+					</div>
+				{% else %}
+					<div id="header_right_top">
+						&nbsp;
+					</div>
+					<div id="header_right_middle">
+						&nbsp;
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		{% if user.is_authenticated %}
+			<div id="user_menu">
+				{% user_menu user %}
+			</div>
+		{% endif %}
+		
+		{% block anonymous_content %}
+		{% endblock %}
+		
+		{% if user.is_authenticated %}
+			{% block user_content %}
+			{% endblock %}
+		{% endif %}
+	</div>
+	<footer>
+		<p>Copyright &copy; MyFut</p>
+	</footer>
+</body>
+</html>
+

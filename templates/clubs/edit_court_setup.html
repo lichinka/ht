@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load vacancy_tags %}
+
+{% block user_content %}
+
+    {% if form.errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+    
+    <div id="form">
+        <form method="post" action="{% url 'clubs.views.edit_court_setup' court_setup_id %}">
+            {% csrf_token %}
+        
+            <div id="form_elem">
+                <label for="id_name">{% trans 'Name' %}</label>
+                {{ form.name }}
+                {{ form.name.errors }}
+            </div>
+
+            <div id="form_elem">  
+	            <label for="id_is_active">
+                	{% if form.is_active.value %}
+                		{% trans '(currently active)' %}
+	                {% endif %}
+                </label>
+                <span style="display:none;">
+                    {{ form.is_active }}
+                </span>
+                {{ form.is_active.errors }}
+            </div>
+
+            {{ form.club }}
+            
+            <div id="form_action">
+                <input type="submit" value="{% trans 'Save' %}" class="button"/>
+            </div>
+            <div id="form_action">
+                <input type="button" value="{% trans 'Clone' %}" class="button"
+                       onClick="window.location='{% url 'clubs.views.clone_court_setup' court_setup_id %}'">
+            </div>
+            <div id="form_action">
+                <input type="button" value="{% trans 'Delete' %}" class="button"
+                       onClick="window.location='{% url 'clubs.views.delete_court_setup' court_setup_id %}'">
+            </div>
+        </form>
+    </div>
+		
+	<ol id="message_menu">
+	    {% for court in court_list %}
+	    	{% if court.id == selected_court.id %}
+	    		<li class="current">
+	    	{% else %}
+	    		<li>
+	    	{% endif %}
+			<a href="{% url 'clubs.views.edit_court_setup' court_setup_id court.id %}">
+				{% trans 'Court' %} {{ court.number }}
+			</a></li>
+		{% endfor %}
+	</ol>
+	
+	<div id="court_setup">
+	    {% for court in court_list %}
+	    	{% if court.id == selected_court.id %}
+		        {% if not court.is_available %}
+		        	<h2>{% trans 'Not available for reservations' %}</h2>
+		        	<br/>
+		        	<p>
+		        		<a href="{% url 'clubs.views.toggle_available_court' court.id %}" class="button">
+		        			{% trans 'Activate' %}
+		        		</a>
+			            <a href="{% url 'clubs.views.edit_court_properties' court_setup_id court.id %}" class="button">
+			                {% trans 'Properties' %}
+			            </a>
+		        	</p>
+		        {% else %}
+					<h2>{% trans 'Prices per day and hour' %}</h2>
+					<br/> 
+                	<form method="post" action="{% url 'clubs.views.save_court_vacancy' court.id %}">
+                		{% csrf_token %}
+                	
+                		<span style="text-align:center;">	
+		                    <a href="{% url 'clubs.views.delete_court' court.id %}" class="button">
+		                    	{% trans 'Delete' %}
+		                    </a> 
+			        		<a href="{% url 'clubs.views.toggle_available_court' court.id %}" class="button">
+			        			{% trans 'Deactivate' %}
+			        		</a>
+			        		<a href="{% url 'clubs.views.clone_court' court.id %}" class="button">
+			        			{% trans 'Clone' %}
+			        		</a>
+				            <a href="{% url 'clubs.views.edit_court_properties' court_setup_id court.id %}" class="button">
+				                {% trans 'Properties' %}
+				            </a>
+				            <a href="javascript:document.forms[1].submit();" class="button">
+				            	{% trans 'Save' %}
+				            </a>
+		 		        </span>
+		 		            
+						<table>
+					        <thead>
+					        	<tr>
+				                <th scope="col">&nbsp;</th>
+				                {% for day in day_list %}
+				                    <th scope="col">{{ day.1 }}</th>
+				                {% endfor %}
+				                </tr>
+					        </thead>
+				            <tbody>
+								{% for h, hour in hour_list %}
+									<tr {% if forloop.counter|divisibleby:2 %}class="odd"{% endif %}>
+										<th scope="row">
+											{{ hour }}
+					                  	</th>
+						                {% vacancy_prices_per_day court h %}
+					                </tr>
+					            {% endfor %}
+					        </tbody>
+					       	<tfoot>
+                                <tr>
+                                    <th scope="row">
+                                        &nbsp;
+						       		</th>
+                                    <td colspan="7">
+									    &nbsp; 
+				                    </td>
+			                   	</tr>
+					        </tfoot>
+				        </table>
+                    </form>
+			    {% endif %}
+			{% endif %}
+	    {% endfor %}
+	</div>
+	
+{% endblock %}

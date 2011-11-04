@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block anonymous_content %}
+
+    <div id="form">	
+		<form method="post" action="{% url 'reservations.views.search' %}">
+			{% csrf_token %}
+			
+			{% if form.errors %}
+	    	    {{ form.non_field_errors }}
+			{% endif %}
+		    
+		    <div id="form_elem">
+			    {{ form.location.errors }}
+			    <label for="id_location">{% trans 'Near city' %}</label>
+			    {{ form.location }}
+	        </div>
+		    	
+		    <div id="form_elem">
+			    {{ form.for_date.errors }}
+		        <label for="id_for_date">{% trans 'Date and Time' %}</label>
+		        {{ form.for_date }}
+	        </div>
+	        
+		    <div id="form_elem">
+			    {{ form.for_time.errors }}
+		        <label for="id_for_time">&nbsp;</label>
+		        {{ form.for_time }}
+	        </div>
+	        
+		    <div id="form_elem">
+			    {{ form.hours.errors }}
+		        <label for="id_hours">{% trans 'for' %}</label>
+		        {{ form.hours }}
+	        </div>
+	        
+	        <div id="form_action"> 
+			    <input type="submit" value="{% trans 'Search' %}" class="button"/>
+			</div>
+		</form>
+	</div>
+
+    {% block search_results %}
+		<h2>{% trans 'Featured clubs' %}</h2>
+		<br/><br/><br/><br/><br/>
+	
+	    <h2>{% trans 'Fast reservation' %}</h2>
+		<br/><br/><br/><br/><br/>
+	{% endblock %}
+    	
+{% endblock %}

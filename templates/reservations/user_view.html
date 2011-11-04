@@ -1,0 +1,101 @@
+{% extends "reservations/search.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load court_tags %}
+{% load vacancy_tags %}
+
+{% block search_results %}
+
+    <div id="day_shorcuts">
+	    <article>
+	        <header>
+	            <script>
+	                function prevDay ( )
+	                {
+	                	document.forms[0].for_date.value--;
+	                	document.forms[0].submit ( );
+	                	return;
+	                }
+	                function nextDay ( )
+	                {
+	                	document.forms[0].for_date.value++;
+	                	document.forms[0].submit ( );
+	                	return;
+	                }
+	                function changeTime (val)
+	                {
+	                	document.forms[0].for_time.value = val;
+	                	document.forms[0].submit ( );
+	                	return;
+	                }
+	            </script>
+	        </header>
+	        <div id="day_shortcuts_left">
+			    {% if prev_day %}
+			        <a href="javascript:prevDay();" class="small_button"><< {{ prev_day|capfirst }}</a>
+			    {% endif %}
+		    </div>
+	        <div id="day_shortcuts_right">
+			    {% if next_day %}
+			        <a href="javascript:nextDay();" class="small_button">{{ next_day|capfirst }} >></a>
+			    {% endif %}
+		    </div>
+	    </article>
+	</div>
+	
+    {% for club in club_list %}
+    	<div id="reservation_panel">
+    		<div id="reservation_panel" class="title">
+    			<div id="reservation_panel" class="title_avatar">
+    				<img src="{{ STATIC_PREFIX }}img/tennis_club.png">
+    			</div>
+    			<div id="reservation_panel" class="title_data">
+			        <h3>
+			            {{ club.name|upper }}
+			        </h3>
+			        {{ club.address }}, {{ club.city }}
+			        <a href="#" class="small_button">{% trans 'more ...' %}</a>
+    			</div>
+    		</div>
+	        <table>
+		        <thead>
+		        	<tr>
+		                <th scope="col">{% trans 'Court' %}</th>
+		                <th scope="col">
+		                    <a href="javascript:changeTime({{ earlier }});" title="{% trans 'Earlier' %}"><<</a>
+		                </th>
+		                {% for h,hour in hour_list %}
+		                    <th scope="col">{{ hour }}</th>
+		                {% endfor %}
+		                <th scope="col">
+		                    <a href="javascript:changeTime({{ later }});" title="{% trans 'Later' %}">>></a>
+		                </th>
+	                </tr>
+		        </thead>
+	            <tbody>
+					{% for court in club.court_list %}
+						<tr {% if forloop.counter|divisibleby:2 %}class="odd"{% endif %}>
+							<th scope="row">
+								{% court_properties court %}
+		                  	</th>
+			                <td>&nbsp;</td>
+			                {% vacancy_per_hour court for_date hour_list %}
+			                <td>&nbsp;</td>
+		                </tr>
+		            {% endfor %}
+		        </tbody>
+		       	<tfoot>
+		       	    <tr>
+		       	        <th scope="row">
+		       	            &nbsp;
+			       		</th>
+	                       <td colspan="9">
+						    &nbsp; 
+			            </td>
+	                </tr>
+		        </tfoot>
+	    	</table>
+		</div>
+    {% endfor %}
+	
+{% endblock %}

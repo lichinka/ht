@@ -1,0 +1,54 @@
+{% load i18n %} 
+{% load url from future %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+
+
+<div class="panel">
+	<div class="panel_title">
+		<img src="{{ STATIC_PREFIX }}img/invitation.png">
+		<h2>{% trans 'Invitations' %}</h2>
+	</div>
+	<div class="panel_content">
+	    {% if not received_qset and not sent_qset %}
+	        <p>
+	           {% trans "Here you will see the people you've invited for a tennis match. All invitations you receive are also displayed here. Start now and look for a new opponent to play against!" %}
+	        </p>
+	    {% endif %}
+		{% if received_qset %}
+			<ul> 
+				{% for message in received_qset.iterator %} 
+				    <li>
+				    	{% trans 'From' %}
+				    	{{ message.sender }},
+				    	{% trans 'on' %}
+			            <a href="{{message.get_absolute_url }}">
+			            	{{ message.sent_at|date:_("DATETIME_FORMAT") }}
+			            </a>
+				    </li>
+				{% endfor %}
+			</ul>
+		{% endif %}  
+		
+		{% if sent_qset %} 
+			<ul> 
+				{% for message in sent_qset.iterator %} 
+				    <li>
+				    	{% trans 'To' %}
+				    	{{ message.recipient }},
+				    	{% trans 'on' %}
+			            <a href="{{message.get_absolute_url }}">
+			            	{{ message.sent_at|date:_("DATETIME_FORMAT") }}
+			            </a>
+				    </li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+  	</div>
+	<div class="panel_buttons">
+		<a href="#" class="button">
+		   {% trans 'Invite' %}
+		</a>
+	</div>
+</div>
