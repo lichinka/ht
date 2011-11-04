@@ -43,6 +43,14 @@ def update_translations ( ):
     local ("./manage.py makemessages --all")
     
 
+def remote_init_db ( ):
+    """ Initializes the database on the server, applying the initial schema migration step.-
+    """
+    with cd (env.remote_root):
+        run ('PYTHONPATH=/home/luka/django-ht:. python manage.py syncdb --noinput')
+        for app in env.apps:
+            run ('PYTHONPATH=/home/luka/django-ht:. python manage.py migrate %s' % app)
+
 def init_db ( ):
     """ Initializes the database, applying the initial schema migration step.-
     """
@@ -73,7 +81,8 @@ def deploy_site ( ):
     """ Deploys the whole site to the server.-
     """
     generate_static ( )
-    RSYNC_EXCLUDE = ['.settings',
+    RSYNC_EXCLUDE = ['.git',
+                     '.settings',
                      '.project',
                      '.pydevproject',
                      'staticfiles',
