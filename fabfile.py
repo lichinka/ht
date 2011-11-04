@@ -37,8 +37,14 @@ env.remote_static_root = '%s%s/' % (env.remote_root,
 
 
 
+def update_translations ( ):
+    """ Updates the message files for further translating.-
+    """
+    local ("./manage.py makemessages --all")
+    
+
 def init_db ( ):
-    """ Initializes the database, aplying the initial schema migration step.-
+    """ Initializes the database, applying the initial schema migration step.-
     """
     local ("./manage.py syncdb --noinput")
     for app in env.apps:
