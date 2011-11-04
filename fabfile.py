@@ -4,9 +4,9 @@ from fabric.contrib import project, console
 #
 # Apps within this project
 #
-env.apps = ['accounts', 'wiki', 'players', 'clubs', 'user_messages', 
-            'ranking', 'comments', 'locations', 'reservations', 
-            'ht_utils']
+env.apps = ['ht_utils', 'locations', 'accounts', 'wiki', 'players',
+            'clubs', 'user_messages', 'ranking', 'comments', 
+            'reservations']
 #
 # Where the project code lives locally
 #
@@ -40,10 +40,10 @@ env.remote_static_root = '%s%s/' % (env.remote_root,
 def init_db ( ):
     """ Initializes the database, aplying the initial schema migration step.-
     """
-    local ("./manage.py syncdb")
+    local ("./manage.py syncdb --noinput")
     for app in env.apps:
-        local ("./manage.py convert_to_south %s" % app)
-    local ("./manage.py migrate")
+        local ("./manage.py migrate %s" % app)
+
 
 def remote_test ( ):
     """ Executes all tests remotely.-
