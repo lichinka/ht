@@ -7,6 +7,7 @@ from django.forms.models import ModelChoiceField
 from django.forms.widgets import HiddenInput, DateInput
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.db.models.aggregates import Max
 
 from locations.models import City
 from clubs.models import Vacancy
@@ -24,9 +25,78 @@ class ReservationForm (forms.ModelForm):
                              widget=HiddenInput ( ))
     vacancy = ModelChoiceField (queryset=Vacancy.objects.all ( ),
                                 widget=HiddenInput ( ))
+    repeat = forms.BooleanField (initial=False,
+                                 required=False)
+    repeat_until = forms.DateField ( )
+    
     class Meta:
         model = Reservation
+
+    def save (self, commit=True):
+        """
+        Creates weekly reservations, if the repeat flag is on, and
+        repeat_until holds a valid date.-
+        """
+        #
+        # first of all, try to save the first reservation of the series
+        #
+        r = super (ReservationForm, self).save (commit=False)
+        #
+        # find out if this is a repeating reservation
+        #
+        if self.cleaned_data['repeat']:
+            series = Reservation.objects.exclude (repeat_series__isnull=True) \
+                                        .aggregate (Max ('repeat_series'))
+            if series['repeat_series__max']:
+                series = int (series['repeat_series__max']) + 1
+            else:
+                series = 1
+            r.repeat_series = series
+            #
+            # save one reservation for each date in the series
+            #
+            until_date = self.cleaned_data['repeat_until']
+            repeat_dates = [self.cleaned_data['for_date']]
+            while until_date > repeat_dates[-1]:
+                next_date = repeat_dates[-1] + timedelta (days=7)
+                repeat_dates.append (next_date)
+            if repeat_dates[-1] > until_date:
+                repeat_dates.pop ( )
+            #
+            # we've already added this one through 'r'
+            #
+            repeat_dates.remove (self.cleaned_data['for_date'])
+            
+            for d in repeat_dates:
+                rr = Reservation.objects.create (created_on=r.created_on,
+                                                 for_date=d,
+                                                 type=r.type,
+                                                 description=r.description,
+                                                 user=r.user,
+                                                 vacancy=r.vacancy,
+                                                 repeat_series=r.repeat_series)
+                rr.save ( )
+        #
+        # don't forget to save the original instance
+        #
+        if commit:
+            r.save ( )
+        return r
+
         
+    def clean (self):
+        """
+        Checks that repeat_until is later than the first reservation date.-
+        """
+        cleaned_data = self.cleaned_data
+        is_repeat = cleaned_data.get ('repeat')
+        from_date = cleaned_data.get ('for_date')
+        until_date = cleaned_data.get ('repeat_until')
+        
+        if is_repeat:
+            if from_date > until_date:
+                raise forms.ValidationError (_('Please check the dates!'))
+        return cleaned_data
         
 
 class SelectDateForm (forms.Form):

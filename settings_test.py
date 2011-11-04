@@ -7,12 +7,12 @@ from settings import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'test_luka_ht',
+        'NAME': ':memory:',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        'TEST_NAME': 'test_luka_ht',
     }
 }
 
+SOUTH_TESTS_MIGRATE = False

@@ -78,7 +78,8 @@ def club_edit (request, vid, ordinal_date):
     """
     Displays a form to create/edit a reservation for the
     given date (ordinal_date) and vacancy (vid).
-    The user must be a club.-
+    The user must be a club and own the court where the
+    reservation is being made.-
     """
     v = get_object_or_404 (Vacancy, pk=vid)
     club = UserProfile.objects.get_profile (request.user.username)
@@ -96,10 +97,13 @@ def club_edit (request, vid, ordinal_date):
                              type='C',
                              user=request.user,
                              vacancy=v)
-            
-        post_data = request.POST if request.method == 'POST' else None
-        form = ReservationForm (post_data,
-                                instance=r)
+        if request.method == 'POST':
+            form = ReservationForm (request.POST,
+                                    instance=r)
+        else:
+            form = ReservationForm (initial={'repeat': False,
+                                             'repeat_until': for_date},
+                                    instance=r)
         if form.is_valid ( ):
             r = form.save (commit=False)
             #

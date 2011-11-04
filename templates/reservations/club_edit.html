@@ -4,18 +4,46 @@
 
 {% block user_content %}
 
+    <h1>
+        {% blocktrans with num=form.instance.vacancy.court.number %}
+            Reservation on court {{ num }}
+        {% endblocktrans %}
+    </h1>
+    
 	{% if form.errors %}
    	    {{ form.non_field_errors }}
 	{% endif %}
 	
     <div id="form">	
+		<script>
+		    function toggleRepeat ( )
+		    {
+				chk = $(":input[type=checkbox][name=repeat]");
+				cont = $(":input[type=text][name=repeat_until]").parent ("div");
+				if (chk.is (':checked'))
+				{
+				    cont.css ("display", "block");
+				}
+		        else
+		        {
+		            cont.css ("display", "none");
+		        }
+		    }
+			$(document).ready (function ( ) {
+				toggleRepeat ( );
+				$(":input[name=repeat]").click (function ( ) {
+					toggleRepeat ( );
+				});
+			});
+		</script>
+		
 		<form method="post" action="{% url 'reservations.views.club_edit' form.instance.vacancy.id ordinal_date %}">
 			{% csrf_token %}
 		    
 		    <div id="form_elem">
-			    {{ form.for_date.errors }}
 			    <label for="id_for_date">{% trans 'Date' %}</label>
 			    {{ form.for_date }}
+			    {{ form.for_date.errors }}
 	        </div>
 		    	
 		    <div id="form_elem">
@@ -29,16 +57,23 @@
 	        </div>
 	        
 		    <div id="form_elem">
-		        <label for="id_court">{% trans 'Court' %}</label>
-		        {{ form.instance.vacancy.court.number }}
+		        <label for="id_description">{% trans 'Description' %}</label>
+		        {{ form.description }}
+			    {{ form.description.errors }}
+	        </div>
+	      
+		    <div id="form_elem">
+		        <label for="id_repeat">{% trans 'Repeat weekly?' %}</label>
+		        {{ form.repeat }}
+			    {{ form.repeat.errors }}
 	        </div>
 	        
 		    <div id="form_elem">
-			    {{ form.description.errors }}
-		        <label for="id_description">{% trans 'Description' %}</label>
-		        {{ form.description }}
+		        <label for="id_repeat">{% trans 'until date' %}</label>
+		        {{ form.repeat_until }}
+			    {{ form.repeat_until.errors }}
 	        </div>
-	       
+	        
 	       	{{ form.pk }} 
 	        {{ form.created_on }}
 	        {{ form.type }}
@@ -47,6 +82,11 @@
 	        
 	        <div id="form_action"> 
 			    <input type="submit" value="{% trans 'Save' %}" class="button"/>
+			</div>
+	        <div id="form_action">
+	            <a href="#" class="button">
+	                {% trans 'Cancel' %}
+	            </a>
 			</div>
 		</form>
 	</div>

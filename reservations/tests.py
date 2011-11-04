@@ -1,5 +1,5 @@
 from random import randint
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 from django.test import TestCase
 from django.test.client import Client
@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.deletion import ProtectedError
 from django.contrib.auth.models import User
+from django.db.models.aggregates import Count
 
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
@@ -128,7 +129,7 @@ class ViewTest (TestCase):
         # add some extra courts
         #
         cs = CourtSetup.objects.get_active (self.club)
-        for i in range (3, randint (3, 15)):
+        for i in range (3, randint (3, 7)):
             Court.objects.create (court_setup=cs,
                                   number=i,
                                   indoor=False if i%2==0 else True,
@@ -147,6 +148,20 @@ class ViewTest (TestCase):
                 court_vacancy_terms[v].price = '%10.3f' % float (10*i + v);
                 court_vacancy_terms[v].save ( )
                 
+    
+    def test_cancel (self):
+        """
+        Checks the behavior of reservations.views.cancel.-
+        """
+        self.assertTrue (False, "Not yet implemented!")
+        
+            
+    def test_player_edit (self):
+        """
+        Checks the behavior of reservations.views.player_edit.-
+        """
+        self.assertTrue (False, "Not yet implemented!")
+        
         
     def test_search (self):
         """
@@ -189,6 +204,7 @@ class ViewTest (TestCase):
             for_date = date.today ( ) + timedelta (days=i%7)
             view_url = reverse ('reservations.views.club_edit',
                                 args=[v.id, for_date.toordinal ( )])
+            reservation_count = Reservation.objects.all ( ).aggregate (Count ('id'))
             #
             # correctly display the reservation form
             #
@@ -197,19 +213,23 @@ class ViewTest (TestCase):
             #
             # fill the form with reservation data and save it
             #
-            instance = resp.context[-1]['form'].instance
-            desc = 'Testing club reservation %s' % str(instance.vacancy.id)
+            form = resp.context[-1]['form']
+            desc = 'Testing club reservation %s' % str(form.instance.vacancy.id)
             resp = self.cli.post (view_url,
-                                  {'created_on': instance.created_on,
-                                   'for_date': instance.for_date,
-                                   'type': instance.type,
+                                  {'created_on': form.instance.created_on,
+                                   'for_date': form.instance.for_date,
+                                   'type': form.instance.type,
                                    'description': desc,
-                                   'user': instance.user.id,
-                                   'vacancy': instance.vacancy.id},
+                                   'user': form.instance.user.id,
+                                   'vacancy': form.instance.vacancy.id,
+                                   'repeat': form.initial['repeat'],
+                                   'repeat_until': form.initial['repeat_until']},
                                   follow=True)
             self.assertEquals (resp.status_code, 200)
             form = resp.context[-1]['form']
             self.assertEquals (len (form.errors.keys ( )), 0, form.errors)
+            self.assertEquals (Reservation.objects.all ( ).aggregate (Count ('id'))['id__count'],
+                               reservation_count['id__count'] + 1)
             try:
                 r = Reservation.objects.get_by_date (for_date).get (vacancy=v)
                 self.assertIsInstance (r, Reservation)
@@ -218,8 +238,98 @@ class ViewTest (TestCase):
                 self.assertEquals (r.description, desc)
                 self.assertEquals (r.user, self.club.user)
                 self.assertEquals (r.vacancy, v)
+                self.assertIsNone (r.repeat_series)
                 
             except ObjectDoesNotExist:
                 self.assertTrue (False,
                                  'The view did not save the reservation correctly.-')
+        #
+        # randomly select some vacancies and reserve with weekly repetition
+        #
+        all_vacancies = Vacancy.objects.get_all (self.courts.values ( ))
+        for i in range (20, randint (21, 25)):
+            v = all_vacancies[i]
+            for_date = date.today ( ) + timedelta (days=i%7)
+            view_url = reverse ('reservations.views.club_edit',
+                                args=[v.id, for_date.toordinal ( )])
+            reservation_count = Reservation.objects.all ( ).aggregate (Count ('id'))
+            #
+            # correctly display the reservation form
+            #
+            resp = self.cli.get (view_url)
+            self.assertEquals (resp.status_code, 200)
+            #
+            # fill the form with invalid data and try to save it
+            #
+            form = resp.context[-1]['form']
+            desc = 'Testing club invalid reservation %s' % str(form.instance.vacancy.id)
+            resp = self.cli.post (view_url,
+                                  {'created_on': form.instance.created_on,
+                                   'for_date': form.instance.for_date,
+                                   'type': form.instance.type,
+                                   'description': desc,
+                                   'user': form.instance.user.id,
+                                   'vacancy': form.instance.vacancy.id,
+                                   'repeat': True,
+                                   'repeat_until': form.instance.for_date - timedelta (days=2)},
+                                  follow=True)
+            self.assertEquals (resp.status_code, 200)
+            form = resp.context[-1]['form']
+            self.assertTrue (len (form.errors.keys ( )) > 0)
+            self.assertEquals (Reservation.objects.all ( ).aggregate (Count ('id'))['id__count'],
+                               reservation_count['id__count'])
+            #
+            # fill the form with reservation (repeat) data and save it
+            #
+            form = resp.context[-1]['form']
+            until_date = form.instance.for_date + timedelta (days=randint (3, 60))
+            repeat_dates = [form.instance.for_date]
+            while until_date > repeat_dates[-1]:
+                next_date = repeat_dates[-1] + timedelta (days=7)
+                repeat_dates.append (next_date)
+            if repeat_dates[-1] > until_date:
+                repeat_dates.pop ( )
+            desc = 'Testing club reservation series %s' % str(form.instance.vacancy.id)
+            resp = self.cli.post (view_url,
+                                  {'created_on': form.instance.created_on,
+                                   'for_date': form.instance.for_date,
+                                   'type': form.instance.type,
+                                   'description': desc,
+                                   'user': form.instance.user.id,
+                                   'vacancy': form.instance.vacancy.id,
+                                   'repeat': True,
+                                   'repeat_until': until_date},
+                                  follow=True)
+            self.assertEquals (resp.status_code, 200)
+            form = resp.context[-1]['form']
+            self.assertEquals (len (form.errors.keys ( )), 0, form.errors)
+            self.assertEquals (Reservation.objects.all ( ).aggregate (Count ('id'))['id__count'],
+                               reservation_count['id__count'] + len (repeat_dates))
+            #
+            # retrieve the repetition series identifier from the first
+            # reservation in the series
+            #
+            try:
+                r = Reservation.objects.get_by_date (for_date).get (vacancy=v)
+                self.assertIsNotNone (r.repeat_series)
+                rep_series = r.repeat_series
+            except ObjectDoesNotExist:
+                self.assertTrue (False,
+                                 'The view did not save the reservation series correctly.-')
+            #
+            # check that all reservations in the repetition series match
+            #
+            for d in repeat_dates:
+                try:
+                    r = Reservation.objects.get_by_date (d).get (vacancy=v)
+                    self.assertIsInstance (r, Reservation)
+                    self.assertEquals (r.for_date, d)
+                    self.assertEquals (r.type, 'C')
+                    self.assertEquals (r.description, desc)
+                    self.assertEquals (r.user, self.club.user)
+                    self.assertEquals (r.vacancy, v)
+                    self.assertEquals (r.repeat_series, rep_series)
+                except ObjectDoesNotExist:
+                    self.assertTrue (False,
+                                     'The view did not save the reservation series correctly.-')
                 
