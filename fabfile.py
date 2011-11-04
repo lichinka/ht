@@ -1,7 +1,12 @@
 from fabric.api import *
 from fabric.contrib import project, console
 
-
+#
+# Apps within this project
+#
+env.apps = ['accounts', 'wiki', 'players', 'clubs', 'user_messages', 
+            'ranking', 'comments', 'locations', 'reservations', 
+            'ht_utils']
 #
 # Where the project code lives locally
 #
@@ -31,6 +36,14 @@ env.remote_static_root = '%s%s/' % (env.remote_root,
                                     'static')
 
 
+
+def init_db ( ):
+    """ Initializes the database, aplying the initial schema migration step.-
+    """
+    local ("./manage.py syncdb")
+    for app in env.apps:
+        local ("./manage.py convert_to_south %s" % app)
+    local ("./manage.py migrate")
 
 def remote_test ( ):
     """ Executes all tests remotely.-

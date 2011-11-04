@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.markup',        # Enables wiki-like parsing and HTML rendering
     'django.contrib.staticfiles',   # Enables serving static files during development
-    #'south',             # Eases model-to-database synchronization
+    'south',             # Eases model-to-database synchronization
     'accounts',          # Includes user's profile
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
