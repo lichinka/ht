@@ -42,8 +42,8 @@ def init_db ( ):
     """
     local ("./manage.py syncdb")
     for app in env.apps:
-        local ("./manage.py schemamigration %s --initial" % app)
         local ("./manage.py convert_to_south %s" % app)
+    local ("./manage.py migrate")
 
 def remote_test ( ):
     """ Executes all tests remotely.-

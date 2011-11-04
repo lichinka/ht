@@ -68,6 +68,8 @@ class Reservation (models.Model):
     user = models.ForeignKey (User)
     vacancy = models.ForeignKey (Vacancy,
                                  on_delete=models.PROTECT)
+    repeat_series = models.IntegerField (null=True,
+                                         blank=True)
     objects = ReservationManager ( )
    
     class Meta:
