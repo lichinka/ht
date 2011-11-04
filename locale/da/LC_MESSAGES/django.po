@@ -9,210 +9,1172 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-11 12:31-0700\n"
+"POT-Creation-Date: 2011-11-04 21:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin.py:13 forms.py:20 models.py:52 templates/messages/outbox.html:7
-#: templates/messages/view.html:12
-msgid "Recipient"
-msgstr "Modtager"
+#: accounts/forms.py:44
+msgid "Please choose a different email address"
+msgstr ""
 
-#: admin.py:15
-msgid "group"
-msgstr "gruppe"
+#: accounts/forms.py:57
+msgid "Passwords do not match, please retype them"
+msgstr ""
 
-#: admin.py:16
-msgid "Creates the message optionally for all users or a group of users."
-msgstr "Skaber beskeden for alle brugere eller en gruppe af brugere."
+#: accounts/models.py:106
+msgid "Beginner"
+msgstr ""
 
-#: admin.py:23
-msgid "All users"
-msgstr "Alle brugere"
+#: accounts/models.py:107
+msgid "Intermediate"
+msgstr ""
 
-#: admin.py:38 models.py:88
-msgid "Message"
-msgstr "Beskeder"
+#: accounts/models.py:108
+msgid "Advanced"
+msgstr ""
 
-#: admin.py:45
-msgid "Date/time"
-msgstr "Dato/tid"
+#: accounts/models.py:109
+msgid "Registered"
+msgstr ""
 
-#: fields.py:53
+#: accounts/models.py:121
+msgid "This user has already been assigned a club profile"
+msgstr ""
+
+#: accounts/models.py:148
+msgid "This user has already been assigned a player profile"
+msgstr ""
+
+#: clubs/models.py:50 clubs/tests.py:518 clubs/tests.py:538
+msgid "Copy of"
+msgstr ""
+
+#: clubs/models.py:92
+msgid "Only one court setup may be active at once"
+msgstr ""
+
+#: clubs/models.py:109 clubs/tests.py:505
+msgid "Default"
+msgstr ""
+
+#: clubs/models.py:180
+msgid "Clay"
+msgstr ""
+
+#: clubs/models.py:181
+msgid "Cement"
+msgstr ""
+
+#: clubs/models.py:182
+msgid "Grass"
+msgstr ""
+
+#: clubs/models.py:183
+msgid "Rubber"
+msgstr ""
+
+#: clubs/models.py:184
+msgid "Carpet"
+msgstr ""
+
+#: clubs/models.py:274
+msgid "Monday"
+msgstr ""
+
+#: clubs/models.py:275
+msgid "Tuesday"
+msgstr ""
+
+#: clubs/models.py:276
+msgid "Wednesday"
+msgstr ""
+
+#: clubs/models.py:277
+msgid "Thursday"
+msgstr ""
+
+#: clubs/models.py:278
+msgid "Friday"
+msgstr ""
+
+#: clubs/models.py:279
+msgid "Saturday"
+msgstr ""
+
+#: clubs/models.py:280
+msgid "Sunday"
+msgstr ""
+
+#: clubs/models.py:327
+msgid "Vacancy terms should be one hour long"
+msgstr ""
+
+#: clubs/models.py:331 players/models.py:22
+msgid "from"
+msgstr ""
+
+#: clubs/models.py:333
+msgid "to"
+msgstr ""
+
+#: comments/admin.py:12
+msgid "Content"
+msgstr ""
+
+#: comments/admin.py:15
+msgid "Metadata"
+msgstr ""
+
+#: comments/admin.py:42
+msgid "flagged"
+msgid_plural "flagged"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments/admin.py:43
+msgid "Flag selected comments"
+msgstr ""
+
+#: comments/admin.py:47
+msgid "approved"
+msgid_plural "approved"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments/admin.py:48
+msgid "Approve selected comments"
+msgstr ""
+
+#: comments/admin.py:52
+msgid "removed"
+msgid_plural "removed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments/admin.py:53
+msgid "Remove selected comments"
+msgstr ""
+
+#: comments/admin.py:65
 #, python-format
-msgid "The following usernames are incorrect: %(users)s"
-msgstr "De følgende brugernavne er forkerte: %(users)s"
+msgid "1 comment was successfully %(action)s."
+msgid_plural "%(count)s comments were successfully %(action)s."
+msgstr[0] ""
+msgstr[1] ""
 
-#: forms.py:21 models.py:49 templates/messages/inbox.html:7
-#: templates/messages/outbox.html:7 templates/messages/trash.html:7
-#: templates/messages/view.html:6
-msgid "Subject"
+#: comments/feeds.py:14
+#, python-format
+msgid "%(site_name)s comments"
+msgstr ""
+
+#: comments/feeds.py:24
+#, python-format
+msgid "Latest comments on %(site_name)s"
+msgstr ""
+
+#: comments/forms.py:109 templates/clubs/edit_court_setup.html:17
+msgid "Name"
+msgstr ""
+
+#: comments/forms.py:110
+msgid "Email address"
+msgstr ""
+
+#: comments/forms.py:111
+msgid "URL"
+msgstr ""
+
+#: comments/forms.py:112
+msgid "Comment"
+msgstr ""
+
+#: comments/forms.py:193
+#, python-format
+msgid "Watch your mouth! The word %s is not allowed here."
+msgid_plural "Watch your mouth! The words %s are not allowed here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments/forms.py:200
+msgid ""
+"If you enter anything in this field your comment will be treated as spam"
+msgstr ""
+
+#: comments/models.py:22
+msgid "content type"
+msgstr ""
+
+#: comments/models.py:24
+#, fuzzy
+msgid "object ID"
 msgstr "Emne"
 
-#: forms.py:22 models.py:50
-msgid "Body"
-msgstr "Indhold"
+#: comments/models.py:50 comments/models.py:172
+#, fuzzy
+msgid "user"
+msgstr "Alle brugere"
 
-#: management.py:9
-msgid "Message Received"
-msgstr "Besked Modtaget"
+#: comments/models.py:52
+msgid "user's name"
+msgstr ""
 
-#: management.py:9
-msgid "you have received a message"
-msgstr "du har modtaget en besked"
+#: comments/models.py:53
+msgid "user's email address"
+msgstr ""
 
-#: management.py:10
-msgid "Message Sent"
-msgstr "Besked Afsendt"
+#: comments/models.py:54
+msgid "user's URL"
+msgstr ""
 
-#: management.py:10
-msgid "you have sent a message"
-msgstr "du har sendt en besked"
+#: comments/models.py:56 comments/models.py:80 comments/models.py:173
+msgid "comment"
+msgstr ""
 
-#: management.py:11
-msgid "Message Replied"
-msgstr "Besked Besvaret"
+#: comments/models.py:57
+msgid "photo"
+msgstr ""
 
-#: management.py:11
-msgid "you have replied to a message"
-msgstr "du har besvaret en besked"
+#: comments/models.py:63
+msgid "date/time submitted"
+msgstr ""
 
-#: management.py:12
-msgid "Reply Received"
-msgstr "Svar Modtaget"
+#: comments/models.py:64
+msgid "IP address"
+msgstr ""
 
-#: management.py:12
-msgid "you have received a reply to a message"
-msgstr "du har modtaget en besvarelse på en besked"
+#: comments/models.py:65
+msgid "is public"
+msgstr ""
 
-#: management.py:13
-msgid "Message Deleted"
-msgstr "Besked Slettet"
+#: comments/models.py:66
+msgid ""
+"Uncheck this box to make the comment effectively disappear from the site."
+msgstr ""
 
-#: management.py:13
-msgid "you have deleted a message"
-msgstr "du har slettet en besked"
+#: comments/models.py:68
+msgid "is removed"
+msgstr ""
 
-#: management.py:14
-msgid "Message Recovered"
-msgstr "Besked Genskabt"
+#: comments/models.py:69
+msgid ""
+"Check this box if the comment is inappropriate. A \"This comment has been "
+"removed\" message will be displayed instead."
+msgstr ""
 
-#: management.py:14
-msgid "you have undeleted a message"
-msgstr "du har genskabt en besked"
+#: comments/models.py:81
+msgid "comments"
+msgstr ""
 
-#: models.py:51 templates/messages/inbox.html:7
-#: templates/messages/trash.html:7 templates/messages/view.html:8
-msgid "Sender"
-msgstr "Afsender"
+#: comments/models.py:123
+msgid ""
+"This comment was posted by an authenticated user and thus the name is read-"
+"only."
+msgstr ""
 
-#: models.py:53
-msgid "Parent message"
-msgstr "Stambesked"
+#: comments/models.py:132
+msgid ""
+"This comment was posted by an authenticated user and thus the email is read-"
+"only."
+msgstr ""
 
-#: models.py:54
-msgid "sent at"
-msgstr "sendt"
-
-#: models.py:55
-msgid "read at"
-msgstr "læst"
-
-#: models.py:56
-msgid "replied at"
-msgstr "besvaret"
-
-#: models.py:57
-msgid "Sender deleted at"
-msgstr "Afsender slettet"
-
-#: models.py:58
-msgid "Recipient deleted at"
-msgstr "Modtager slettet"
-
-#: models.py:89
-msgid "Messages"
-msgstr "Beskeder"
-
-#: utils.py:27
-#, python-format
-msgid "New Message: %(subject)s"
-msgstr "Ny besked: %(subject)s"
-
-#: views.py:78 views.py:112
-msgid "Message successfully sent."
-msgstr "Besked sendt succesfuldt."
-
-#: views.py:118
+#: comments/models.py:157
 #, python-format
 msgid ""
-"%(sender)s wrote:\n"
-"%(body)s"
+"Posted by %(user)s at %(date)s\n"
+"\n"
+"%(comment)s\n"
+"\n"
+"http://%(domain)s%(url)s"
 msgstr ""
-"%(sender)s skrev:\n"
-"%(body)s"
 
-#: views.py:122
+#: comments/models.py:174
+msgid "flag"
+msgstr ""
+
+#: comments/models.py:175
+msgid "date"
+msgstr ""
+
+#: comments/models.py:185
+msgid "comment flag"
+msgstr ""
+
+#: comments/models.py:186
+msgid "comment flags"
+msgstr ""
+
+#: comments/templates/comments/approve.html:4
+msgid "Approve a comment"
+msgstr ""
+
+#: comments/templates/comments/approve.html:7
+msgid "Really make this comment public?"
+msgstr ""
+
+#: comments/templates/comments/approve.html:12
+msgid "Approve"
+msgstr ""
+
+#: comments/templates/comments/approved.html:4
+msgid "Thanks for approving"
+msgstr ""
+
+#: comments/templates/comments/approved.html:7
+#: comments/templates/comments/deleted.html:7
+#: comments/templates/comments/flagged.html:7
+msgid ""
+"Thanks for taking the time to improve the quality of discussion on our site"
+msgstr ""
+
+#: comments/templates/comments/delete.html:4
+msgid "Remove a comment"
+msgstr ""
+
+#: comments/templates/comments/delete.html:7
+msgid "Really remove this comment?"
+msgstr ""
+
+#: comments/templates/comments/delete.html:12
+msgid "Remove"
+msgstr ""
+
+#: comments/templates/comments/deleted.html:4
+msgid "Thanks for removing"
+msgstr ""
+
+#: comments/templates/comments/flag.html:4
+msgid "Flag this comment"
+msgstr ""
+
+#: comments/templates/comments/flag.html:7
+msgid "Really flag this comment?"
+msgstr ""
+
+#: comments/templates/comments/flag.html:12
+msgid "Flag"
+msgstr ""
+
+#: comments/templates/comments/flagged.html:4
+msgid "Thanks for flagging"
+msgstr ""
+
+#: comments/templates/comments/form.html:18
+#: comments/templates/comments/preview.html:32
+msgid "Post"
+msgstr ""
+
+#: comments/templates/comments/form.html:19
+#: comments/templates/comments/preview.html:33 templates/wiki/edit.html:50
+msgid "Preview"
+msgstr ""
+
+#: comments/templates/comments/posted.html:4
+msgid "Thanks for commenting"
+msgstr ""
+
+#: comments/templates/comments/posted.html:7
+msgid "Thank you for your comment"
+msgstr ""
+
+#: comments/templates/comments/preview.html:4
+#: comments/templates/comments/preview.html:13
+msgid "Preview your comment"
+msgstr ""
+
+#: comments/templates/comments/preview.html:11
+msgid "Please correct the error below"
+msgid_plural "Please correct the errors below"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments/templates/comments/preview.html:16
+msgid "and"
+msgstr ""
+
+#: comments/templates/comments/preview.html:16
+msgid "Post your comment"
+msgstr ""
+
+#: comments/templates/comments/preview.html:16
+msgid "or make changes"
+msgstr ""
+
+#: players/forms.py:17
+msgid "-- any day --"
+msgstr ""
+
+#: players/forms.py:22 reservations/forms.py:157
+msgid "-- anywhere --"
+msgstr ""
+
+#: players/models.py:13
+msgid "Week days"
+msgstr ""
+
+#: players/models.py:14
+msgid "Weekends"
+msgstr ""
+
+#: players/models.py:15
+msgid "Saturdays"
+msgstr ""
+
+#: players/models.py:16
+msgid "Sundays"
+msgstr ""
+
+#: players/models.py:17
+msgid "Mondays"
+msgstr ""
+
+#: players/models.py:18
+msgid "Tuesdays"
+msgstr ""
+
+#: players/models.py:19
+msgid "Wednesdays"
+msgstr ""
+
+#: players/models.py:20
+msgid "Thursdays"
+msgstr ""
+
+#: players/models.py:21
+msgid "Fridays"
+msgstr ""
+
+#: players/models.py:23
+msgid "up to"
+msgstr ""
+
+#: players/views.py:80 user_messages/models.py:48 user_messages/models.py:55
+msgid "Invitation"
+msgstr ""
+
+#: players/views.py:84 templates/players/availability.html:24
+msgid "in"
+msgstr ""
+
+#: ranking/forms.py:13
+msgid "Yes"
+msgstr ""
+
+#: ranking/forms.py:14
+msgid "No"
+msgstr ""
+
+#: ranking/forms.py:16
+msgid "Did you win?"
+msgstr ""
+
+#: ranking/forms.py:61
+msgid "The entered score does not fit the match type."
+msgstr ""
+
+#: ranking/models.py:33
+msgid "One set"
+msgstr ""
+
+#: ranking/models.py:34
+msgid "Best of three sets"
+msgstr ""
+
+#: ranking/models.py:35
+msgid "Best of five sets"
+msgstr ""
+
+#: ranking/models.py:108 templates/ranking/comment_match.html:15
+msgid "won"
+msgstr ""
+
+#: ranking/views.py:38 templates/ranking/played_matches.html:28
+#: templates/ranking/played_matches.html:33
+msgid "Challenge"
+msgstr ""
+
+#: ranking/views.py:39
+msgid "About"
+msgstr ""
+
+#: ranking/views.py:41
+msgid "played on"
+msgstr ""
+
+#: reservations/forms.py:98
+msgid "Please check the dates!"
+msgstr ""
+
+#: reservations/forms.py:132 templates/reservations/club_view.html:33
+#: templates/reservations/reservation_count_per_club.html:9
+msgid "Today"
+msgstr ""
+
+#: reservations/forms.py:133
+#: templates/reservations/reservation_count_per_club.html:13
+msgid "Tomorrow"
+msgstr ""
+
+#: reservations/forms.py:143
+msgid "-- anytime --"
+msgstr ""
+
+#: reservations/forms.py:144
+msgid "Morning"
+msgstr ""
+
+#: reservations/forms.py:145
+msgid "Afternoon"
+msgstr ""
+
+#: reservations/forms.py:146
+msgid "Evening"
+msgstr ""
+
+#: reservations/forms.py:152
+msgid "1 hour"
+msgstr ""
+
+#: reservations/forms.py:153
+msgid "2 hours"
+msgstr ""
+
+#: reservations/forms.py:154
+msgid "3 hours"
+msgstr ""
+
+#: reservations/models.py:67
+msgid "By player"
+msgstr ""
+
+#: reservations/models.py:68
+msgid "By club"
+msgstr ""
+
+#: reservations/models.py:69
+msgid "Repairs"
+msgstr ""
+
+#: reservations/views.py:94
+msgid "Reservation sent"
+msgstr ""
+
+#: reservations/views.py:95
+msgid ""
+"Your reservation has been processed!\n"
+"                                          Please check your message box for "
+"possible cancellation due to weather or other unexpected events."
+msgstr ""
+
+#: templates/404.html:13 templates/base.html:15 templates/welcome.html:13
+#: templates/wiki/edit.html:13 templates/wiki/preview.html:13
+#: templates/wiki/welcome.html:13
+msgid "::: HT :::"
+msgstr ""
+
+#: templates/404.html:22
+msgid "Oops!"
+msgstr ""
+
+#: templates/404.html:33
+msgid "The object you are looking for cannot be found"
+msgstr ""
+
+#: templates/500.html:9
+msgid "There has been an internal error"
+msgstr ""
+
+#: templates/500.html:17
+msgid "Leave us a message so we will able to track the problem down."
+msgstr ""
+
+#: templates/500.html:19
+msgid "Thank you for helping us improve the portal!"
+msgstr ""
+
+#: templates/welcome.html:22 templates/wiki/welcome.html:22
+msgid "Welcome!"
+msgstr ""
+
+#: templates/welcome.html:34 templates/accounts/login.html:33
+#: templates/wiki/welcome.html:34
+msgid "Login"
+msgstr ""
+
+#: templates/accounts/club_information.html:10
+msgid "Institutional data"
+msgstr ""
+
+#: templates/accounts/club_information.html:20
+#: templates/accounts/player_information.html:38 templates/admin/index.html:35
+#: templates/clubs/court_setup.html:56 templates/players/availability.html:45
+msgid "Edit"
+msgstr ""
+
+#: templates/accounts/display_player_profile.html:28
+msgid "Ads"
+msgstr ""
+
+#: templates/accounts/display_player_profile.html:32
+msgid ""
+"The ads you publish, including the comments people post on them, are "
+"displayed here."
+msgstr ""
+
+#: templates/accounts/display_player_profile.html:35
+msgid ""
+"You may also follow other people's ads that may interest you. Try finding "
+"that racquet you always dreamed about!"
+msgstr ""
+
+#: templates/accounts/display_player_profile.html:39
+#: templates/players/opponent.html:35 templates/reservations/search.html:40
+msgid "Search"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:16
+msgid "First name"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:22
+msgid "Last name"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:28
+msgid "Game level"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:34
+msgid "Male?"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:40
+msgid "Right handed?"
+msgstr ""
+
+#: templates/accounts/edit_player_profile.html:49
+#: templates/clubs/edit_court_properties.html:58
+#: templates/clubs/edit_court_setup.html:37
+#: templates/clubs/edit_court_setup.html:97
+#: templates/reservations/club_edit.html:84 templates/wiki/edit.html:51
+msgid "Save"
+msgstr ""
+
+#: templates/accounts/login.html:8
+msgid "Wrong email address or password"
+msgstr ""
+
+#: templates/accounts/login.html:16
+msgid "User name"
+msgstr ""
+
+#: templates/accounts/login.html:22 templates/accounts/register.html:22
+msgid "Password"
+msgstr ""
+
+#: templates/accounts/player_information.html:11
+msgid "Personal information"
+msgstr ""
+
+#: templates/accounts/player_information.html:20
+msgid "(Male)"
+msgstr ""
+
+#: templates/accounts/player_information.html:22
+msgid "(Female)"
+msgstr ""
+
+#: templates/accounts/player_information.html:27
+msgid "Right-handed"
+msgstr ""
+
+#: templates/accounts/player_information.html:29
+msgid "Left-handed"
+msgstr ""
+
+#: templates/accounts/register.html:16
+msgid "Email"
+msgstr ""
+
+#: templates/accounts/register.html:28
+msgid "Password confirmation"
+msgstr ""
+
+#: templates/accounts/register.html:34
+msgid "Register me!"
+msgstr ""
+
+#: templates/accounts/user_menu.html:9
+msgid "Profile"
+msgstr ""
+
+#: templates/accounts/user_menu.html:15
+msgid "Reservations"
+msgstr ""
+
+#: templates/admin/base_site.html:4
+msgid "::: HT site admin"
+msgstr ""
+
+#: templates/admin/base_site.html:7
+msgid "HT administration"
+msgstr ""
+
+#: templates/admin/index.html:18
 #, python-format
-msgid "Re: %(subject)s"
-msgstr "SV: %(subject)s"
+msgid "Models available in the %(name)s application."
+msgstr ""
 
-#: views.py:158
-msgid "Message successfully deleted."
-msgstr "Besked slettet succesfuldt."
+#: templates/admin/index.html:19
+#, python-format
+msgid "%(name)s"
+msgstr ""
 
-#: views.py:185
-msgid "Message successfully recovered."
-msgstr "Besked genskabt succesfuldt."
+#: templates/admin/index.html:29 templates/players/vacancy.html:16
+#: templates/ranking/display_matches.html:27
+#: templates/ranking/played_matches.html:46
+msgid "Add"
+msgstr ""
 
-#: templates/messages/base.html:8 templates/messages/inbox.html:4
-#: templates/messages/new_message.html:10
+#: templates/admin/index.html:45
+msgid "You don't have permission to edit anything."
+msgstr ""
+
+#: templates/admin/index.html:53
+#, fuzzy
+msgid "Recent Actions"
+msgstr "Handling"
+
+#: templates/admin/index.html:54
+#, fuzzy
+msgid "My Actions"
+msgstr "Handling"
+
+#: templates/admin/index.html:58
+msgid "None available"
+msgstr ""
+
+#: templates/admin/index.html:72
+msgid "Unknown content"
+msgstr ""
+
+#: templates/clubs/court_properties.html:18
+msgid "Artificial light"
+msgstr ""
+
+#: templates/clubs/court_properties.html:20
+msgid "No artificial light"
+msgstr ""
+
+#: templates/clubs/court_properties.html:23
+#: templates/clubs/edit_court_properties.html:26
+msgid "Indoor"
+msgstr ""
+
+#: templates/clubs/court_properties.html:25
+msgid "Outdoor"
+msgstr ""
+
+#: templates/clubs/court_setup.html:30
+msgid "Court setups"
+msgstr ""
+
+#: templates/clubs/court_setup.html:41
+msgid "(active)"
+msgstr ""
+
+#: templates/clubs/court_setup.html:53
+#: templates/clubs/edit_court_setup.html:71
+msgid "Activate"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:8
+#: templates/clubs/edit_court_setup.html:58
+#: templates/reservations/club_view.html:82
+#: templates/reservations/player_edit.html:39
+#: templates/reservations/user_view.html:63
+msgid "Court"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:20
+msgid "Number"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:32
+msgid "Light"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:38
+msgid "Surface"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:44
+msgid "Single only?"
+msgstr ""
+
+#: templates/clubs/edit_court_properties.html:50
+msgid "Is available?"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:25
+msgid "(currently active)"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:40
+#: templates/clubs/edit_court_setup.html:91
+msgid "Clone"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:44
+#: templates/clubs/edit_court_setup.html:85
+#: templates/players/availability.html:29
+#: templates/user_messages/inbox.html:26
+#: templates/user_messages/outbox.html:23 templates/user_messages/view.html:20
+msgid "Delete"
+msgstr "Slet"
+
+#: templates/clubs/edit_court_setup.html:67
+msgid "Not available for reservations"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:74
+#: templates/clubs/edit_court_setup.html:94
+msgid "Properties"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:78
+msgid "Prices per day and hour"
+msgstr ""
+
+#: templates/clubs/edit_court_setup.html:88
+msgid "Deactivate"
+msgstr ""
+
+#: templates/clubs/vacancy_per_hour.html:9
+#: templates/reservations/reservations_per_court.html:13
+msgid "Make reservation"
+msgstr ""
+
+#: templates/notification_off/messages_deleted/notice.html:1
+#, python-format
+msgid ""
+"You have deleted the message <a href=\"%(message_url)s\">%(message)s</a>."
+msgstr "Du har slettet beskeden <a href=\"%(message_url)s\">%(message)s</a>."
+
+#: templates/notification_off/messages_received/notice.html:2
+#, python-format
+msgid ""
+"You have received the message <a href=\"%(message_url)s\">%(message)s</a> "
+"from %(message_sender)s."
+msgstr ""
+"Du har modtaget beskeden <a href=\"%(message_url)s\">%(message)s</a> fra "
+"%(message_sender)s."
+
+#: templates/notification_off/messages_recovered/notice.html:1
+#, python-format
+msgid ""
+"You have recovered the message <a href=\"%(message_url)s\">%(message)s</a>."
+msgstr "Du har genskabt beskeden <a href=\"%(message_url)s\">%(message)s</a>."
+
+#: templates/notification_off/messages_replied/notice.html:2
+#, python-format
+msgid ""
+"You have replied to <a href=\"%(message_url)s\">%(message_parent_msg)s</a> "
+"from %(message_recipient)s."
+msgstr ""
+"Du har besvaret <a href=\"%(message_url)s\">%(message_parent_msg)s</a> fra "
+"%(message_recipient)s."
+
+#: templates/notification_off/messages_reply_received/notice.html:2
+#, python-format
+msgid "%(message_sender)s has sent you a reply to %(message_parent_msg)s."
+msgstr ""
+"%(message_sender)s har sendt dig en besvarelse på %(message_parent_msg)s."
+
+#: templates/notification_off/messages_sent/notice.html:2
+#, python-format
+msgid ""
+"You have sent the message <a href=\"%(message_url)s\">%(message)s</a> to "
+"%(message_recipient)s."
+msgstr ""
+"Du har sendt beskeden <a href=\"%(message_url)s\">%(message)s</a> til "
+"%(message_recipient)s."
+
+#: templates/players/availability.html:10
+msgid "Availability"
+msgstr ""
+
+#: templates/players/availability.html:21
+msgid "and later"
+msgstr ""
+
+#: templates/players/availability.html:34
+#: templates/user_messages/invitations.html:51
+msgid "Invite"
+msgstr ""
+
+#: templates/players/availability.html:39
+msgid ""
+"Tell us when you have time, so that other people will be able to invite you "
+"for a match!"
+msgstr ""
+
+#: templates/players/opponent.html:24
+msgid "I would like to play on"
+msgstr ""
+
+#: templates/players/opponent.html:30
+msgid "near"
+msgstr ""
+
+#: templates/players/opponent.html:52
+msgid "No players found to play on the selected days"
+msgstr ""
+
+#: templates/players/opponent.html:53
+msgid "Try to find"
+msgstr ""
+
+#: templates/players/opponent.html:55
+msgid "players nearby"
+msgstr ""
+
+#: templates/players/vacancy.html:11 templates/ranking/display_matches.html:22
+msgid "You have an error"
+msgstr ""
+
+#: templates/ranking/comment_match.html:11
+msgid "Match played on"
+msgstr ""
+
+#: templates/ranking/comment_match.html:29
+msgid "Enter a comment about this match"
+msgstr ""
+
+#: templates/ranking/display_matches.html:17
+msgid "Enter match result"
+msgstr ""
+
+#: templates/ranking/played_matches.html:11
+msgid "Matches"
+msgstr ""
+
+#: templates/ranking/played_matches.html:21
+msgid "Comments"
+msgstr ""
+
+#: templates/ranking/played_matches.html:40
+msgid ""
+"Write in the result of every match you play against another HT members, and "
+"you will appear on our ranking!"
+msgstr ""
+
+#: templates/ranking/ranking.html:10
+msgid "Current ranking"
+msgstr ""
+
+#: templates/ranking/ranking.html:24
+msgid "No data for the ranking yet"
+msgstr ""
+
+#: templates/ranking/ranking.html:28
+msgid ""
+"The ranking is calculated based on the amount of points achieved by each "
+"player."
+msgstr ""
+
+#: templates/ranking/ranking.html:31
+msgid ""
+"A player gets one point for every game she/he wins. For example, after a "
+"match resulting"
+msgstr ""
+
+#: templates/ranking/ranking.html:32
+msgid ""
+"in 7:6, 6:2, the winner gets 13 points, whereas the loser gets 8 points."
+msgstr ""
+
+#: templates/ranking/ranking.html:35
+msgid "All matches reported to HT are taken into account."
+msgstr ""
+
+#: templates/reservations/club_edit.html:8
+#, python-format
+msgid ""
+"\n"
+"            Reservation on court %(num)s\n"
+"        "
+msgstr ""
+
+#: templates/reservations/club_edit.html:44
+#: templates/reservations/club_view.html:20
+#: templates/reservations/player_edit.html:17
+#: templates/user_messages/view.html:10
+msgid "Date"
+msgstr "Dato"
+
+#: templates/reservations/club_edit.html:50
+#: templates/reservations/player_edit.html:23
+#: templates/user_messages/invitations.html:23
+msgid "From"
+msgstr ""
+
+#: templates/reservations/club_edit.html:55
+#: templates/reservations/player_edit.html:28
+#: templates/user_messages/invitations.html:38
+msgid "To"
+msgstr ""
+
+#: templates/reservations/club_edit.html:60
+msgid "Description"
+msgstr ""
+
+#: templates/reservations/club_edit.html:66
+msgid "Repeat weekly?"
+msgstr ""
+
+#: templates/reservations/club_edit.html:72
+msgid "until date"
+msgstr ""
+
+#: templates/reservations/club_edit.html:92
+#: templates/user_messages/feedback.html:37
+msgid "Cancel"
+msgstr ""
+
+#: templates/reservations/club_view.html:30
+msgid "Show"
+msgstr ""
+
+#: templates/reservations/player_edit.html:6
+msgid "Confirm reservation"
+msgstr ""
+
+#: templates/reservations/player_edit.html:33
+msgid "Club"
+msgstr ""
+
+#: templates/reservations/player_edit.html:56
+msgid "Confirm"
+msgstr ""
+
+#: templates/reservations/reservation_count_per_club.html:17
+msgid "Next week"
+msgstr ""
+
+#: templates/reservations/reservations_per_court.html:9
+msgid "Reserved"
+msgstr ""
+
+#: templates/reservations/search.html:17
+msgid "Near city"
+msgstr ""
+
+#: templates/reservations/search.html:23
+#, fuzzy
+msgid "Date and Time"
+msgstr "Dato/tid"
+
+#: templates/reservations/search.html:35
+msgid "for"
+msgstr ""
+
+#: templates/reservations/search.html:46
+msgid "Featured clubs"
+msgstr ""
+
+#: templates/reservations/search.html:49
+msgid "Fast reservation"
+msgstr ""
+
+#: templates/reservations/user_view.html:57
+msgid "more ..."
+msgstr ""
+
+#: templates/reservations/user_view.html:65
+msgid "Earlier"
+msgstr ""
+
+#: templates/reservations/user_view.html:71
+msgid "Later"
+msgstr ""
+
+#: templates/user_messages/base.html:8
+#: templates/user_messages/new_message.html:10
 msgid "Inbox"
 msgstr "Indboks"
 
-#: templates/messages/base.html:9 templates/messages/outbox.html:4
-msgid "Sent Messages"
-msgstr "Sendte Beskeder"
+#: templates/user_messages/base.html:13
+msgid "Sent"
+msgstr "Sendt"
 
-#: templates/messages/base.html:10
-msgid "New Message"
-msgstr "Ny Besked"
-
-#: templates/messages/base.html:11
+#: templates/user_messages/base.html:18
 msgid "Trash"
 msgstr "Papirkurv"
 
-#: templates/messages/compose.html:4
+#: templates/user_messages/compose.html:10
 msgid "Compose Message"
 msgstr "Skriv Ny Besked"
 
-#: templates/messages/compose.html:9
+#: templates/user_messages/compose.html:16
+#: templates/user_messages/feedback.html:34
 msgid "Send"
 msgstr "Send"
 
-#: templates/messages/inbox.html:7
-msgid "Received"
-msgstr "Modtaget"
+#: templates/user_messages/feedback.html:8
+msgid "Feedback"
+msgstr ""
 
-#: templates/messages/inbox.html:7 templates/messages/outbox.html:7
-#: templates/messages/trash.html:7
-msgid "Action"
-msgstr "Handling"
+#: templates/user_messages/feedback.html:24
+msgid "Thank you for sharing your opinions and comments with us!"
+msgstr ""
 
-#: templates/messages/inbox.html:19 templates/messages/outbox.html:16
-#: templates/messages/trash.html:16 templates/messages/view.html:11
+#: templates/user_messages/inbox.html:21
+#: templates/user_messages/invitations.html:27
+#: templates/user_messages/invitations.html:42
+#: templates/user_messages/outbox.html:21
+#: templates/user_messages/trash.html:23 templates/user_messages/view.html:11
 msgid "DATETIME_FORMAT"
 msgstr "DATETIME_FORMAT"
 
-#: templates/messages/inbox.html:20 templates/messages/outbox.html:17
-msgid "delete"
-msgstr "slet"
+#: templates/user_messages/inbox.html:23
+msgid "Mark as read"
+msgstr ""
 
-#: templates/messages/new_message.html:1
+#: templates/user_messages/inbox.html:29
+#: templates/user_messages/new_message.html:11
+#: templates/user_messages/view.html:18
+msgid "Reply"
+msgstr "Besvar"
+
+#: templates/user_messages/inbox.html:42
+#: templates/user_messages/outbox.html:35
+#: templates/user_messages/trash.html:37
+#, fuzzy
+msgid "No messages"
+msgstr "Beskeder"
+
+#: templates/user_messages/invitations.html:11
+msgid "Invitations"
+msgstr ""
+
+#: templates/user_messages/invitations.html:16
+msgid ""
+"Here you will see the people you've invited for a tennis match. All "
+"invitations you receive are also displayed here. Start now and look for a "
+"new opponent to play against!"
+msgstr ""
+
+#: templates/user_messages/invitations.html:25
+#: templates/user_messages/invitations.html:40
+msgid "on"
+msgstr ""
+
+#: templates/user_messages/new_message.html:1
 #, python-format
 msgid ""
 "Hello %(recipient)s,\n"
@@ -225,91 +1187,198 @@ msgstr ""
 "du har modtaget en privat besked fra %(sender)s med\n"
 "følgende indhold:"
 
-#: templates/messages/new_message.html:9
+#: templates/user_messages/new_message.html:9
 #, python-format
 msgid "Sent from %(site_url)s"
 msgstr "Sendt fra %(site_url)s"
 
-#: templates/messages/new_message.html:11 templates/messages/view.html:18
-msgid "Reply"
-msgstr "Besvar"
-
-#: templates/messages/outbox.html:7
-msgid "Sent"
-msgstr "Sendt"
-
-#: templates/messages/trash.html:4
-msgid "Deleted Messages"
-msgstr "Slettede Beskeder"
-
-#: templates/messages/trash.html:7 templates/messages/view.html:10
-msgid "Date"
-msgstr "Dato"
-
-#: templates/messages/trash.html:17
-msgid "undelete"
-msgstr "genskab"
-
-#: templates/messages/trash.html:23
+#: templates/user_messages/trash.html:9
+#, fuzzy
 msgid ""
-"Deleted Messages are removed from the trash at unregular intervals, don't "
+"Deleted messages are removed from the trash at unregular intervals, don't "
 "rely on this feature for long-time storage."
 msgstr ""
 "Slettede beskeder fjernes fra papirkurven med jævne mellemrum. Lad være med "
 "at regne med denne funktion til langtidslagring."
 
-#: templates/messages/view.html:4
+#: templates/user_messages/trash.html:25
+#, fuzzy
+msgid "Undelete"
+msgstr "genskab"
+
+#: templates/user_messages/view.html:4
 msgid "View Message"
 msgstr "Læs Besked"
 
-#: templates/messages/view.html:20
-msgid "Delete"
-msgstr "Slet"
+#: templates/user_messages/view.html:6 user_messages/forms.py:23
+#: user_messages/models.py:63
+msgid "Subject"
+msgstr "Emne"
 
-#: templates/notification/messages_deleted/notice.html:1
+#: templates/user_messages/view.html:8 user_messages/models.py:65
+msgid "Sender"
+msgstr "Afsender"
+
+#: templates/user_messages/view.html:12 user_messages/admin.py:19
+#: user_messages/forms.py:22 user_messages/models.py:66
+msgid "Recipient"
+msgstr "Modtager"
+
+#: user_messages/admin.py:21
+msgid "group"
+msgstr "gruppe"
+
+#: user_messages/admin.py:22
+msgid "Creates the message optionally for all users or a group of users."
+msgstr "Skaber beskeden for alle brugere eller en gruppe af brugere."
+
+#: user_messages/admin.py:29
+msgid "All users"
+msgstr "Alle brugere"
+
+#: user_messages/admin.py:44 user_messages/models.py:102
+msgid "Message"
+msgstr "Beskeder"
+
+#: user_messages/admin.py:51
+msgid "Date/time"
+msgstr "Dato/tid"
+
+#: user_messages/fields.py:53
+#, python-format
+msgid "The following usernames are incorrect: %(users)s"
+msgstr "De følgende brugernavne er forkerte: %(users)s"
+
+#: user_messages/forms.py:24 user_messages/models.py:64
+msgid "Body"
+msgstr "Indhold"
+
+#: user_messages/management.py:9
+msgid "Message Received"
+msgstr "Besked Modtaget"
+
+#: user_messages/management.py:9
+msgid "you have received a message"
+msgstr "du har modtaget en besked"
+
+#: user_messages/management.py:10
+msgid "Message Sent"
+msgstr "Besked Afsendt"
+
+#: user_messages/management.py:10
+msgid "you have sent a message"
+msgstr "du har sendt en besked"
+
+#: user_messages/management.py:11
+msgid "Message Replied"
+msgstr "Besked Besvaret"
+
+#: user_messages/management.py:11
+msgid "you have replied to a message"
+msgstr "du har besvaret en besked"
+
+#: user_messages/management.py:12
+msgid "Reply Received"
+msgstr "Svar Modtaget"
+
+#: user_messages/management.py:12
+msgid "you have received a reply to a message"
+msgstr "du har modtaget en besvarelse på en besked"
+
+#: user_messages/management.py:13
+msgid "Message Deleted"
+msgstr "Besked Slettet"
+
+#: user_messages/management.py:13
+msgid "you have deleted a message"
+msgstr "du har slettet en besked"
+
+#: user_messages/management.py:14
+msgid "Message Recovered"
+msgstr "Besked Genskabt"
+
+#: user_messages/management.py:14
+msgid "you have undeleted a message"
+msgstr "du har genskabt en besked"
+
+#: user_messages/models.py:67
+msgid "Parent message"
+msgstr "Stambesked"
+
+#: user_messages/models.py:68
+msgid "sent at"
+msgstr "sendt"
+
+#: user_messages/models.py:69
+msgid "read at"
+msgstr "læst"
+
+#: user_messages/models.py:70
+msgid "replied at"
+msgstr "besvaret"
+
+#: user_messages/models.py:71
+msgid "Sender deleted at"
+msgstr "Afsender slettet"
+
+#: user_messages/models.py:72
+msgid "Recipient deleted at"
+msgstr "Modtager slettet"
+
+#: user_messages/models.py:103
+msgid "Messages"
+msgstr "Beskeder"
+
+#: user_messages/utils.py:28
 #, python-format
 msgid ""
-"You have deleted the message <a href=\"%(message_url)s\">%(message)s</a>."
-msgstr "Du har slettet beskeden <a href=\"%(message_url)s\">%(message)s</a>."
-
-#: templates/notification/messages_received/notice.html:2
-#, python-format
-msgid ""
-"You have received the message <a href=\"%(message_url)s\">%(message)s</a> "
-"from %(message_sender)s."
+"%(sender)s wrote:\n"
+"%(body)s"
 msgstr ""
-"Du har modtaget beskeden <a href=\"%(message_url)s\">%(message)s</a> fra %"
-"(message_sender)s."
+"%(sender)s skrev:\n"
+"%(body)s"
 
-#: templates/notification/messages_recovered/notice.html:1
-#, python-format
-msgid ""
-"You have recovered the message <a href=\"%(message_url)s\">%(message)s</a>."
-msgstr "Du har genskabt beskeden <a href=\"%(message_url)s\">%(message)s</a>."
+#: user_messages/utils.py:56
+#, fuzzy, python-format
+msgid "Re%(prefix)s: %(subject)s"
+msgstr "SV: %(subject)s"
 
-#: templates/notification/messages_replied/notice.html:2
+#: user_messages/utils.py:62
 #, python-format
-msgid ""
-"You have replied to <a href=\"%(message_url)s\">%(message_parent_msg)s</a> "
-"from %(message_recipient)s."
-msgstr ""
-"Du har besvaret <a href=\"%(message_url)s\">%(message_parent_msg)s</a> fra %"
-"(message_recipient)s."
+msgid "New Message: %(subject)s"
+msgstr "Ny besked: %(subject)s"
 
-#: templates/notification/messages_reply_received/notice.html:2
-#, python-format
-msgid "%(message_sender)s has sent you a reply to %(message_parent_msg)s."
-msgstr ""
-"%(message_sender)s har sendt dig en besvarelse på %(message_parent_msg)s."
+#: user_messages/views.py:118 user_messages/views.py:164
+msgid "Message successfully sent."
+msgstr "Besked sendt succesfuldt."
 
-#: templates/notification/messages_sent/notice.html:2
+#: user_messages/views.py:171
 #, python-format
-msgid ""
-"You have sent the message <a href=\"%(message_url)s\">%(message)s</a> to %"
-"(message_recipient)s."
-msgstr ""
-"Du har sendt beskeden <a href=\"%(message_url)s\">%(message)s</a> til %"
-"(message_recipient)s."
+msgid "Re: %(subject)s"
+msgstr "SV: %(subject)s"
+
+#: user_messages/views.py:207
+msgid "Message successfully deleted."
+msgstr "Besked slettet succesfuldt."
+
+#: user_messages/views.py:234
+msgid "Message successfully recovered."
+msgstr "Besked genskabt succesfuldt."
+
+#~ msgid "Sent Messages"
+#~ msgstr "Sendte Beskeder"
+
+#~ msgid "New Message"
+#~ msgstr "Ny Besked"
+
+#~ msgid "Received"
+#~ msgstr "Modtaget"
+
+#~ msgid "delete"
+#~ msgstr "slet"
+
+#~ msgid "Deleted Messages"
+#~ msgstr "Slettede Beskeder"
 
 #, fuzzy
 #~ msgid "You have deleted the message '%(message)s'."

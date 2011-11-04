@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-03 20:57+0100\n"
+"POT-Creation-Date: 2011-11-04 21:47+0100\n"
 "PO-Revision-Date: 2011-11-03 21:00+CEST\n"
 "Last-Translator: B+Lu\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,12 @@ msgid "Beginner"
 msgstr "Začetnik"
 
 #: accounts/models.py:107
-msgid "Srednji"
-msgstr ""
+msgid "Intermediate"
+msgstr "Srednji"
 
 #: accounts/models.py:108
 msgid "Advanced"
-msgstr "Napredna igra"
+msgstr "Napredni"
 
 #: accounts/models.py:109
 msgid "Registered"
@@ -42,11 +42,11 @@ msgstr "Včlanjen igralec"
 
 #: accounts/models.py:121
 msgid "This user has already been assigned a club profile"
-msgstr "Ta uporabnik je registriran kot klub"
+msgstr "Ta uporabnik je že registriran kot klub"
 
 #: accounts/models.py:148
 msgid "This user has already been assigned a player profile"
-msgstr "Ta uporabnik je registriran kot igralec"
+msgstr "Ta uporabnik je že registriran kot igralec"
 
 #: clubs/models.py:50 clubs/tests.py:518 clubs/tests.py:538
 msgid "Copy of"
@@ -54,7 +54,7 @@ msgstr "Kopija"
 
 #: clubs/models.py:92
 msgid "Only one court setup may be active at once"
-msgstr "???"
+msgstr "Samo en razpored igrišč mora biti aktiven naenkrat"
 
 #: clubs/models.py:109 clubs/tests.py:505
 msgid "Default"
@@ -404,7 +404,7 @@ msgstr ""
 msgid "-- any day --"
 msgstr "-- kadarkoli --"
 
-#: players/forms.py:22 reservations/forms.py:87
+#: players/forms.py:22 reservations/forms.py:157
 msgid "-- anywhere --"
 msgstr "-- kjerkoli --"
 
@@ -501,66 +501,75 @@ msgstr "O"
 msgid "played on"
 msgstr "igrali v"
 
-#: reservations/forms.py:62 templates/reservations/club_view.html:33
+#: reservations/forms.py:98
+msgid "Please check the dates!"
+msgstr ""
+
+#: reservations/forms.py:132 templates/reservations/club_view.html:33
 #: templates/reservations/reservation_count_per_club.html:9
 msgid "Today"
 msgstr "Danes"
 
-#: reservations/forms.py:63
+#: reservations/forms.py:133
 #: templates/reservations/reservation_count_per_club.html:13
 msgid "Tomorrow"
 msgstr "Jutri"
 
-#: reservations/forms.py:73
+#: reservations/forms.py:143
 msgid "-- anytime --"
 msgstr "-- kadarkoli --"
 
-#: reservations/forms.py:74
+#: reservations/forms.py:144
 msgid "Morning"
 msgstr "Zjutraj"
 
-#: reservations/forms.py:75
+#: reservations/forms.py:145
 msgid "Afternoon"
 msgstr "Popoldan"
 
-#: reservations/forms.py:76
+#: reservations/forms.py:146
 msgid "Evening"
 msgstr "Zvečer"
 
-#: reservations/forms.py:82
+#: reservations/forms.py:152
 msgid "1 hour"
-msgstr "1 ura"
+msgstr "1 uro"
 
-#: reservations/forms.py:83
+#: reservations/forms.py:153
 msgid "2 hours"
 msgstr "2 uri"
 
-#: reservations/forms.py:84
+#: reservations/forms.py:154
 msgid "3 hours"
 msgstr "3 ure"
 
-#: reservations/models.py:56
+#: reservations/models.py:67
 msgid "By player"
 msgstr "S strani igralca"
 
-#: reservations/models.py:57
+#: reservations/models.py:68
 msgid "By club"
 msgstr "S strani kluba"
 
-#: reservations/models.py:58
+#: reservations/models.py:69
 msgid "Repairs"
 msgstr "Vzdrževanje"
 
-#: reservations/views.py:64
+#: reservations/views.py:94
 msgid "Reservation sent"
 msgstr "Rezervacija zaključena"
 
-#: reservations/views.py:65
+#: reservations/views.py:95
+#, fuzzy
 msgid ""
 "Your reservation has been processed!\n"
-"                                      Please check your message box for "
+"                                          Please check your message box for "
 "possible cancellation due to weather or other unexpected events."
-msgstr "Prejeli smo vašo rezervacijo!\n Prosimo, da preverite vaš nabiralnik za sporočila v zvezi z morebitnim preklicem rezervacije zaradi slabega vremena ali drugih nepročakovanih dogodkov."
+msgstr ""
+"Prejeli smo vašo rezervacijo!\n"
+" Prosimo, da preverite vaš nabiralnik za sporočila v zvezi z morebitnim "
+"preklicem rezervacije zaradi slabega vremena ali drugih nepročakovanih "
+"dogodkov."
 
 #: templates/404.html:13 templates/base.html:15 templates/welcome.html:13
 #: templates/wiki/edit.html:13 templates/wiki/preview.html:13
@@ -578,11 +587,13 @@ msgstr "Te strani ne najdemo"
 
 #: templates/500.html:9
 msgid "There has been an internal error"
-msgstr "Prišlo je do nepričakovane napake"
+msgstr "Prišlo je do nepričakovane napake :-("
 
 #: templates/500.html:17
 msgid "Leave us a message so we will able to track the problem down."
-msgstr "Lahko nam pustite sporočilo, ki nam bo pomagalo pri odpravljanju odkrite napake."
+msgstr ""
+"Lahko nam pustite sporočilo, ki nam bo pomagalo pri odpravljanju odkrite "
+"napake."
 
 #: templates/500.html:19
 msgid "Thank you for helping us improve the portal!"
@@ -616,15 +627,16 @@ msgid ""
 "The ads you publish, including the comments people post on them, are "
 "displayed here."
 msgstr ""
-"Tukaj lahko pregledate svoje oddane oglase, skupaj s pripradajočimi komentarji drugih ljudji."
+"Tukaj lahko pregledate svoje oddane oglase, skupaj s pripradajočimi "
+"komentarji drugih ljudji."
 
 #: templates/accounts/display_player_profile.html:35
 msgid ""
 "You may also follow other people's ads that may interest you. Try finding "
 "that racquet you always dreamed about!"
 msgstr ""
-"Vi lahko tudi sledite oglase drugih, ki vas zanimajo. Poskusite najti "
-"tisti lopar, katerega ste vedno sanjali!"
+"Vi lahko tudi sledite oglase drugih, ki vas zanimajo. Poskusite najti tisti "
+"lopar, katerega ste vedno sanjali!"
 
 #: templates/accounts/display_player_profile.html:39
 #: templates/players/opponent.html:35 templates/reservations/search.html:40
@@ -652,10 +664,10 @@ msgid "Right handed?"
 msgstr "Desničar"
 
 #: templates/accounts/edit_player_profile.html:49
-#: templates/clubs/edit_court_properties.html:62
+#: templates/clubs/edit_court_properties.html:58
 #: templates/clubs/edit_court_setup.html:37
 #: templates/clubs/edit_court_setup.html:97
-#: templates/reservations/club_edit.html:49 templates/wiki/edit.html:51
+#: templates/reservations/club_edit.html:84 templates/wiki/edit.html:51
 msgid "Save"
 msgstr "Shrani"
 
@@ -764,7 +776,7 @@ msgid "No artificial light"
 msgstr "Brez umetne svetlove"
 
 #: templates/clubs/court_properties.html:23
-#: templates/clubs/edit_court_properties.html:30
+#: templates/clubs/edit_court_properties.html:26
 msgid "Indoor"
 msgstr "Pokrito igrišče"
 
@@ -787,30 +799,29 @@ msgstr "Preklopi"
 
 #: templates/clubs/edit_court_properties.html:8
 #: templates/clubs/edit_court_setup.html:58
-#: templates/reservations/club_edit.html:32
 #: templates/reservations/club_view.html:82
 #: templates/reservations/player_edit.html:39
 #: templates/reservations/user_view.html:63
 msgid "Court"
 msgstr "Igrišče"
 
-#: templates/clubs/edit_court_properties.html:24
+#: templates/clubs/edit_court_properties.html:20
 msgid "Number"
 msgstr "Številka"
 
-#: templates/clubs/edit_court_properties.html:36
+#: templates/clubs/edit_court_properties.html:32
 msgid "Light"
 msgstr "Svetlova"
 
-#: templates/clubs/edit_court_properties.html:42
+#: templates/clubs/edit_court_properties.html:38
 msgid "Surface"
 msgstr "Površina"
 
-#: templates/clubs/edit_court_properties.html:48
+#: templates/clubs/edit_court_properties.html:44
 msgid "Single only?"
 msgstr "Samo posamezno?"
 
-#: templates/clubs/edit_court_properties.html:54
+#: templates/clubs/edit_court_properties.html:50
 msgid "Is available?"
 msgstr "Na voljo?"
 
@@ -909,8 +920,8 @@ msgid ""
 "Tell us when you have time, so that other people will be able to invite you "
 "for a match!"
 msgstr ""
-"Vpišite termine, ko ste na voljo za igro, tako da vas bodo drugi ljudje povabili "
-"na igro!"
+"Vpišite termine, ko ste na voljo za igro, tako da vas bodo drugi ljudje "
+"povabili na igro!"
 
 #: templates/players/opponent.html:24
 msgid "I would like to play on"
@@ -961,7 +972,8 @@ msgid ""
 "Write in the result of every match you play against another HT members, and "
 "you will appear on our ranking!"
 msgstr ""
-"Z vsakim vnešenim rezultatom dvoboja se prebite gor v lestvici igralcev portala!"
+"Z vsakim vnešenim rezultatom dvoboja se prebite gor v lestvici igralcev "
+"portala!"
 
 #: templates/ranking/ranking.html:10
 msgid "Current ranking"
@@ -976,7 +988,8 @@ msgid ""
 "The ranking is calculated based on the amount of points achieved by each "
 "player."
 msgstr ""
-"Točkovanje lestvice je izračunano na podlagi točk, ki jih je vsak igralec dosegel."
+"Točkovanje lestvice je izračunano na podlagi točk, ki jih je vsak igralec "
+"dosegel."
 
 #: templates/ranking/ranking.html:31
 msgid ""
@@ -996,32 +1009,54 @@ msgstr ""
 msgid "All matches reported to HT are taken into account."
 msgstr "Za lestvico se upoštevajo vsi vnešeni rezultati."
 
-#: templates/reservations/club_edit.html:17
+#: templates/reservations/club_edit.html:8
+#, python-format
+msgid ""
+"\n"
+"            Reservation on court %(num)s\n"
+"        "
+msgstr ""
+
+#: templates/reservations/club_edit.html:44
 #: templates/reservations/club_view.html:20
 #: templates/reservations/player_edit.html:17
 #: templates/user_messages/view.html:10
 msgid "Date"
 msgstr "Datum"
 
-#: templates/reservations/club_edit.html:22
+#: templates/reservations/club_edit.html:50
 #: templates/reservations/player_edit.html:23
 #: templates/user_messages/invitations.html:23
 msgid "From"
 msgstr "Od"
 
-#: templates/reservations/club_edit.html:27
+#: templates/reservations/club_edit.html:55
 #: templates/reservations/player_edit.html:28
 #: templates/user_messages/invitations.html:38
 msgid "To"
 msgstr "Do"
 
-#: templates/reservations/club_edit.html:38
+#: templates/reservations/club_edit.html:60
 msgid "Description"
 msgstr "Opis"
 
+#: templates/reservations/club_edit.html:66
+#, fuzzy
+msgid "Repeat weekly?"
+msgstr "Naslednji teden"
+
+#: templates/reservations/club_edit.html:72
+msgid "until date"
+msgstr ""
+
+#: templates/reservations/club_edit.html:92
+#: templates/user_messages/feedback.html:37
+msgid "Cancel"
+msgstr "Prekliči"
+
 #: templates/reservations/club_view.html:30
 msgid "Show"
-msgstr "Prikaži"
+msgstr "Pojdi"
 
 #: templates/reservations/player_edit.html:6
 msgid "Confirm reservation"
@@ -1031,7 +1066,7 @@ msgstr "Potritev rezervacije"
 msgid "Club"
 msgstr "Klub"
 
-#: templates/reservations/player_edit.html:53
+#: templates/reservations/player_edit.html:56
 msgid "Confirm"
 msgstr "Potrdi"
 
@@ -1105,10 +1140,6 @@ msgstr "Povratne informacije"
 msgid "Thank you for sharing your opinions and comments with us!"
 msgstr "Zahvaljujemo se za delitev vaše mnenje in pripombe z nami!"
 
-#: templates/user_messages/feedback.html:37
-msgid "Cancel"
-msgstr "Prekliči"
-
 #: templates/user_messages/inbox.html:21
 #: templates/user_messages/invitations.html:27
 #: templates/user_messages/invitations.html:42
@@ -1143,8 +1174,9 @@ msgid ""
 "invitations you receive are also displayed here. Start now and look for a "
 "new opponent to play against!"
 msgstr ""
-"Tukaj lahko vidite soigralce, katere ste kdaj povabili na teniškem dvoboju. Tukaj "
-"tudi vidite vsa prejeta vabila. Začnite zdaj in si poiščite novega nasprotnika! "
+"Tukaj lahko vidite soigralce, katere ste kdaj povabili na teniškem dvoboju. "
+"Tukaj tudi vidite vsa prejeta vabila. Začnite zdaj in si poiščite novega "
+"nasprotnika! "
 
 #: templates/user_messages/invitations.html:25
 #: templates/user_messages/invitations.html:40
@@ -1170,8 +1202,8 @@ msgid ""
 "Deleted messages are removed from the trash at unregular intervals, don't "
 "rely on this feature for long-time storage."
 msgstr ""
-"Izbrisana sporočila se samodejno odstranijo iz te mape, zato pa "
-"ne smete se zanašati na njo z namenom arhiviranje sporočil"
+"Izbrisana sporočila se samodejno odstranijo iz te mape, zato pa ne smete se "
+"zanašati na njo z namenom arhiviranje sporočil"
 
 #: templates/user_messages/trash.html:25
 msgid "Undelete"
