@@ -1,78 +1,30 @@
 import locale, random, string
 
 from django.db import transaction
-from django.test.simple import DjangoTestSuiteRunner, dependency_ordered
+from django.conf import settings
+from django.test.simple import DjangoTestSuiteRunner
 
 
-
-class HtTestSuiteRunner (DjangoTestSuiteRunner):
+class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
     """
-    FIXME: Not currently used!
-    A custom test runner to avoid DB creation/deletion.-
+    A custom test suite to avoid running tests of applications
+    specified in settings.TEST_EXCLUDE.-
     """
-    def setup_databases(self, **kwargs):
-        """
-        Code adapted from django/test/simple.py
-        """
-        from django.db import connections, DEFAULT_DB_ALIAS
-
-        # First pass -- work out which databases actually need to be created,
-        # and which ones are test mirrors or duplicate entries in DATABASES
-        mirrored_aliases = {}
-        test_databases = {}
-        dependencies = {}
-        for alias in connections:
-            connection = connections[alias]
-            if connection.settings_dict['TEST_MIRROR']:
-                # If the database is marked as a test mirror, save
-                # the alias.
-                mirrored_aliases[alias] = connection.settings_dict['TEST_MIRROR']
-            else:
-                # Store a tuple with DB parameters that uniquely identify it.
-                # If we have two aliases with the same values for that tuple,
-                # we only need to create the test database once.
-                item = test_databases.setdefault(
-                    connection.creation.test_db_signature(),
-                    (connection.settings_dict['NAME'], [])
-                )
-                item[1].append(alias)
-
-                if 'TEST_DEPENDENCIES' in connection.settings_dict:
-                    dependencies[alias] = connection.settings_dict['TEST_DEPENDENCIES']
-                else:
-                    if alias != DEFAULT_DB_ALIAS:
-                        dependencies[alias] = connection.settings_dict.get('TEST_DEPENDENCIES', [DEFAULT_DB_ALIAS])
-
-        # Second pass -- actually create the databases.
-        old_names = []
-        mirrors = []
-        for signature, (db_name, aliases) in dependency_ordered(test_databases.items(), dependencies):
-            # Actually create the database for the first connection
-            connection = connections[aliases[0]]
-            old_names.append((connection, db_name, True))
-            #test_db_name = connection.creation.create_test_db(self.verbosity, autoclobber=not self.interactive)
-            if connection.settings_dict.get('TEST_NAME'):
-                test_db_name = connection.settings_dict.get('TEST_NAME')
-            else:
-                test_db_name = 'test_%s' % connection.settings_dict.get('NAME')
-            for alias in aliases[1:]:
-                connection = connections[alias]
-                if db_name:
-                    old_names.append((connection, db_name, False))
-                    connection.settings_dict['NAME'] = test_db_name
-                else:
-                    # If settings_dict['NAME'] isn't defined, we have a backend where
-                    # the name isn't important -- e.g., SQLite, which uses :memory:.
-                    # Force create the database instead of assuming it's a duplicate.
-                    old_names.append((connection, db_name, True))
-                    connection.creation.create_test_db(self.verbosity, autoclobber=not self.interactive)
-
-        for alias, mirror_alias in mirrored_aliases.items():
-            mirrors.append((alias, connections[alias].settings_dict['NAME']))
-            connections[alias].settings_dict['NAME'] = connections[mirror_alias].settings_dict['NAME']
-
-        return old_names, mirrors
+    EXCLUDED_APPS = getattr (settings, 'TEST_EXCLUDE', [])
     
+    def __init__(self, *args, **kwargs):
+        super (AdvancedTestSuiteRunner, self).__init__ (*args, **kwargs)
+    
+    def build_suite (self, *args, **kwargs):
+        suite = super (AdvancedTestSuiteRunner, self).build_suite (*args, **kwargs)
+        if not args[0] and not getattr(settings, 'RUN_ALL_TESTS', False):
+            tests = []
+            for case in suite:
+                pkg = case.__class__.__module__.split('.')[0]
+                if pkg not in self.EXCLUDED_APPS:
+                    tests.append (case)
+            suite._tests = tests 
+        return suite
     
     
 def random_ascii_string (length):
