@@ -5,11 +5,11 @@
 {% block user_content %}
 	<h1>{% trans 'Confirm reservation' %}</h1>
 	
+	{% if form.errors %}
+   	    {{ form.non_field_errors }}
+	{% endif %}
+	
     <div id="form">	
-		{% if form.errors %}
-    	    {{ form.non_field_errors }}
-		{% endif %}
-		
 		<form method="post" action="{% url 'reservations.views.player_edit' form.instance.vacancy.id ordinal_date %}">
 			{% csrf_token %}
 		    
@@ -42,10 +42,13 @@
 	        
 		    <span style="display:none;">
 		        {{ form.description }}
+		        {{ form.repeat }}
+		        {{ form.repeat_until }}
 	        </span>
 	       
 	       	{{ form.pk }} 
 	        {{ form.created_on }}
+	        {{ form.type }}
 	        {{ form.user }}
 	        {{ form.vacancy }}
 	        

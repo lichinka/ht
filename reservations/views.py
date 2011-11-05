@@ -18,56 +18,88 @@ from django.core.exceptions import ObjectDoesNotExist
     
     
 @login_required
+def cancel (request, r_id):
+    """
+    Cancels (or deletes) a given reservation, owned by the
+    user currently logged in.-
+    """
+    r = get_object_or_404 (Reservation, pk=r_id)
+    if request.user == r.user:
+        Reservation.objects.delete (r)
+        #
+        # redirect to the correct view, based on the user's profile
+        #
+        if UserProfile.objects.get_profile (request.user.username).is_player ( ):
+            return redirect ('ht.views.home')
+        elif UserProfile.objects.get_profile (request.user.username).is_club ( ):
+            return redirect ('reservations.views.club_view') 
+    else:
+        #
+        # TODO voting for banning a user goes here
+        #
+        if UserProfile.objects.get_profile (request.user.username).is_club ( ):
+            Reservation.objects.delete (r)
+            return redirect ('reservations.views.club_view') 
+    
+    
+@login_required
 def player_edit (request, v_id, ordinal_date):
     """
     Displays a form to create/edit a reservation for the
     given date (ordinal_date) and vacancy (v_id).
-    The user must be a player.-
+    The user must be a player and the owner of the reservation
+    (if it already exists).-
     """
     if UserProfile.objects.get_profile (request.user.username).is_player ( ):
-        if ordinal_date:
-            for_date = date.fromordinal (int (ordinal_date))
         v = get_object_or_404 (Vacancy, pk=v_id)
-        r = Reservation.objects.filter (for_date=for_date,
-                                        vacancy=v)
-        if r:
-            #
-            # we are editing an existing reservation
-            #
-            r = r[0]
-        else:
+        for_date = date.fromordinal (int (ordinal_date))
+        try:
+            r = Reservation.objects.filter (for_date=for_date) \
+                                   .get (vacancy=v)
+        except ObjectDoesNotExist:
             #
             # create a new reservation in-memory
             #
             r = Reservation (created_on=datetime.now ( ),
                              for_date=for_date,
+                             type='P',
                              user=request.user,
                              vacancy=v)
-        post_data = request.POST if request.method == 'POST' else None
-        form = ReservationForm (post_data,
-                                instance=r)
-        if form.is_valid ( ):
-            r = form.save (commit=False)
-            #
-            # save which user made the reservation
-            # and the reservation type
-            #
-            r.user = request.user
-            r.type = 'P'
-            #
-            # add the user's name to the description
-            #
-            r.description = '%s, %s' % (r.user.last_name,
-                                        r.user.first_name)
-            r.save ( )
-            return success (request,
-                            title=_('Reservation sent'),
-                            body=_('''Your reservation has been processed!
-                                      Please check your message box for possible cancellation due to weather or other unexpected events.'''))
-        return render_to_response ('reservations/player_edit.html',
-                                   {'form': form,
-                                    'ordinal_date': ordinal_date},
-                                   context_instance=RequestContext(request))
+        #
+        # the logged-in user should own this reservation
+        #
+        if request.user == r.user:
+            if request.method == 'POST':
+                form = ReservationForm (request.POST,
+                                        instance=r)
+            else:
+                form = ReservationForm (initial={'repeat': False,
+                                                 'repeat_until': for_date},
+                                        instance=r)
+            if form.is_valid ( ):
+                r = form.save (commit=False)
+                #
+                # save which user made the reservation
+                # and the reservation type
+                #
+                r.user = request.user
+                r.type = 'P'
+                #
+                # add the user's name to the description
+                #
+                r.description = '%s, %s' % (r.user.last_name,
+                                            r.user.first_name)
+                r.save ( )
+                return success (request,
+                                title=_('Reservation sent'),
+                                body=_('''Your reservation has been processed!
+                                          Please check your message box for possible cancellation due to weather or other unexpected events.'''))
+            return render_to_response ('reservations/player_edit.html',
+                                       {'form': form,
+                                        'ordinal_date': ordinal_date},
+                                       context_instance=RequestContext(request))
+        else:
+            raise Http404
     else:
         raise Http404
     
@@ -78,7 +110,8 @@ def club_edit (request, vid, ordinal_date):
     """
     Displays a form to create/edit a reservation for the
     given date (ordinal_date) and vacancy (vid).
-    The user must be a club.-
+    The user must be a club and own the court where the
+    reservation is being made.-
     """
     v = get_object_or_404 (Vacancy, pk=vid)
     club = UserProfile.objects.get_profile (request.user.username)
@@ -96,10 +129,13 @@ def club_edit (request, vid, ordinal_date):
                              type='C',
                              user=request.user,
                              vacancy=v)
-            
-        post_data = request.POST if request.method == 'POST' else None
-        form = ReservationForm (post_data,
-                                instance=r)
+        if request.method == 'POST':
+            form = ReservationForm (request.POST,
+                                    instance=r)
+        else:
+            form = ReservationForm (initial={'repeat': False,
+                                             'repeat_until': for_date},
+                                    instance=r)
         if form.is_valid ( ):
             r = form.save (commit=False)
             #

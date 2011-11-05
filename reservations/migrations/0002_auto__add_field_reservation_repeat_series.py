@@ -8,29 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Reservation'
-        db.create_table('reservations_reservation', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 11, 4, 11, 20, 16, 796592))),
-            ('for_date', self.gf('django.db.models.fields.DateField')()),
-            ('type', self.gf('django.db.models.fields.CharField')(default='P', max_length=1)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('vacancy', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['clubs.Vacancy'])),
-        ))
-        db.send_create_signal('reservations', ['Reservation'])
-
-        # Adding unique constraint on 'Reservation', fields ['for_date', 'vacancy']
-        db.create_unique('reservations_reservation', ['for_date', 'vacancy_id'])
+        # Adding field 'Reservation.repeat_series'
+        db.add_column('reservations_reservation', 'repeat_series', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True), keep_default=False)
 
 
     def backwards(self, orm):
         
-        # Removing unique constraint on 'Reservation', fields ['for_date', 'vacancy']
-        db.delete_unique('reservations_reservation', ['for_date', 'vacancy_id'])
-
-        # Deleting model 'Reservation'
-        db.delete_table('reservations_reservation')
+        # Deleting field 'Reservation.repeat_series'
+        db.delete_column('reservations_reservation', 'repeat_series')
 
 
     models = {
@@ -113,14 +98,11 @@ class Migration(SchemaMigration):
         },
         'reservations.reservation': {
             'Meta': {'unique_together': "(('for_date', 'vacancy'),)", 'object_name': 'Reservation'},
-<<<<<<< HEAD
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 11, 4, 11, 3, 29, 40408)'}),
-=======
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 11, 4, 11, 20, 16, 796592)'}),
->>>>>>> south
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 11, 4, 11, 21, 59, 163102)'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
             'for_date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'repeat_series': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'P'", 'max_length': '1'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'vacancy': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['clubs.Vacancy']"})
