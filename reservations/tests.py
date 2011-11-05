@@ -223,6 +223,7 @@ class ViewTest (TestCase):
         #
         self.cli.login (username=self.T_CLUB['username'],
                         password=self.T_CLUB['password'])
+        """
         #
         # physically delete only the reservations owned by the user
         #
@@ -240,8 +241,9 @@ class ViewTest (TestCase):
         self.assertEquals (resp.status_code, 404)
         self.assertEquals (reservations.aggregate (Count ('id'))['id__count'],
                            reservation_count)
+        """
         #
-        # cancel only one reservation when it is not part of a
+        # cancel strictly one reservation when it is not part of a
         # repetition series
         #
         reservations = Reservation.objects.filter (user=self.club.user,
