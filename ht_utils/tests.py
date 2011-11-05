@@ -11,6 +11,9 @@ from locations.models import City
 class SiteViewTest (TestCase):
     """ All the test cases for entry views of the site.-
     """
+    T_ROOT = {'username': 'superman',
+              'email': 'superman@kripton.si',
+              'password': 'ineednopassword'}
     T_CLUB = {'username': 'test_club',
               'email': 'club@nowhere.si',
               'password': 'averygoodpassword'}
@@ -20,9 +23,10 @@ class SiteViewTest (TestCase):
     
     def setUp (self):
         """
-        Creates a club, player and a client used during testing.-
+        Creates a superuser, club, player and a client used during testing.-
         """
         self.cli = Client ( )
+        superusr = User.objects.create_superuser (**self.T_ROOT)
         c = User.objects.create_user (**self.T_CLUB)
         self.club = UserProfile.objects.create_club_profile (c,
                                                              "Postal address 1231",
@@ -40,11 +44,21 @@ class SiteViewTest (TestCase):
         """ Checks the behavior of ht.views.home.-
         """
         view_url = reverse ('ht.views.home')
-        
+        #
+        # unauthenticated users should see the welcome screen
+        #
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template.name, 'welcome.html')
-        
+        #
+        # superusers should not be allowed in this site
+        #
+        self.cli.logout ( )
+        self.cli.login (username=self.T_ROOT['username'],
+                        password=self.T_ROOT['password'])
+        resp = self.cli.get (view_url)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (resp.template.name, 'superuser_not_allowed.html')
         #
         # log the club in
         #
@@ -53,7 +67,6 @@ class SiteViewTest (TestCase):
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'clubs/home.html')
-        
         #
         # log the player in
         #
