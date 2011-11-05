@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-04 21:48+0100\n"
+"POT-Creation-Date: 2011-11-05 17:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -408,7 +408,7 @@ msgstr ""
 msgid "-- any day --"
 msgstr ""
 
-#: players/forms.py:22 reservations/forms.py:157
+#: players/forms.py:22 reservations/forms.py:158
 msgid "-- anywhere --"
 msgstr ""
 
@@ -505,45 +505,45 @@ msgstr ""
 msgid "played on"
 msgstr ""
 
-#: reservations/forms.py:98
+#: reservations/forms.py:99
 msgid "Please check the dates!"
 msgstr ""
 
-#: reservations/forms.py:132 templates/reservations/club_view.html:33
+#: reservations/forms.py:133 templates/reservations/club_view.html:33
 #: templates/reservations/reservation_count_per_club.html:9
 msgid "Today"
 msgstr ""
 
-#: reservations/forms.py:133
+#: reservations/forms.py:134
 #: templates/reservations/reservation_count_per_club.html:13
 msgid "Tomorrow"
 msgstr ""
 
-#: reservations/forms.py:143
+#: reservations/forms.py:144
 msgid "-- anytime --"
 msgstr ""
 
-#: reservations/forms.py:144
+#: reservations/forms.py:145
 msgid "Morning"
 msgstr ""
 
-#: reservations/forms.py:145
+#: reservations/forms.py:146
 msgid "Afternoon"
 msgstr ""
 
-#: reservations/forms.py:146
+#: reservations/forms.py:147
 msgid "Evening"
 msgstr ""
 
-#: reservations/forms.py:152
+#: reservations/forms.py:153
 msgid "1 hour"
 msgstr ""
 
-#: reservations/forms.py:153
+#: reservations/forms.py:154
 msgid "2 hours"
 msgstr ""
 
-#: reservations/forms.py:154
+#: reservations/forms.py:155
 msgid "3 hours"
 msgstr ""
 
@@ -570,7 +570,8 @@ msgid ""
 "possible cancellation due to weather or other unexpected events."
 msgstr ""
 
-#: templates/404.html:13 templates/base.html:15 templates/welcome.html:13
+#: templates/404.html:13 templates/base.html:15
+#: templates/superuser_not_allowed.html:13 templates/welcome.html:13
 #: templates/wiki/edit.html:13 templates/wiki/preview.html:13
 #: templates/wiki/welcome.html:13
 msgid "::: HT :::"
@@ -596,6 +597,19 @@ msgstr ""
 msgid "Thank you for helping us improve the portal!"
 msgstr ""
 
+#: templates/superuser_not_allowed.html:22
+msgid "Warning"
+msgstr ""
+
+#: templates/superuser_not_allowed.html:31
+msgid ""
+"I cannot let you pass since you currently are superuser. Please try again!"
+msgstr ""
+
+#: templates/superuser_not_allowed.html:36
+msgid "Logout"
+msgstr ""
+
 #: templates/welcome.html:22 templates/wiki/welcome.html:22
 msgid "Welcome!"
 msgstr ""
@@ -609,7 +623,7 @@ msgstr ""
 msgid "Institutional data"
 msgstr ""
 
-#: templates/accounts/club_information.html:20
+#: templates/accounts/club_information.html:21
 #: templates/accounts/player_information.html:38 templates/admin/index.html:35
 #: templates/clubs/court_setup.html:56 templates/players/availability.html:45
 msgid "Edit"
@@ -796,7 +810,7 @@ msgstr ""
 #: templates/clubs/edit_court_setup.html:58
 #: templates/reservations/club_view.html:82
 #: templates/reservations/player_edit.html:39
-#: templates/reservations/user_view.html:63
+#: templates/reservations/user_view.html:65
 msgid "Court"
 msgstr ""
 
@@ -1076,23 +1090,23 @@ msgstr "Fecha"
 msgid "for"
 msgstr ""
 
-#: templates/reservations/search.html:46
+#: templates/reservations/search.html:47
 msgid "Featured clubs"
 msgstr ""
 
-#: templates/reservations/search.html:49
+#: templates/reservations/search.html:50
 msgid "Fast reservation"
 msgstr ""
 
-#: templates/reservations/user_view.html:57
+#: templates/reservations/user_view.html:59
 msgid "more ..."
 msgstr ""
 
-#: templates/reservations/user_view.html:65
+#: templates/reservations/user_view.html:67
 msgid "Earlier"
 msgstr ""
 
-#: templates/reservations/user_view.html:71
+#: templates/reservations/user_view.html:73
 msgid "Later"
 msgstr ""
 
