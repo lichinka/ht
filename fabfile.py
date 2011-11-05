@@ -1,8 +1,10 @@
 from fabric.api import *
+from fabric.utils import *
 from fabric.contrib import project, console
 
 #
-# Apps within this project
+# These are our apps within this project.
+# We want to run migrations (South) on them.
 #
 env.apps = ['ht_utils', 'locations', 'accounts', 'wiki', 'players',
             'clubs', 'user_messages', 'ranking', 'comments', 
@@ -30,11 +32,21 @@ env.remote_init = '/home/luka/init/'
 #
 env.remote_root = '/home/luka/ht/'
 #
+# Directory used to test the site BEFORE switching it to production
+#
+env.remote_scratch_dir = '/home/luka/scratch/ht/'
+#
 # Where the static files live on the server
 #
 env.remote_static_root = '%s%s/' % (env.remote_root,
                                     'static')
 
+
+
+def compile_translations ( ):
+    """ Compiles the current set of translations into the app.-
+    """
+    local ("./manage.py compilemessages")
 
 
 def update_translations ( ):
@@ -59,11 +71,19 @@ def init_db ( ):
         local ("./manage.py migrate %s" % app)
 
 
+def remote_scratch_test (app=''):
+    """ Tests the specified application or all if none given. All tests are run in the remote scratch directory.-
+    """
+    with cd (env.remote_scratch_dir):
+        run ('PYTHONPATH=/home/luka/django-ht:. python manage.py test --verbosity=2 --settings=ht.settings_test --failfast %s' % app)
+
+
 def remote_test ( ):
-    """ Executes all tests remotely.-
+    """ Executes all tests in the remote production directory.-
     """
     with cd (env.remote_root):
         run ('PYTHONPATH=/home/luka/django-ht:. python manage.py test --verbosity=2 --settings=ht.settings_test --failfast')
+
 
 def test (app=''):
     """ Executes all tests with the corresponding settings file. Accepts app name as parameter.-
@@ -77,10 +97,18 @@ def generate_static ( ):
     local ('./manage.py collectstatic --verbosity=2 --noinput')
 
 
-def deploy_site ( ):
-    """ Deploys the whole site to the server.-
+def remote_create_scratch_dir ( ):
+    with cd ('~'):
+        run ('mkdir -p %s' % env.remote_scratch_dir)
+        run ('mkdir -p %s/log' % env.remote_scratch_dir)
+
+
+def deploy_scratch_site ( ):
+    """ Deploys the whole site to the server's scratch dir, including static files and translations.-
     """
     generate_static ( )
+    compile_translations ( )
+    remote_create_scratch_dir ( )
     RSYNC_EXCLUDE = ['.git',
                      '.settings',
                      '.project',
@@ -89,11 +117,10 @@ def deploy_site ( ):
                      'media',
                      'log',
                      '.fabfile.*',
-                     'fabfile.*',
                      'TODO']
     extra_opts = '--omit-dir-times'
     project.rsync_project (
-        remote_dir = env.remote_root,
+        remote_dir = env.remote_scratch_dir,
         local_dir = env.local_root,
         exclude = RSYNC_EXCLUDE,
         delete = True,
@@ -116,16 +143,27 @@ def stop_server ( ):
         run ('./ht stop')
 
 
+def remote_switch_dirs ( ):
+    """ Changes the scratch directory to production and archives the previous production one.-
+    """
+    with cd ('~'):
+        run ('rm -rf ht_$(date %s)' % '+%Y%m%d')
+        run ('mv %s ht_$(date %s)' % (env.remote_root, '+%Y%m%d'))
+        run ('mv %(remote_scratch_dir)s %(remote_root)s' % env)
+
+
 def deploy ( ):
     """ Tests, deploys and restarts the server.-
     """
     if not console.confirm ('Deploy to production?',
                             default=False):
-        utils.abort ('Production deployment aborted.')
+        abort ('Production deployment aborted.')
     else:
         test ( )
+        deploy_scratch_site ( )
+        remote_scratch_test ( )
         stop_server ( )
-        deploy_site ( )
-        remote_test ( )
+        remote_switch_dirs ( )
         start_server ( )
+        remote_test ( )
 
