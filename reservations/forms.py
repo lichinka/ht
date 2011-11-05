@@ -20,6 +20,7 @@ class ReservationForm (forms.ModelForm):
     A form to create/edit reservations.-
     """
     created_on = forms.CharField (widget=HiddenInput ( ))
+    for_date = forms.DateField (widget=DateInput (attrs={'readonly': 'readonly'}))
     type = forms.CharField (widget=HiddenInput ( ))
     user = ModelChoiceField (queryset=User.objects.all ( ),
                              widget=HiddenInput ( ))
