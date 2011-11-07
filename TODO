@@ -1,13 +1,22 @@
-+ Test cases fail in the remote server.
++ When deleting courts/court setups, catch the ProtectedError exception to not accidentally delete reservations.
+    + ask the user what to do when deleting an object with reservations attached to it.
++ Check all translations marked as fuzzy in 'django.po'.
++ Add a small pop-up calendar beside every Date field.
++ Reservations club_view:
+    + show the whole week of reservations (booked terms should be marked in red color, with green those free),
+    + on mouse over show only "description",
+    + on click show all reservation details (i.e. form).
++ Add a logo in the club's profile. Add TAZAL's logo.
++ Add an avatar in the player's profile. Maybe extending them from UserProfile?
 + Changing the 'date' in create/edit reservation makes it to disappear.
-+ Create scripts for DB backups.
-+ Improve the fabric task 'deploy', so that if remote test cases fail, the new version is not applied and the servers keep running.
-+ Club profile does not look good in Chrome.
++ Club profile: court setup square does not look good in Chrome, IE and some versions of FF.
+    + change it by adding two links beside every court setup: Edit and Activate.
++ Display the club's email address in the profile (kontakti podatki) and in the reservation search results.
++ Change all checkboxes in all forms to display a dropdown with options Yes/No.
 + Implement the reservation system.
     + When canceling a reservation: if the user that created the reservation is the same as the one canceling it,
       then delete the database record; otherwise mark the reservation as canceled and act accordingly (banning, fakture, ...)
     + Implement the club-side of the reservation system.
-        + When deleting objects, catch the ProtectedError exception to not accidentally delete reservations.
         + Add 'CourtSetup' to allow clubs to quickly switch between different court
           configurations (eg. summer, winter, bad weather, tournament, ...)
             - Cancel the related reservations when switching court setups.
@@ -27,8 +36,6 @@
         - Give the option to send the player a reservation reminder via mail.
         - Give the option to send other player(s) the reservation summary via "Invitation"
             - If the opponent is not a member, try to catch him/her.
-+ Add a logo in the club's profile.
-+ Add an avatar in the player's profile. Maybe extending them from UserProfile?
 - Always test that the club is owner of the object being changed BEFORE updating it (courts, court_setups, ...) 
 - Always test that the player is owner of the object being changed BEFORE updating it (profile, availability, ads, ...) 
 - Write the test for 'edit_court_setup' view, checking for form errors when saving data.
