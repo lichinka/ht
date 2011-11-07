@@ -92,8 +92,9 @@ def player_edit (request, v_id, ordinal_date):
                 r.save ( )
                 return success (request,
                                 title=_('Reservation sent'),
-                                body=_('''Your reservation has been processed!
-                                          Please check your message box for possible cancellation due to weather or other unexpected events.'''))
+                                body=_('Your reservation has been processed! \
+                                        Please check your message box for possible cancellation \
+                                        due to bad weather or other unexpected events.'))
             return render_to_response ('reservations/player_edit.html',
                                        {'form': form,
                                         'ordinal_date': ordinal_date},

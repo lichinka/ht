@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-05 17:28+0100\n"
+"POT-Creation-Date: 2011-11-07 21:49+0100\n"
 "PO-Revision-Date: 2011-11-03 21:00+CEST\n"
 "Last-Translator: B+Lu\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,75 +48,75 @@ msgstr "Ta uporabnik je že registriran kot klub"
 msgid "This user has already been assigned a player profile"
 msgstr "Ta uporabnik je že registriran kot igralec"
 
-#: clubs/models.py:50 clubs/tests.py:518 clubs/tests.py:538
+#: clubs/models.py:78 clubs/tests.py:591 clubs/tests.py:611
 msgid "Copy of"
 msgstr "Kopija"
 
-#: clubs/models.py:92
+#: clubs/models.py:116
 msgid "Only one court setup may be active at once"
 msgstr "Samo en razpored igrišč mora biti aktiviran naenkrat"
 
-#: clubs/models.py:109 clubs/tests.py:505
+#: clubs/models.py:133 clubs/tests.py:578
 msgid "Default"
 msgstr "Privzeto"
 
-#: clubs/models.py:180
+#: clubs/models.py:203
 msgid "Clay"
 msgstr "Pesek"
 
-#: clubs/models.py:181
+#: clubs/models.py:204
 msgid "Cement"
 msgstr "Beton"
 
-#: clubs/models.py:182
+#: clubs/models.py:205
 msgid "Grass"
 msgstr "Trava"
 
-#: clubs/models.py:183
+#: clubs/models.py:206
 msgid "Rubber"
 msgstr "Guma"
 
-#: clubs/models.py:184
+#: clubs/models.py:207
 msgid "Carpet"
 msgstr "Preproga"
 
-#: clubs/models.py:274
+#: clubs/models.py:308
 msgid "Monday"
 msgstr "Ponedeljek"
 
-#: clubs/models.py:275
+#: clubs/models.py:309
 msgid "Tuesday"
 msgstr "Torek"
 
-#: clubs/models.py:276
+#: clubs/models.py:310
 msgid "Wednesday"
 msgstr "Sreda"
 
-#: clubs/models.py:277
+#: clubs/models.py:311
 msgid "Thursday"
 msgstr "Četrtek"
 
-#: clubs/models.py:278
+#: clubs/models.py:312
 msgid "Friday"
 msgstr "Petek"
 
-#: clubs/models.py:279
+#: clubs/models.py:313
 msgid "Saturday"
 msgstr "Sobota"
 
-#: clubs/models.py:280
+#: clubs/models.py:314
 msgid "Sunday"
 msgstr "Nedelja"
 
-#: clubs/models.py:327
+#: clubs/models.py:361
 msgid "Vacancy terms should be one hour long"
 msgstr "Termini razpoložljivosti igrišč morajo biti dolgi eno uro"
 
-#: clubs/models.py:331 players/models.py:22
+#: clubs/models.py:365 players/models.py:22
 msgid "from"
 msgstr "od"
 
-#: clubs/models.py:333
+#: clubs/models.py:367
 msgid "to"
 msgstr "do"
 
@@ -560,16 +560,15 @@ msgid "Reservation sent"
 msgstr "Rezervacija zaključena"
 
 #: reservations/views.py:95
-#, fuzzy
 msgid ""
-"Your reservation has been processed!\n"
-"                                          Please check your message box for "
-"possible cancellation due to weather or other unexpected events."
+"Your reservation has been processed!                                         "
+"Please check your message box for possible "
+"cancellation                                         due to bad weather or "
+"other unexpected events."
 msgstr ""
-"Prejeli smo vašo rezervacijo.\n"
-" Prosimo, da preverite vaš nabiralnik za sporočila v zvezi z morebitnim "
-"preklicem rezervacije zaradi slabega vremena ali drugih nepročakovanih "
-"dogodkov."
+"Prejeli smo vašo rezervacijo. Prosimo, da preverite vaš nabiralnik za "
+"sporočila v zvezi z morebitnim preklicem rezervacije zaradi slabega vremena "
+"ali drugih nepročakovanih dogodkov."
 
 #: templates/404.html:13 templates/base.html:15
 #: templates/superuser_not_allowed.html:13 templates/welcome.html:13
@@ -1058,9 +1057,8 @@ msgid "Description"
 msgstr "Opis"
 
 #: templates/reservations/club_edit.html:66
-#, fuzzy
 msgid "Repeat weekly?"
-msgstr "Ponovitev?"
+msgstr "Ponavljaj tedensko?"
 
 #: templates/reservations/club_edit.html:72
 msgid "until date"

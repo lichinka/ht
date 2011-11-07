@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-05 17:29+0100\n"
+"POT-Creation-Date: 2011-11-07 21:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,75 +50,75 @@ msgstr ""
 msgid "This user has already been assigned a player profile"
 msgstr ""
 
-#: clubs/models.py:50 clubs/tests.py:518 clubs/tests.py:538
+#: clubs/models.py:78 clubs/tests.py:591 clubs/tests.py:611
 msgid "Copy of"
 msgstr ""
 
-#: clubs/models.py:92
+#: clubs/models.py:116
 msgid "Only one court setup may be active at once"
 msgstr ""
 
-#: clubs/models.py:109 clubs/tests.py:505
+#: clubs/models.py:133 clubs/tests.py:578
 msgid "Default"
 msgstr ""
 
-#: clubs/models.py:180
+#: clubs/models.py:203
 msgid "Clay"
 msgstr ""
 
-#: clubs/models.py:181
+#: clubs/models.py:204
 msgid "Cement"
 msgstr ""
 
-#: clubs/models.py:182
+#: clubs/models.py:205
 msgid "Grass"
 msgstr ""
 
-#: clubs/models.py:183
+#: clubs/models.py:206
 msgid "Rubber"
 msgstr ""
 
-#: clubs/models.py:184
+#: clubs/models.py:207
 msgid "Carpet"
 msgstr ""
 
-#: clubs/models.py:274
+#: clubs/models.py:308
 msgid "Monday"
 msgstr ""
 
-#: clubs/models.py:275
+#: clubs/models.py:309
 msgid "Tuesday"
 msgstr ""
 
-#: clubs/models.py:276
+#: clubs/models.py:310
 msgid "Wednesday"
 msgstr ""
 
-#: clubs/models.py:277
+#: clubs/models.py:311
 msgid "Thursday"
 msgstr ""
 
-#: clubs/models.py:278
+#: clubs/models.py:312
 msgid "Friday"
 msgstr ""
 
-#: clubs/models.py:279
+#: clubs/models.py:313
 msgid "Saturday"
 msgstr ""
 
-#: clubs/models.py:280
+#: clubs/models.py:314
 msgid "Sunday"
 msgstr ""
 
-#: clubs/models.py:327
+#: clubs/models.py:361
 msgid "Vacancy terms should be one hour long"
 msgstr ""
 
-#: clubs/models.py:331 players/models.py:22
+#: clubs/models.py:365 players/models.py:22
 msgid "from"
 msgstr ""
 
-#: clubs/models.py:333
+#: clubs/models.py:367
 msgid "to"
 msgstr ""
 
@@ -565,9 +565,10 @@ msgstr ""
 
 #: reservations/views.py:95
 msgid ""
-"Your reservation has been processed!\n"
-"                                          Please check your message box for "
-"possible cancellation due to weather or other unexpected events."
+"Your reservation has been processed!                                         "
+"Please check your message box for possible "
+"cancellation                                         due to bad weather or "
+"other unexpected events."
 msgstr ""
 
 #: templates/404.html:13 templates/base.html:15
