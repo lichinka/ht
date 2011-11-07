@@ -8,10 +8,12 @@ import ht_utils
 from clubs.forms import EditCourtSetupForm, EditCourtPropertiesForm
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
+from django.db.models.deletion import ProtectedError
 
 
 
 @login_required
+@transaction.commit_on_success
 def clone_court_setup (request, cs_id):
     """
     Clones a court setup of a club, including all its courts, 
@@ -31,16 +33,12 @@ def clone_court_setup (request, cs_id):
 @login_required
 def delete_court_setup (request, cs_id):
     """
-    Deletes a court setup of a club, prior confirmation.-
+    Deletes a court setup of a club.-
     """
+    cs = get_object_or_404 (CourtSetup, pk=cs_id)
     club = UserProfile.objects.get_profile (request.user)
-    if club.is_club ( ):
-        cs = get_object_or_404 (CourtSetup, pk=cs_id)
-        #
-        # do not allow the deletion of the last court setup of this club
-        #
-        if CourtSetup.objects.get_count (club) > 1:
-            cs.delete ( )
+    if (club.is_club ( )) and (cs.club == club):
+        CourtSetup.objects.delete (cs)
         return redirect ('accounts.views.display_profile')
     else:
         raise Http404
@@ -60,7 +58,15 @@ def delete_court (request, c_id):
         # do not allow the deletion of the last court
         #
         if Court.objects.get_count (cs) > 1:
-            c.delete ( )
+            #
+            # do not allow the deletion of this court setup
+            # if it has any other objects (i.e. reservations)
+            # attached to itself
+            #
+            try:
+                c.delete ( )
+            except ProtectedError:
+                pass
         return redirect ('clubs.views.edit_court_setup',
                          cs_id=cs.id)
     else:

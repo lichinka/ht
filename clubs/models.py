@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import ht_utils
 from accounts.models import ClubProfile
+from django.db.models.deletion import ProtectedError
 
 
 
@@ -38,36 +39,59 @@ class CourtSetupManager (models.Manager):
                                   .aggregate (Count ('id'))
         return int(count['id__count'])
     
-    
-    @transaction.commit_manually 
+   
+    @transaction.commit_on_success
+    def delete (self, court_setup):
+        """
+        Deletes the received court setup, including all its
+        referenced objects. If there is an active reservation
+        attached to it, the court setup is not deleted.-
+        """
+        #
+        # do not allow the deletion of the last court setup of a club
+        #
+        if self.get_count (court_setup.club) > 1:
+            #
+            # do not allow the deletion of this court setup
+            # if it has any reservations attached to itself
+            #
+            try:
+                court_setup.delete ( )
+                #
+                # activate another court setup
+                #
+                cs = CourtSetup.objects.filter (club=court_setup.club).values ('id')
+                cs = CourtSetup.objects.get (pk=cs[0]['id'])
+                cs.is_active = True
+                cs.save ( )
+            except ProtectedError:
+                pass
+            
+            
+    @transaction.commit_on_success
     def clone (self, court_setup):
         """
         Clones a court setup of a club, including all its courts, 
         their properties and vacancy terms. Returns the newly created
         court setup.-
         """
-        try:
-            clone_name = "%s %s" % (ugettext('Copy of'), court_setup.name)
-            clone = self.model.objects.create (name=clone_name,
-                                               club=court_setup.club,
-                                               is_active=False)
-            #
-            # delete any existing courts in the cloned court setup
-            #
-            Court.objects.filter (court_setup=clone).delete ( )
-            #
-            # clone all courts contained in this court setup
-            #
-            for court in Court.objects.filter (court_setup=court_setup):
-                cloned_court = Court.objects.clone (court)
-                cloned_court.court_setup = clone
-                cloned_court.number = court.number
-                cloned_court.save ( )
-            transaction.commit ( )
-            return clone
-        except:
-            transaction.rollback ( )
-            return None
+        clone_name = "%s %s" % (ugettext('Copy of'), court_setup.name)
+        clone = self.model.objects.create (name=clone_name,
+                                           club=court_setup.club,
+                                           is_active=False)
+        #
+        # delete any existing courts in the cloned court setup
+        #
+        Court.objects.filter (court_setup=clone).delete ( )
+        #
+        # clone all courts contained in this court setup
+        #
+        for court in Court.objects.filter (court_setup=court_setup):
+            cloned_court = Court.objects.clone (court)
+            cloned_court.court_setup = clone
+            cloned_court.number = court.number
+            cloned_court.save ( )
+        return clone
     
     
     
@@ -110,7 +134,6 @@ def create_courtsetup (sender, instance, created, raw, **kwargs):
                                         club=instance,
                                         is_active=True)
         cs.save ( )
-        
         
         
             
@@ -266,6 +289,17 @@ class VacancyManager (models.Manager):
             v = v.filter (available_from__in=hour_list)
         return v
 
+
+    def get_all_by_date (self, courts=None, date_list=None, hour_list=None):
+        """
+        Returns a query set of all vacancies, optionally filtering by the
+        object lists received.-
+        """
+        if date_list:
+            dow_list = [d.isoweekday ( ) for d in date_list]
+        return self.get_all (courts, dow_list, hour_list)
+    
+    
 
 class Vacancy (models.Model):
     """

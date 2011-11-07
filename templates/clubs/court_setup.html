@@ -37,8 +37,8 @@
 		        	<label>
 		        		<input type="radio" name="court_setup" value="{{ setup.id }}">
 			                {% if setup.is_active %}
-			                    <b>{{ setup.name }}</b>
-			                    <i>{% trans "(active)" %}</i>
+			                    <b>{{ setup.name }}
+			                    {% trans "(active)" %}</b>
 			                {% else %}
 			                    {{ setup.name }}
 			                {% endif %}

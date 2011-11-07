@@ -2,13 +2,14 @@ from random import randint
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import date
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.db.models import Count
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User
 
-from ht_utils import number_to_default_locale
+from ht_utils import number_to_default_locale, random_id_list
+from ht_utils import pick_random_element, BaseViewTestCase
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
 from locations.models import City
@@ -137,60 +138,132 @@ class TemplateTagTest (TestCase):
                 
             
                 
-class ViewTest (TestCase):
+class DeleteCourtSetupTest (BaseViewTestCase):
     """
-    All the test cases for the views of this app.-
+    All the test cases for this view.-
     """
-    def setUp (self):
-        """
-        Creates a club and fills prices for some vacancy terms
-        used during testing.-
-        """
-        c = User.objects.create_user ('test_club', 'club@nowhere.si', 'pass')
-        self.club = UserProfile.objects.create_club_profile (c,
-                                                             "Postal address 1231",
-                                                             City.objects.all ( )[0],
-                                                             "111-222-333",
-                                                             "The best tennis club d.o.o.")
+    def test_having_an_active_court_setup_after_deleting_the_active_one (self):
         #
-        # add a couple of extra court setups
+        # log the club in
         #
-        CourtSetup.objects.create (name="The second court setup",
-                                   club=self.club,
-                                   is_active=False)
-        CourtSetup.objects.create (name="The third court setup",
-                                   club=self.club,
-                                   is_active=False)
+        self.cli.login (username=self.T_CLUB['username'], 
+                        password=self.T_CLUB['password'])
         #
-        # set some prices for the vacancy terms of all
-        # courts in the active court setup
+        # if the active court setup has been deleted, another one 
+        # should still be active
         #
         cs = CourtSetup.objects.get_active (self.club)
-        courts = Court.objects.get_available (cs)
-        for c in range (0, len(courts)):
-            court_vacancy_terms = Vacancy.objects.get_all ([courts[c]])
-            for v in range (0, len(court_vacancy_terms)):
-                court_vacancy_terms[v].price = '%10.2f' % float (10*c + v);
-                court_vacancy_terms[v].save ( )
-                
+        self.assertIsNotNone (cs)
+        view_url = reverse ('clubs.views.delete_court_setup',
+                            args=[cs.id])
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        cs_act = CourtSetup.objects.get_active (self.club)
+        self.assertIsNotNone (cs_act)
+        self.assertNotEquals (cs_act, cs)
+        self.assertEquals (cs_act.is_active, True)
         
-    def test_toggle_active_court_setup (self):
+    
+    def test_cannot_delete_court_setup_with_reservations (self):
+        #
+        # log the club in
+        #
+        self.cli.login (username=self.T_CLUB['username'], 
+                        password=self.T_CLUB['password'])
+        #
+        # cannot delete a court setup that has reservations attached to it
+        #
+        cs_count = CourtSetup.objects.get_count (self.club)
+        # create reservation
+        cs = CourtSetup.objects.get_active (self.club)
+        courts = Court.objects.get_available (cs).values ( )
+        v = False
+        while not v:
+            v = Vacancy.objects.get_all_by_date (courts,
+                                                 [date.today ( )],
+                                                 [pick_random_element (Vacancy.HOURS)[0]])
+        Reservation.objects.create (for_date=date.today ( ),
+                                    type='P',
+                                    description="Test reservation",
+                                    user=self.player.user,
+                                    vacancy=v[0])
+        # try to delete the court setup
+        cs = CourtSetup.objects.get (pk=cs.id)
+        view_url = reverse ('clubs.views.delete_court_setup',
+                            args=[cs.id])
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club))
+   
+    
+    def test_successful_deletion_of_a_random_court_setup (self):
+        #
+        # log the club in
+        #
+        self.cli.login (username=self.T_CLUB['username'], 
+                        password=self.T_CLUB['password'])
+        #
+        # successful deletion of a random court setup
+        #
+        cs_ids = random_id_list (CourtSetup.objects.all ( ).values ('id'))
+        cs_count = CourtSetup.objects.get_count (self.club)
+        cs = CourtSetup.objects.get (pk=cs_ids[0])
+        view_url = reverse ('clubs.views.delete_court_setup',
+                            args=[cs.id])
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club) + 1)
+        # successful redirection after successful deletion
+        self.assertEquals (resp.template[0].name, 'accounts/display_club_profile.html')
+    
+    
+    def test_the_last_court_setup_cannot_be_deleted_and_should_be_active (self):
+        #
+        # log the club in
+        #
+        self.cli.login (username=self.T_CLUB['username'], 
+                        password=self.T_CLUB['password'])
+        #
+        # the last court setup cannot be deleted and should always be active
+        #
+        cs_ids = random_id_list (CourtSetup.objects.filter (club=self.club).values ('id'))
+        for id in cs_ids:
+            view_url = reverse ('clubs.views.delete_court_setup',
+                                args=[id])
+            resp = self.cli.get (view_url, follow=True)
+            self.assertEquals (resp.status_code, 200)
+            cs_count = CourtSetup.objects.get_count (self.club)
+            self.assertTrue (cs_count > 0)
+            self.assertIsInstance (CourtSetup.objects.get_active (self.club), CourtSetup)
+        for i in range (0, 10):
+            cs = CourtSetup.objects.get_active (self.club)
+            view_url = reverse ('clubs.views.delete_court_setup',
+                                args=[cs.id])
+            resp = self.cli.get (view_url, follow=True)
+            self.assertEquals (resp.status_code, 200)
+            cs_count = CourtSetup.objects.get_count (self.club)
+            self.assertEquals (cs_count, 1)
+            self.assertEquals (cs.is_active, True)
+            
+        
+    
+class ToggleActiveCourtSetupTest (BaseViewTestCase):
+    def test (self):
         """
         Checks the behavior of clubs.views.toggle_active_court_setup.-
         """
         #
         # log the club in
         #
-        cli = Client ( )
-        cli.login (username='test_club', 
-                   password='pass')
+        self.cli.login (username=self.T_CLUB['username'],
+                        password=self.T_CLUB['password'])
         #
         # check that the active court setup cannot be deactivated
         #
         cs = CourtSetup.objects.get_active (self.club)
         view_url = reverse ('clubs.views.toggle_active_court_setup',
                             args=[cs.id])
-        resp = cli.get (view_url, follow=True)
+        resp = self.cli.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         cs = CourtSetup.objects.get (pk=cs.id)
         self.assertEquals (cs.is_active, True)
@@ -209,7 +282,7 @@ class ViewTest (TestCase):
             cs = cs[0]
             view_url = reverse ('clubs.views.toggle_active_court_setup',
                                 args=[cs.id])
-            resp = cli.get (view_url, follow=True)
+            resp = self.cli.get (view_url, follow=True)
             self.assertEquals (resp.status_code, 200)
             cs = CourtSetup.objects.get (pk=cs.id)
             self.assertEquals (cs.is_active, True)
@@ -222,16 +295,16 @@ class ViewTest (TestCase):
         self.assertEquals (int (cs['id__count']), 1)
         
             
-    def test_edit_court_setup (self):
+class EditCourtSetupTest (BaseViewTestCase):
+    def test (self):
         """
         Checks the behavior of clubs.views.edit_court_setup.-
         """
         #
         # log the club in
         #
-        cli = Client ( )
-        cli.login (username='test_club', 
-                   password='pass')
+        self.cli.login (username=self.T_CLUB['username'],
+                        password=self.T_CLUB['password'])
         #
         # check that the displayed data matches the test data
         #
@@ -240,23 +313,22 @@ class ViewTest (TestCase):
         for c in courts:
             view_url = reverse ('clubs.views.edit_court_setup',
                                 args=[cs.id, c.id])
-            resp = cli.get (view_url)
+            resp = self.cli.get (view_url)
             self.assertTrue (resp.status_code == 200,
                              "The view %s returned %s" % (view_url,
                                                           resp.status_code))
             
             
-        
-    def test_save_court_vacancy (self):
+class SaveCourtVacancyTest (BaseViewTestCase): 
+    def test (self):
         """
         Checks the correct behavior of clubs.views.save_court_vacancy.-
         """
         #
         # log the club in
         #
-        cli = Client ( )
-        cli.login (username='test_club', 
-                   password='pass')
+        self.cli.login (username=self.T_CLUB['username'],
+                        password=self.T_CLUB['password'])
         
         cs = CourtSetup.objects.get_active (self.club)
         courts = Court.objects.get_available (cs)
@@ -271,9 +343,9 @@ class ViewTest (TestCase):
             
             view_url = reverse ('clubs.views.save_court_vacancy',
                                 args=[c.id])        
-            resp = cli.post (view_url, 
-                             court_prices, 
-                             follow=True)
+            resp = self.cli.post (view_url, 
+                                  court_prices, 
+                                  follow=True)
             self.assertEquals (resp.status_code, 200)
             #
             # check that the saved prices match
@@ -283,6 +355,7 @@ class ViewTest (TestCase):
             for v in vacancy_list:
                 self.assertEquals (v.price, Decimal ('%10.2f' % float(v.id)))
     
+   
     
     
 class VacancyTest (TestCase):
