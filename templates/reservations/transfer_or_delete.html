@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block user_content %}
+	<h1>{% trans 'Transfer or delete reservations?' %}</h1>
+    
+    <br/>	
+	<h3>{% trans 'The system has found that there are booked courts over the object you have selected.' %}</h3>
+	<h3>{% trans 'Please indicate, what should we do with them.' %}</h3>
+	<br/>
+	
+	{% if form.errors %}
+   	    {{ form.non_field_errors }}
+	{% endif %}
+	
+    <div id="form">	
+		<form method="post" action="#">
+			{% csrf_token %}
+		    
+		    <div id="form_elem">
+			    <label for="id_user_choice">{% trans 'Select one of these actions:' %}</label>
+			    {{ form.user_choice }}
+			    {{ form.user_choice.errors }}
+	        </div>
+	        
+		    <div id="form_elem">
+			    <label for="id_transfer_to">{% trans 'Transfer to:' %}</label>
+			    {{ form.transfer_to }}
+			    {{ form.transfer_to.errors }}
+	        </div>
+	        
+	        <div id="form_action"> 
+			    <input type="submit" value="{% trans 'Confirm' %}" class="button"/>
+			</div>
+		</form>
+	</div>
+	
+	<table class="reservation">
+		<caption>
+			{% trans 'Reservations found' %}
+		</caption>
+		<thead>
+			<tr>
+				<th scope="col">&nbsp;</th>
+				<th scope="col">{% trans 'Date' %}</th>
+                <th scope="col">{% trans 'From' %}</th>
+                <th scope="col">{% trans 'To' %}</th>
+                <th scope="col">{% trans 'Court' %}</th>
+                <th scope="col">{% trans 'Description' %}</th>
+                <th scope="col">{% trans 'Repetition?' %}</th>
+            </tr>
+		</thead>
+		<tbody>
+			{% for res in res_list %}
+				<tr>
+					<td>&nbsp;</td>
+					<td>{{ res.for_date|date:"SHORT_DATE_FORMAT" }}</td>
+					<td>{{ res.vacancy.get_available_from_display }}</td>
+					<td>{{ res.vacancy.get_available_to_display }}</td>
+					<td>{{ res.vacancy.court }}</td>
+					<td>{{ res.description }}</td>
+					<td>
+						{% if res.repeat_series %}
+							{% trans 'Yes' %}
+						{% else %}
+							{% trans 'No' %}
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+    	
+{% endblock %}

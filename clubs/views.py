@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import transaction
 from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -8,7 +10,10 @@ import ht_utils
 from clubs.forms import EditCourtSetupForm, EditCourtPropertiesForm
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
+from reservations.models import Reservation
+from django.core.urlresolvers import reverse
 from django.db.models.deletion import ProtectedError
+from django.db.models.aggregates import Count
 
 
 
@@ -28,16 +33,38 @@ def clone_court_setup (request, cs_id):
     else:
         raise Http404
     
-    
+
     
 @login_required
 def delete_court_setup (request, cs_id):
     """
-    Deletes a court setup of a club.-
+    Deletes a court setup of a club, taking care of the
+    reservations attached to it.-
     """
     cs = get_object_or_404 (CourtSetup, pk=cs_id)
     club = UserProfile.objects.get_profile (request.user)
     if (club.is_club ( )) and (cs.club == club):
+        """
+        #
+        # FIXME: Turn this on after transfer_or_delete is working correctly
+        #
+        #
+        # number of past reservations attached to this court setup
+        #
+        past_count = Reservation.objects.up_to_date (cs, date.today ( )) \
+                                        .aggregate (Count ('id'))
+        past_count = int (past_count['id__count'])
+        #
+        # number of future reservations attached to this court setup
+        #
+        future_count = Reservation.objects.from_date (cs, date.today ( )) \
+                                          .aggregate (Count ('id'))
+        future_count = int (future_count['id__count'])
+        if (past_count > 0) or (future_count > 0):
+            return redirect (reverse ('reservations.views.transfer_or_delete',
+                                      args=[cs.id]))
+        else:
+        """                                  
         CourtSetup.objects.delete (cs)
         return redirect ('accounts.views.display_profile')
     else:

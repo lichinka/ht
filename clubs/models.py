@@ -2,13 +2,14 @@ from django.db import models, transaction
 from django.dispatch import receiver
 from django.db.models import Count, Max
 from django.core.exceptions import ValidationError
+from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
-
-import ht_utils
-from accounts.models import ClubProfile
 from django.db.models.deletion import ProtectedError
+
+from ht_utils import update_many, insert_many
+from accounts.models import ClubProfile
 
 
 
@@ -41,11 +42,12 @@ class CourtSetupManager (models.Manager):
     
    
     @transaction.commit_on_success
-    def delete (self, court_setup):
+    def delete (self, court_setup, force=True):
         """
         Deletes the received court setup, including all its
-        referenced objects. If there is an active reservation
-        attached to it, the court setup is not deleted.-
+        referenced objects. If there are reservations attached 
+        to it, the court setup (and its reservations) are deleted
+        only if the 'force' flag is True.-
         """
         #
         # do not allow the deletion of the last court setup of a club
@@ -57,15 +59,21 @@ class CourtSetupManager (models.Manager):
             #
             try:
                 court_setup.delete ( )
-                #
-                # activate another court setup
-                #
-                cs = CourtSetup.objects.filter (club=court_setup.club).values ('id')
-                cs = CourtSetup.objects.get (pk=cs[0]['id'])
-                cs.is_active = True
-                cs.save ( )
             except ProtectedError:
-                pass
+                if force:
+                    #
+                    # delete all reservations from all
+                    # courts of the received court setup
+                    #
+                    for court in Court.objects.filter (court_setup=court_setup):
+                        Court.objects.delete_reservations (court)
+            #
+            # activate another court setup
+            #
+            cs = CourtSetup.objects.filter (club=court_setup.club).values ('id')
+            cs = CourtSetup.objects.get (pk=cs[0]['id'])
+            cs.is_active = True
+            cs.save ( )
             
             
     @transaction.commit_on_success
@@ -138,6 +146,15 @@ def create_courtsetup (sender, instance, created, raw, **kwargs):
         
             
 class CourtManager (models.Manager):
+    def delete_reservations (self, court):
+        """
+        Deletes all reservations attached to the received court.-
+        """
+        from reservations.models import Reservation
+        for r in Reservation.objects.filter (vacancy__court=court).iterator ( ):
+            Reservation.objects.delete (r)
+            
+        
     def get_available (self, court_setup):
         """
         Returns a query set of available courts belonging
@@ -191,7 +208,7 @@ class CourtManager (models.Manager):
         #
         # update the copied vacancy prices
         #
-        ht_utils.update_many (bulk, fields=['price'])
+        update_many (bulk, fields=['price'])
         return clone
  
  
@@ -262,13 +279,34 @@ def create_court (sender, instance, created, raw, **kwargs):
             
 
 
-class VacancyManager (models.Manager):
+class VacancyMixin (object):
+    """
+    Allows method chaining at manager level.-
+    """
+    def get_free (self, cs, for_date, hour):
+        """
+        Returns a query set of free vacancies (i.e. not yet booked) for
+        the given date and hour, for active courts belonging to the given
+        court setup.-
+        """
+        from reservations.models import Reservation
+        
+        booked = Reservation.objects.by_date (cs, for_date) \
+                                    .filter (vacancy__available_from=hour) \
+                                    .values ('vacancy__id')
+        return self.filter (court__court_setup=cs) \
+                   .filter (day_of_week=for_date.isoweekday ( )) \
+                   .filter (available_from=hour) \
+                   .exclude (court__is_available=False) \
+                   .exclude (id__in=booked)
+        
+        
     def get_all (self, courts=None, day_of_week_list=None, hour_list=None):
         """
         Returns a query set of all vacancies, optionally filtering by the
         object lists received.-
         """
-        v = Vacancy.objects.all ( )
+        v = self.all ( )
         
         if courts:
             try:
@@ -298,7 +336,21 @@ class VacancyManager (models.Manager):
         if date_list:
             dow_list = [d.isoweekday ( ) for d in date_list]
         return self.get_all (courts, dow_list, hour_list)
-    
+
+
+class VacancyQuerySet (QuerySet, VacancyMixin):
+    """
+    Glue class to build a manager that supports method chaining.-
+    """
+    pass
+
+
+class VacancyManager (models.Manager, VacancyMixin):
+    """
+    A tuned manager that supports method chaining.-
+    """
+    def get_query_set (self):
+        return VacancyQuerySet (self.model, using=self._db)
     
 
 class Vacancy (models.Model):
@@ -391,7 +443,7 @@ def create_court_vacancy_terms (sender, instance, created, raw, **kwargs):
                              available_to=h+1,
                              price=None)
                 bulk.append (v)
-        ht_utils.insert_many (bulk)
+        insert_many (bulk)
  
 
 @receiver(pre_delete, sender=Court)

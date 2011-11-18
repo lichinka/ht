@@ -1,18 +1,28 @@
++ NEVER DELETE RESERVATION RECORDS?
 + When deleting courts/court setups, catch the ProtectedError exception to not accidentally delete reservations.
-    + ask the user what to do when deleting an object with reservations attached to it.
+    + ask the user what to do when deleting an object with reservations attached to it:
+    	- transfer reservations or ignore them?
++ When adding a reservation (or a repeating reservation), check that the target vacancy is free!
+	- Implement a book method that will take care of this and add test cases!
+	- Replace all Reservation.create calls with the book method.
 + Check all translations marked as fuzzy in 'django.po'.
-+ Add a small pop-up calendar beside every Date field.
 + Reservations club_view:
     + show the whole week of reservations (booked terms should be marked in red color, with green those free),
     + on mouse over show only "description",
     + on click show all reservation details (i.e. form).
++ Check that the size of uploaded images does not exceed a defined threshold.
 + Add a logo in the club's profile. Add TAZAL's logo.
 + Add an avatar in the player's profile. Maybe extending them from UserProfile?
 + Changing the 'date' in create/edit reservation makes it to disappear.
+    - Before correcting, implement a test case to catch this error. 
+	- This is because the date is given as part of the GET address (i.e. ordinal date).
+	- Implement a test case for catching ValueError when not all terms are free for 
+	  booking (repeating reservations, reservations/tests.py:269)
 + Club profile: court setup square does not look good in Chrome, IE and some versions of FF.
     + change it by adding two links beside every court setup: Edit and Activate.
 + Display the club's email address in the profile (kontakti podatki) and in the reservation search results.
 + Change all checkboxes in all forms to display a dropdown with options Yes/No.
+- Display per-user activity in the admin.
 + Implement the reservation system.
     + When canceling a reservation: if the user that created the reservation is the same as the one canceling it,
       then delete the database record; otherwise mark the reservation as canceled and act accordingly (banning, fakture, ...)
@@ -41,7 +51,9 @@
 - Write the test for 'edit_court_setup' view, checking for form errors when saving data.
 - When registering new users, make sure that they give info about the terms they are willing to play with others (search opponent!)
 - In the reservation search result, beside the club name, change the "more ..." button to "directions ...", "show on map ...", ...
+    - show the button only if the club has 'elektronsko vizitko'.
 - In the reservation tables (all of them) highlight the column in a similar fashion as the row is.
+    - also highlight the current active element (button or input text).
 - En la vista de edit court setup:
     - when deactivating a court, check if it has reservations attached.
 - En la vista del club (reservas):
@@ -49,7 +61,6 @@
     - en el formulario de edicion de reservas, agreagar un boton para enviar un mensaje al usuario que hizo la reserva.
     - despues de grabar cambios en una reserva, volver a la fecha donde aparece la reserva cambiada.
     - mostrar la confiabilidad del usuario que reservo la cancha con una escala de colores sobre las letras, fondo o alguna otra marca.
-    - agregar un boton para ir al dia de hoy.
 - Implement a public club profile page, including:
     - all club's data,
     - club's avatar,
@@ -76,7 +87,6 @@
 - Disagree (or appeal) a displayed result of a match (in case one of the players doesn't agree).
 - Create a template tag for displaying the vacancies of a given player/user.
 - Display the "last seen on" beside every player when looking for an opponent.
-- Check that the size of uploaded images does not exceed a defined threshold.
 - Implement the ads system.
 - Add a test to check if the logged-in user is active where needed.
 - Add 'breadcrumbs' left-aligned on the menu bar.

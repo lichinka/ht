@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 
+from django.db import transaction
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
@@ -11,12 +12,59 @@ from clubs.models import CourtSetup, Court, Vacancy
 from ht_utils.views import success
 from accounts.models import UserProfile, ClubProfile
 from locations.models import City
-from reservations.forms import SearchFreeCourtForm, ReservationForm, SelectDateForm
+from reservations.forms import SearchFreeCourtForm, ReservationForm
+from reservations.forms import SelectDateForm, TransferOrDeleteForm
 from reservations.models import Reservation
 from django.core.exceptions import ObjectDoesNotExist
 
     
     
+@login_required
+@transaction.commit_on_success
+def transfer_or_delete (request, cs_id, c_id=None):
+    """
+    Display a form to allow the club decide what to do with
+    reservations attached to the received court or court_setup.-
+    """
+    cs = get_object_or_404 (CourtSetup, pk=cs_id)
+    club = UserProfile.objects.get_profile (request.user.username)
+    if (club.is_club ( )) and (cs.club == club):
+        if request.method == 'POST':
+            form = TransferOrDeleteForm (request.POST)
+        else:
+            form = TransferOrDeleteForm ( )
+        #
+        # the court setups to where transfer the reservations
+        #
+        form.fields['transfer_to'].queryset = CourtSetup.objects.filter (club=club) \
+                                                                .exclude (id=cs.id)
+        #
+        # the reservations that may be transfered or deleted
+        #
+        res_list = Reservation.objects.by_court_setup (cs).order_by ('for_date', 
+                                                                     'vacancy__available_from',
+                                                                     'vacancy__court__number') \
+                                                          .values ('id')
+        res_list = [Reservation.objects.get (pk=r['id']) for r in res_list]
+                                                                
+        if form.is_valid ( ):
+            #
+            # to transfer reservations means copying and then deleting
+            #
+            if form.cleaned_data['user_choice'] == 1:
+                copied_res = Reservation.objects.copy_to_court_setup (form.cleaned_data['transfer_to'],
+                                                                      res_list, 
+                                                                      commit=False)
+        
+        return render_to_response ('reservations/transfer_or_delete.html',
+                                   {'form': form,
+                                    'res_list': res_list},
+                                   context_instance=RequestContext(request))
+    else:
+        raise Http404
+
+
+   
 @login_required
 def cancel (request, r_id):
     """
@@ -119,7 +167,7 @@ def club_edit (request, vid, ordinal_date):
     if (club.is_club ( )) and (v.court.court_setup.club == club):
         for_date = date.fromordinal (int (ordinal_date))
         try:
-            r = Reservation.objects.filter (for_date=for_date) \
+            r = Reservation.objects.by_date (v.court.court_setup, for_date) \
                                    .get (vacancy=v)
         except ObjectDoesNotExist:
             #
@@ -139,12 +187,6 @@ def club_edit (request, vid, ordinal_date):
                                     instance=r)
         if form.is_valid ( ):
             r = form.save (commit=False)
-            #
-            # save which user made the reservation
-            # and the reservation type
-            #
-            r.user = request.user
-            r.type = 'C'
             #
             # add the club's name if no description has been given
             #

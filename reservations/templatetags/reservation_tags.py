@@ -1,7 +1,7 @@
 from django import template
 from django.http import Http404
 
-from clubs.models import Vacancy
+from clubs.models import CourtSetup, Vacancy
 from accounts.models import UserProfile
 from reservations.models import Reservation
 
@@ -19,7 +19,11 @@ def reservations_per_court (court_list, for_date, for_hour):
     for court in court_list:
         court.vacancy = Vacancy.objects.get_all ([court], [dow], [for_hour])
         court.vacancy = court.vacancy[0]
-        court.reservation = Reservation.objects.get_by_date (for_date) \
+        try:
+            cs = court.court_setup
+        except AttributeError:
+            cs = CourtSetup.objects.get (pk=court['court_setup_id'])
+        court.reservation = Reservation.objects.by_date (cs, for_date) \
                                                .filter (vacancy=court.vacancy)
         if court.reservation:
             court.reservation = court.reservation[0]

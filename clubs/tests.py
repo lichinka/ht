@@ -8,14 +8,15 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User
 
-from ht_utils import number_to_default_locale, random_id_list
-from ht_utils import pick_random_element, BaseViewTestCase
+from ht_utils import number_to_default_locale, pick_random_element
+from ht_utils.tests import BaseViewTestCase
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
 from locations.models import City
 from clubs.templatetags import vacancy_tags
 from reservations.models import Reservation
 from clubs.templatetags.vacancy_tags import vacancy_prices_per_day
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -142,111 +143,53 @@ class DeleteCourtSetupTest (BaseViewTestCase):
     """
     All the test cases for this view.-
     """
-    def test_having_an_active_court_setup_after_deleting_the_active_one (self):
+    def test_delete_court_setup_without_reservations (self):
         #
         # log the club in
         #
         self.cli.login (username=self.T_CLUB['username'], 
                         password=self.T_CLUB['password'])
+        cs_count = CourtSetup.objects.all ( ).aggregate (Count('id'))
         #
-        # if the active court setup has been deleted, another one 
-        # should still be active
+        # get a court setup WITHOUT reservations
         #
-        cs = CourtSetup.objects.get_active (self.club)
-        self.assertIsNotNone (cs)
+        for cs in CourtSetup.objects.filter (club=self.club).iterator ( ):
+            r = Reservation.objects.by_court_setup (cs)
+            if not r:
+                cs = CourtSetup.objects.get (pk=cs.id)
+                break
+        self.assertIsInstance (cs, CourtSetup)
         view_url = reverse ('clubs.views.delete_court_setup',
                             args=[cs.id])
         resp = self.cli.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
-        cs_act = CourtSetup.objects.get_active (self.club)
-        self.assertIsNotNone (cs_act)
-        self.assertNotEquals (cs_act, cs)
-        self.assertEquals (cs_act.is_active, True)
-        
-    
-    def test_cannot_delete_court_setup_with_reservations (self):
-        #
-        # log the club in
-        #
-        self.cli.login (username=self.T_CLUB['username'], 
-                        password=self.T_CLUB['password'])
-        #
-        # cannot delete a court setup that has reservations attached to it
-        #
-        cs_count = CourtSetup.objects.get_count (self.club)
-        # create reservation
-        cs = CourtSetup.objects.get_active (self.club)
-        courts = Court.objects.get_available (cs).values ( )
-        v = False
-        while not v:
-            v = Vacancy.objects.get_all_by_date (courts,
-                                                 [date.today ( )],
-                                                 [pick_random_element (Vacancy.HOURS)[0]])
-        Reservation.objects.create (for_date=date.today ( ),
-                                    type='P',
-                                    description="Test reservation",
-                                    user=self.player.user,
-                                    vacancy=v[0])
-        # try to delete the court setup
-        cs = CourtSetup.objects.get (pk=cs.id)
-        view_url = reverse ('clubs.views.delete_court_setup',
-                            args=[cs.id])
-        resp = self.cli.get (view_url, follow=True)
-        self.assertEquals (resp.status_code, 200)
-        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club))
-   
-    
-    def test_successful_deletion_of_a_random_court_setup (self):
-        #
-        # log the club in
-        #
-        self.cli.login (username=self.T_CLUB['username'], 
-                        password=self.T_CLUB['password'])
-        #
-        # successful deletion of a random court setup
-        #
-        cs_ids = random_id_list (CourtSetup.objects.all ( ).values ('id'))
-        cs_count = CourtSetup.objects.get_count (self.club)
-        cs = CourtSetup.objects.get (pk=cs_ids[0])
-        view_url = reverse ('clubs.views.delete_court_setup',
-                            args=[cs.id])
-        resp = self.cli.get (view_url, follow=True)
-        self.assertEquals (resp.status_code, 200)
-        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club) + 1)
-        # successful redirection after successful deletion
         self.assertEquals (resp.template[0].name, 'accounts/display_club_profile.html')
-    
-    
-    def test_the_last_court_setup_cannot_be_deleted_and_should_be_active (self):
+        self.assertEquals (cs_count['id__count'] - 1,
+                           CourtSetup.objects.all ( ).aggregate (Count('id'))['id__count'])
+        
+    def test_redirect_if_court_setup_has_reservations (self):
         #
         # log the club in
         #
         self.cli.login (username=self.T_CLUB['username'], 
                         password=self.T_CLUB['password'])
         #
-        # the last court setup cannot be deleted and should always be active
+        # get a court setup WITH reservations
         #
-        cs_ids = random_id_list (CourtSetup.objects.filter (club=self.club).values ('id'))
-        for id in cs_ids:
-            view_url = reverse ('clubs.views.delete_court_setup',
-                                args=[id])
-            resp = self.cli.get (view_url, follow=True)
-            self.assertEquals (resp.status_code, 200)
-            cs_count = CourtSetup.objects.get_count (self.club)
-            self.assertTrue (cs_count > 0)
-            self.assertIsInstance (CourtSetup.objects.get_active (self.club), CourtSetup)
-        for i in range (0, 10):
-            cs = CourtSetup.objects.get_active (self.club)
-            view_url = reverse ('clubs.views.delete_court_setup',
-                                args=[cs.id])
-            resp = self.cli.get (view_url, follow=True)
-            self.assertEquals (resp.status_code, 200)
-            cs_count = CourtSetup.objects.get_count (self.club)
-            self.assertEquals (cs_count, 1)
-            self.assertEquals (cs.is_active, True)
+        for cs in self.cs_list:
+            r = Reservation.objects.by_court_setup (cs)
+            if r:
+                cs = CourtSetup.objects.get (pk=cs.id)
+                break
+        self.assertIsInstance (cs, CourtSetup)
+        view_url = reverse ('clubs.views.delete_court_setup',
+                            args=[cs.id])
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        #self.assertEquals (resp.template[0].name, 'reservations/transfer_or_delete.html')
+        
             
         
-    
 class ToggleActiveCourtSetupTest (BaseViewTestCase):
     def test (self):
         """
@@ -338,7 +281,8 @@ class SaveCourtVacancyTest (BaseViewTestCase):
                 prices = vacancy_prices_per_day (c, h)
                 prices = dict (prices['prices'])
                 for k in prices.keys ( ):
-                    prices[k] = '%10.2f' % float (k.split ('_')[1])
+                    val = float (k.split ('_')[1]) / 10.0
+                    prices[k] = '%10.2f' % val
                 court_prices = dict (court_prices, **prices)
             
             view_url = reverse ('clubs.views.save_court_vacancy',
@@ -350,35 +294,27 @@ class SaveCourtVacancyTest (BaseViewTestCase):
             #
             # check that the saved prices match
             #
-            v_ids = [int (Decimal (v)) for v in court_prices.values()]
+            v_ids = [ int (k.split('_')[1]) for k in court_prices.keys ( ) ]
             vacancy_list = Vacancy.objects.filter (id__in=v_ids)
             for v in vacancy_list:
-                self.assertEquals (v.price, Decimal ('%10.2f' % float(v.id)))
+                expected_val = float (v.id) / 10.0
+                self.assertEquals (v.price, Decimal ('%10.2f' % expected_val))
     
    
     
     
-class VacancyTest (TestCase):
+class VacancyTest (BaseViewTestCase):
     """
     All the test cases for the Vacancy model.-
     """
-    def setUp (self):
-        """
-        Creates a club used during testing.-
-        """
-        c = User.objects.create_user ('test_club', 'club@nowhere.si', 'pass')
-        self.club = UserProfile.objects.create_club_profile (c,
-                                                             "Postal address 1231",
-                                                             City.objects.all ( )[0],
-                                                             "111-222-333",
-                                                             "The best tennis club d.o.o.")
-
     def test_default_vacancy_terms_creation (self):
         """
         Checks that default vacancy terms are created for the new club
         inside its default court setup, as part of its default court.-
         """
-        cs = CourtSetup.objects.get_active (self.club)
+        cs = CourtSetup.objects.create (name="Some court setup",
+                                        club=self.club,
+                                        is_active=False)
         courts = Court.objects.get_available (cs)
         vacancy_terms = Vacancy.objects.get_all (courts)
         
@@ -405,8 +341,7 @@ class VacancyTest (TestCase):
                                      "The vacancy term %s has an invalid starting time" % v)
                     self.assertTrue (v.available_to == all_hours[i+1],
                                      "The vacancy term %s has an invalid ending time" % v)
-                    self.assertTrue (v.price == None,
-                                     "The vacancy term %s has a price set" % v)
+                    self.assertIsNotNone (v.price == None)
                     self.assertTrue (v in vacancy_terms,
                                      "The vacancy term %s is not contained in the 'get_all' query" % v)
                     
@@ -437,6 +372,47 @@ class VacancyTest (TestCase):
                          "Vacancy.HOURS last element is not as expected.")
     
     
+    def test_manager_get_free (self):
+        """
+        Checks the correctness of the get_free manager method.- 
+        """
+        #
+        # first test with available courts only
+        #
+        for_date = date.today ( )
+        hour = pick_random_element (Vacancy.HOURS)
+        cs = pick_random_element (self.cs_list)
+        term_count = Court.objects.get_available (cs)
+        term_count = term_count.aggregate (Count ('id'))['id__count']
+        booked = Reservation.objects.filter (vacancy__court__court_setup=cs) \
+                                    .filter (for_date=for_date) \
+                                    .filter (vacancy__available_from=hour[0]) \
+                                    .values ('vacancy__id')
+        free = Vacancy.objects.get_free (cs, for_date, hour[0]) \
+                              .values ('id')
+        self.assertEquals (term_count, len(booked) + len(free))
+        
+        #
+        # randomly deactivate a court and repeat the test
+        #
+        court_off = pick_random_element (Court.objects.get_available (cs).values ('id'))
+        court_off = Court.objects.get (pk=court_off['id'])
+        court_off.is_available = False
+        court_off.save ( )
+        for_date = date.today ( )
+        hour = pick_random_element (Vacancy.HOURS)
+        cs = pick_random_element (self.cs_list)
+        term_count = Court.objects.get_available (cs)
+        term_count = term_count.aggregate (Count ('id'))['id__count']
+        booked = Reservation.objects.filter (vacancy__court__court_setup=cs) \
+                                    .filter (for_date=for_date) \
+                                    .filter (vacancy__available_from=hour[0]) \
+                                    .values ('vacancy__id')
+        free = Vacancy.objects.get_free (cs, for_date, hour[0]) \
+                              .values ('id')
+        self.assertEquals (term_count, len(booked) + len(free))
+    
+        
     def test_manager_get_all (self):
         """
         Checks the correctness of the get_all manager method.- 
@@ -447,11 +423,11 @@ class VacancyTest (TestCase):
         vacancy_term_count = vacancy_terms.aggregate (Count ('id'))
         vacancy_term_count = int (vacancy_term_count['id__count'])
         #
-        # there should be 119 terms, i.e. 
+        # there should be 119 terms per court, i.e. 
         # 7 days * 17 time intervals, from 7:00 to 23:00
         #
-        self.assertEquals (vacancy_term_count, 119,
-                           "Vacancy.objects.get_all() returned the wrong number of terms")
+        self.assertEquals (vacancy_term_count, 
+                           119 * int (courts.aggregate (Count ('id'))['id__count']))
         #
         # the method should also accept a list of objects
         #
@@ -461,11 +437,11 @@ class VacancyTest (TestCase):
         vacancy_term_count = vacancy_terms.aggregate (Count ('id'))
         vacancy_term_count = int (vacancy_term_count['id__count'])
         #
-        # there should still be 119 terms, i.e. 
+        # there should still be 119 terms per court, i.e. 
         # 7 days * 17 time intervals, from 7:00 to 23:00
         #
-        self.assertEquals (vacancy_term_count, 119,
-                           "Vacancy.objects.get_all() returned the wrong number of terms")
+        self.assertEquals (vacancy_term_count, 
+                           119 * int (Court.objects.get_available (cs).aggregate (Count ('id'))['id__count']))
         #
         # the method should also accept a list of IDs
         #
@@ -475,11 +451,11 @@ class VacancyTest (TestCase):
         vacancy_term_count = vacancy_terms.aggregate (Count ('id'))
         vacancy_term_count = int (vacancy_term_count['id__count'])
         #
-        # there should still be 119 terms, i.e. 
+        # there should still be 119 terms per court, i.e. 
         # 7 days * 17 time intervals, from 7:00 to 23:00
         #
-        self.assertEquals (vacancy_term_count, 119,
-                           "Vacancy.objects.get_all() returned the wrong number of terms")
+        self.assertEquals (vacancy_term_count, 
+                           119 * int (Court.objects.get_available (cs).aggregate (Count ('id'))['id__count']))
         #
         # the method should also accept a list of dicts
         #
@@ -488,11 +464,11 @@ class VacancyTest (TestCase):
         vacancy_term_count = vacancy_terms.aggregate (Count ('id'))
         vacancy_term_count = int (vacancy_term_count['id__count'])
         #
-        # there should still be 119 terms, i.e. 
+        # there should still be 119 terms per court, i.e. 
         # 7 days * 17 time intervals, from 7:00 to 23:00
         #
-        self.assertEquals (vacancy_term_count, 119,
-                           "Vacancy.objects.get_all() returned the wrong number of terms")
+        self.assertEquals (vacancy_term_count, 
+                           119 * int (Court.objects.get_available (cs).aggregate (Count ('id'))['id__count']))
         
         
         
@@ -530,69 +506,111 @@ class CourtTest (TestCase):
 
 
     
-class CourtSetupTest (TestCase):
+class CourtSetupTest (BaseViewTestCase):
     """
     All the test cases for the CourtSetup model.-
     """
-    def setUp (self):
-        """
-        Creates a club used during testing.-
-        """
-        c = User.objects.create_user ('test_club', 'club@nowhere.si', 'pass')
-        self.club = UserProfile.objects.create_club_profile (c,
-                                                             "Postal address 1231",
-                                                             City.objects.all ( )[0],
-                                                             "111-222-333",
-                                                             "The best tennis club d.o.o.")
-        #
-        # add a couple of extra court setups
-        #
-        self.cs2 = CourtSetup.objects.create (name="The second court setup",
-                                              club=self.club,
-                                              is_active=False)
-        self.cs3 = CourtSetup.objects.create (name="The third court setup",
-                                              club=self.club,
-                                              is_active=False)
-        #
-        # add a random number of courts to each court setup
-        #
-        for cs in CourtSetup.objects.filter (club=self.club):
-            for i in range (2, randint (2, 20)):
-                Court.objects.create (court_setup=cs,
-                                      number=i,
-                                      indoor=True if i%2 == 0 else False,
-                                      light=False if i%2 == 0 else True,
-                                      surface=Court.SURFACES[i%5][0],
-                                      single_only=True if i%2 == 0 else False,
-                                      is_available=False if i%2 == 0 else True)
-        
-        
     def test_default_court_setup_creation (self):
         """
         Checks that a default court setup has been created for the new club.-
         """
+        self.assertIsNotNone (CourtSetup.objects.get_active (self.club))
         cs = CourtSetup.objects.get_active (self.club)
+        self.assertEquals (cs.name, ugettext('Default'))
+        self.assertEquals (cs.club, self.club)
+        self.assertTrue (cs.is_active)
+
+
+    def test_manager_delete (self):
+        """
+        Checks that a court setup deletion is correctly handled.-
+        """
+        #
+        # cannot delete a court setup that has reservations attached to it
+        #
+        cs_count = CourtSetup.objects.get_count (self.club)
+        #
+        # find a court setup with reservations attached to it
+        #
+        rand_res = pick_random_element (self.res_list)
+        cs = rand_res.vacancy.court.court_setup
+        #
+        # try to delete the court setup
+        #
+        cs = CourtSetup.objects.get (pk=cs.id)
+        CourtSetup.objects.delete (cs)
+        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club))
         
-        self.assertIsNotNone (cs, 
-                              "There is no active court setup for club %s" % (self.club))
-        self.assertTrue (cs.name == ugettext('Default'),
-                         "The name of the created court setup in not valid")
-        self.assertTrue (cs.club == self.club,
-                         "The created court setup is not connected with the created club")
-        self.assertTrue (cs.is_active,
-                         "The created court setup is not active")
-
-
+        #
+        # successfully delete a court setup that has reservations 
+        # attached to it, if and only if the 'force' flag is given
+        #
+        cs_count = CourtSetup.objects.get_count (self.club)
+        #
+        # find a court setup with reservations attached to it
+        #
+        rand_res = pick_random_element (self.res_list)
+        cs = rand_res.vacancy.court.court_setup
+        #
+        # try to force the deletion of the court setup
+        #
+        cs = CourtSetup.objects.get (pk=cs.id)
+        CourtSetup.objects.delete (cs, force=True)
+        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club) + 1)
+        
+        #
+        # if the active court setup has been deleted, another one 
+        # should still be active
+        #
+        cs = CourtSetup.objects.get_active (self.club)
+        self.assertIsNotNone (cs)
+        CourtSetup.objects.delete (cs)
+        cs_act = CourtSetup.objects.get_active (self.club)
+        self.assertIsNotNone (cs_act)
+        self.assertNotEquals (cs_act, cs)
+        self.assertEquals (cs_act.is_active, True)
+        
+        #
+        # successful deletion of a random court setup
+        #
+        cs = None
+        while cs is None:
+            cs = pick_random_element (self.cs_list)
+            try:
+                cs = CourtSetup.objects.get (pk=cs.id)
+            except ObjectDoesNotExist:
+                cs = None
+        self.assertEquals (cs.club, self.club)
+        cs_count = CourtSetup.objects.get_count (self.club)
+        CourtSetup.objects.delete (cs)
+        self.assertEquals (cs_count, CourtSetup.objects.get_count (self.club) + 1)
+        
+        #
+        # the last court setup cannot be deleted and should always be active
+        #
+        for cs in self.cs_list:
+            CourtSetup.objects.delete (cs)
+            cs_count = CourtSetup.objects.get_count (self.club)
+            self.assertTrue (cs_count > 0)
+            self.assertIsInstance (CourtSetup.objects.get_active (self.club), CourtSetup)
+        for i in range (0, 10):
+            cs = CourtSetup.objects.get_active (self.club)
+            CourtSetup.objects.delete (cs)
+            cs_count = CourtSetup.objects.get_count (self.club)
+            self.assertEquals (cs_count, 1)
+            self.assertEquals (cs.is_active, True)
+    
+    
     def test_manager_clone (self):
         """
         Checks that a court setup is correctly cloned.-
         """
-        cs_clone = CourtSetup.objects.clone (self.cs2)
-        self.assertEquals (cs_clone.name, "%s %s" % (ugettext('Copy of'), self.cs2.name))
+        cs_clone = CourtSetup.objects.clone (self.cs_list[1])
+        self.assertEquals (cs_clone.name, "%s %s" % (ugettext('Copy of'), self.cs_list[1].name))
         self.assertEquals (cs_clone.club, self.club)
         self.assertEquals (cs_clone.is_active, False)
       
-        for c in Court.objects.get_available (self.cs2):
+        for c in Court.objects.get_available (self.cs_list[1]):
             c_clone = Court.objects.get_available (cs_clone).filter (number=c.number)
             self.assertEquals (c_clone.aggregate (Count ('id'))['id__count'], 1,
                                "Court %s does not exist in cloned court setup" % str(c.number))

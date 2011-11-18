@@ -113,11 +113,7 @@ class Migration(SchemaMigration):
         },
         'reservations.reservation': {
             'Meta': {'unique_together': "(('for_date', 'vacancy'),)", 'object_name': 'Reservation'},
-<<<<<<< HEAD
             'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 11, 4, 11, 3, 29, 40408)'}),
-=======
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 11, 4, 11, 20, 16, 796592)'}),
->>>>>>> south
             'description': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
             'for_date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
