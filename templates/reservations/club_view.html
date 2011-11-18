@@ -3,6 +3,8 @@
 {% load url from future %}
 {% load reservation_tags %}
 
+
+
 {% block user_content %}
 	
 	<div id="court_setup">
@@ -29,9 +31,6 @@
 		        <div id="form_action"> 
 				    <input type="submit" value="{% trans 'Show' %}" class="button"/>
 				</div>
-		        <div id="form_action">
-		            <input type="button" value="{% trans 'Today' %}" class="button" onclick="javascript:goToday();"/>
-		        </div> 
 	    	</form>
 	    </div>
 	    
@@ -39,13 +38,15 @@
 		    <article>
 		        <header>
 		            <script>
-		                function goToday ( )
-		                {
-		                	document.forms[0].for_date.value = 
-		                	    document.forms[0].today_date.value;
-		                	document.forms[0].submit ( );
-		                	return;
-		                }
+						$(function ( ) 
+						{
+							$("#id_for_date").datepicker (
+								{onSelect: function (dateText, inst) 
+								 		   {
+										       document.forms[0].submit ( );
+										   }
+								});
+						});
 		                function prevDay ( )
 		                {
 		                	document.forms[0].for_date.value = 
@@ -71,7 +72,7 @@
 		    </article>
 		</div>
 		
-		<table>
+		<table class="reservation">
 		    <caption>
 	            {{ form.for_date.value|date:'l, j F Y'|capfirst }}
 			</caption>

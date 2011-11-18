@@ -16,6 +16,14 @@
 	
     <div id="form">	
 		<script>
+			$(function ( )
+			{
+				toggleRepeat ( );
+				$(":input[name=repeat]").click (function ( ) {
+					toggleRepeat ( );
+				});
+				$("#id_repeat_until").datepicker ( );
+			});
 		    function toggleRepeat ( )
 		    {
 				chk = $(":input[type=checkbox][name=repeat]");
@@ -29,12 +37,6 @@
 		            cont.css ("display", "none");
 		        }
 		    }
-			$(document).ready (function ( ) {
-				toggleRepeat ( );
-				$(":input[name=repeat]").click (function ( ) {
-					toggleRepeat ( );
-				});
-			});
 		</script>
 		
 		<form method="post" action="{% url 'reservations.views.club_edit' form.instance.vacancy.id ordinal_date %}">
@@ -69,7 +71,7 @@
 	        </div>
 	        
 		    <div id="form_elem">
-		        <label for="id_repeat">{% trans 'until date' %}</label>
+		        <label for="id_repeat_until">{% trans 'until date' %}</label>
 		        {{ form.repeat_until }}
 			    {{ form.repeat_until.errors }}
 	        </div>
