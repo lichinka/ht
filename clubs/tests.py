@@ -382,16 +382,16 @@ class VacancyTest (BaseViewTestCase):
         for_date = date.today ( )
         hour = pick_random_element (Vacancy.HOURS)
         cs = pick_random_element (self.cs_list)
-        term_count = Court.objects.get_available (cs)
-        term_count = term_count.aggregate (Count ('id'))['id__count']
-        booked = Reservation.objects.filter (vacancy__court__court_setup=cs) \
-                                    .filter (for_date=for_date) \
+        term_count = Court.objects.get_available (cs) \
+                                  .aggregate (Count ('id'))
+        term_count = term_count['id__count']
+        booked = Reservation.objects.by_date (cs, for_date) \
+                                    .filter (vacancy__court__is_available=True) \
                                     .filter (vacancy__available_from=hour[0]) \
                                     .values ('vacancy__id')
         free = Vacancy.objects.get_free (cs, for_date, hour[0]) \
                               .values ('id')
         self.assertEquals (term_count, len(booked) + len(free))
-        
         #
         # randomly deactivate a court and repeat the test
         #
@@ -404,8 +404,7 @@ class VacancyTest (BaseViewTestCase):
         cs = pick_random_element (self.cs_list)
         term_count = Court.objects.get_available (cs)
         term_count = term_count.aggregate (Count ('id'))['id__count']
-        booked = Reservation.objects.filter (vacancy__court__court_setup=cs) \
-                                    .filter (for_date=for_date) \
+        booked = Reservation.objects.by_date (cs, for_date) \
                                     .filter (vacancy__available_from=hour[0]) \
                                     .values ('vacancy__id')
         free = Vacancy.objects.get_free (cs, for_date, hour[0]) \
