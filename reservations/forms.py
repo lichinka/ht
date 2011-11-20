@@ -130,7 +130,7 @@ class ReservationForm (forms.ModelForm):
             r.save ( )
         return r
 
-        
+
     def clean (self):
         """
         Checks that repeat_until is later than the first reservation date.
@@ -155,20 +155,6 @@ class SelectDateForm (forms.Form):
     A form to select for which date to display reservations.-
     """
     for_date = forms.DateField (initial=date.today ( ))
-    #
-    # these three fields are hidden
-    # we cannot use a HiddenInput, because it cannot handle date values
-    #
-    today_date = forms.DateField (initial=date.today ( ),
-                                  widget=DateInput (format=locale.nl_langinfo(locale.D_FMT),
-                                                    attrs={'style': 'display:none'}))
-    prev_date = forms.DateField (initial=date.today ( ) - timedelta (days=1),
-                                 widget=DateInput (format=locale.nl_langinfo(locale.D_FMT),
-                                                   attrs={'style': 'display:none'}))
-    next_date = forms.DateField (initial=date.today ( ) + timedelta (days=1),
-                                 widget=DateInput (format=locale.nl_langinfo(locale.D_FMT),
-                                                   attrs={'style': 'display:none'}))
-    
     
     
 class SearchFreeCourtForm (forms.Form):
