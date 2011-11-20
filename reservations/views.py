@@ -1,3 +1,4 @@
+import locale
 from datetime import date, datetime, timedelta
 
 from django.db import transaction
@@ -10,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from clubs.models import CourtSetup, Court, Vacancy
 from ht_utils.views import success
+from ht_utils.profile import profile
 from accounts.models import UserProfile, ClubProfile
 from locations.models import City
 from reservations.forms import SearchFreeCourtForm, ReservationForm
@@ -202,8 +204,7 @@ def club_edit (request, vid, ordinal_date):
     else:
         raise Http404
     
-    
-    
+
 @login_required
 def club_view (request):
     """
@@ -216,26 +217,91 @@ def club_view (request):
         form = SelectDateForm (post_data)
         if form.is_valid ( ):
             for_date = form.cleaned_data['for_date']
-            prev_date = for_date - timedelta (days=1)
-            next_date = for_date + timedelta (days=1)
-            form = SelectDateForm (initial={'for_date': for_date,
-                                            'prev_date': prev_date,
-                                            'next_date': next_date,})
         else:
             #
             # fail silently in case of an invalid date
             #
-            form = SelectDateForm ( )
+            for_date = form.fields['for_date'].initial
+        #
+        # generate a list with all dates of the week containing 'for_date'
+        #
+        week_date_list = list ( )
+        for dow in range (1, 8):
+            week_date_list.append (for_date + timedelta (days=dow - for_date.isoweekday ( )))
+        #
+        # shortcut dates for today, last and next week
+        #
+        today_date = date.strftime (date.today ( ),
+                                   locale.nl_langinfo (locale.D_FMT))
+        today_date = today_date.replace (' ', '')
+        prev_date = week_date_list[0] - timedelta (days=1)
+        prev_date = date.strftime (prev_date, 
+                                   locale.nl_langinfo (locale.D_FMT))
+        prev_date = prev_date.replace (' ', '')
+        next_date = week_date_list[-1] + timedelta (days=1)
+        next_date = date.strftime (next_date,
+                                   locale.nl_langinfo (locale.D_FMT))
+        next_date = next_date.replace (' ', '')
+        #
+        # court setup
+        # 
         cs = CourtSetup.objects.get_active (club)
-        court_list = Court.objects.get_available (cs) \
-                                  .order_by ('number')
-        hour_list = Vacancy.HOURS[:-1]
-        return render_to_response ('reservations/club_view.html',
-                                   {'court_list': court_list,
-                                    'court_setup': cs,
-                                    'form': form,
-                                    'hour_list': hour_list},
-                                   context_instance=RequestContext(request))
+        #
+        # up-to-here we've generated data for the upper part
+        # of the page; the table containing the reservations
+        # if transfered via AJAX
+        #
+        if request.is_ajax ( ):
+            #
+            # hour list
+            # 
+            hour_list = Vacancy.HOURS[:-1]
+            #
+            # create the matrix containing the terms that will be displayed
+            #
+            terms = dict ( )
+            avail_courts = Court.objects.get_available (cs).values ('id')
+            for d in week_date_list:
+                terms[d] = dict ( )
+                booked_terms = Reservation.objects.by_date (cs, d) \
+                                                  .filter (vacancy__court__id__in=avail_courts) \
+                                                  .values ('vacancy__id')
+                booked_terms = [e['vacancy__id'] for e in booked_terms]
+                v_per_hour_and_court = Vacancy.objects.filter (day_of_week=d.isoweekday ( )) \
+                                                      .filter (court__id__in=avail_courts)
+                for v in v_per_hour_and_court.iterator ( ):
+                    h = v.available_from
+                    c_id = v.court.id
+                    if h not in terms[d].keys ( ):
+                        terms[d][h] = dict ( )
+                    if c_id not in terms[d][h].keys ( ):
+                        terms[d][h][c_id] = dict ( )
+                    terms[d][h][c_id]['vacancy'] = v
+                    if v.id in booked_terms:
+                        terms[d][h][c_id]['reservation'] = Reservation.objects.by_date (cs, d) \
+                                                                              .get (vacancy__id=v.id)
+                    else:
+                        terms[d][h][c_id]['reservation'] = None
+            #
+            # finally render the table containing reservations for the week
+            #            
+            return render_to_response ('reservations/club_view_table.html',
+                                       {'week_date_list': week_date_list,
+                                        'court_setup': cs,
+                                        'hour_list': hour_list,
+                                        'terms': terms},
+                                       context_instance=RequestContext(request))
+        else:
+            #
+            # render the header part of the page
+            #
+            return render_to_response ('reservations/club_view.html',
+                                       {'form': form,
+                                        'court_setup': cs,
+                                        'today_date': today_date,
+                                        'prev_date': prev_date,
+                                        'next_date': next_date},
+                                       context_instance=RequestContext(request))
     else:
         raise Http404
     

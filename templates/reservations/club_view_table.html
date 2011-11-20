@@ -1,0 +1,33 @@
+{% load reservation_tags %}
+
+<table class="reservation">
+    <caption>
+           {{ form.for_date.value|date:"l, j. F Y"|capfirst }}
+	</caption>
+       <thead>
+       	<tr>
+              <th scope="col">&nbsp;</th>
+              {% for d in week_date_list %}
+                  <th scope="col">{{ d|date:"D, d.m." }}</th>
+              {% endfor %}
+              </tr>
+       </thead>
+       <tbody>
+           {% for h, hour in hour_list %}
+				<tr {% if forloop.counter|divisibleby:2 %}class="odd"{% endif %}>
+					<th scope="row">
+						{{ hour }}
+	                </th>
+	                {% for d in week_date_list %}
+	                	{% reservations_per_day terms d h %}
+	                {% endfor %}
+	            </tr>
+	       {% endfor %}
+       </tbody>
+       <tfoot>
+         	<tr>
+             	<th scope="row">&nbsp;</th>
+                <td colspan="10">&nbsp;</td>
+            </tr>
+       </tfoot>
+</table>

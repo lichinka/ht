@@ -1,7 +1,6 @@
 from django import template
 from django.http import Http404
 
-from clubs.models import CourtSetup, Vacancy
 from accounts.models import UserProfile
 from reservations.models import Reservation
 
@@ -9,27 +8,26 @@ register = template.Library ( )
 
 
 
-@register.inclusion_tag('reservations/reservations_per_court.html')
-def reservations_per_court (court_list, for_date, for_hour):
+@register.inclusion_tag ('reservations/reservations_per_day.html')
+def reservations_per_day (terms, for_date, for_hour):
     """
-    Renders available and reserved terms for the received date and
-    hour, per court.-
+    Renders free and booked terms for all the available courts
+    in the received court setup, for the given date and hour.
+    Terms is a multidimensional dictionary with the same structure
+    as the data being displayed:
+    
+        terms[date][hour][court_id]['vacancy'] = Vacancy object
+    
+    and if the vacancy term is booked:
+    
+        terms[date][hour][court_id]['reservation'] = Reservation object
     """
-    dow = for_date.isoweekday ( )
-    for court in court_list:
-        court.vacancy = Vacancy.objects.get_all ([court], [dow], [for_hour])
-        court.vacancy = court.vacancy[0]
-        try:
-            cs = court.court_setup
-        except AttributeError:
-            cs = CourtSetup.objects.get (pk=court['court_setup_id'])
-        court.reservation = Reservation.objects.by_date (cs, for_date) \
-                                               .filter (vacancy=court.vacancy)
-        if court.reservation:
-            court.reservation = court.reservation[0]
-            
-    return {'court_list': court_list,
-            'ordinal_date': for_date.toordinal ( ),}
+    term_list = terms[for_date][for_hour]
+    term_list = [(term_list[k]['vacancy'], term_list[k]['reservation']) for k in term_list.keys ( )]
+    term_list = sorted (term_list, key=lambda e: e[0].court.number)
+    return {'for_date': for_date,
+            'for_hour': for_hour,
+            'term_list': term_list}
 
 
     

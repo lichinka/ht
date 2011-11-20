@@ -197,7 +197,157 @@ a.small_empty_button {
 a.small_empty_button:hover {
     background:#d87902;
     text-decoration: none;
-}   
+}
+a.court_button {
+	width: 20px;
+	height: 20px;
+	margin-left:0.2em;
+	float:left;
+}
+a.booked_court_button_1 {
+	background-image: url(img/booked_court.png);
+	background-position: 0 0;
+}
+a.booked_court_button_2 {
+	background-image: url(img/booked_court.png);
+	background-position: -20px 0;
+}
+a.booked_court_button_3 {
+	background-image: url(img/booked_court.png);
+	background-position: -40px 0;
+}
+a.booked_court_button_4 {
+	background-image: url(img/booked_court.png);
+	background-position: -60px 0;
+}
+a.booked_court_button_5 {
+	background-image: url(img/booked_court.png);
+	background-position: -80px 0;
+}
+a.booked_court_button_6 {
+	background-image: url(img/booked_court.png);
+	background-position: -100px 0;
+}
+a.booked_court_button_7 {
+	background-image: url(img/booked_court.png);
+	background-position: -120px 0;
+}
+a.booked_court_button_8 {
+	background-image: url(img/booked_court.png);
+	background-position: -140px 0;
+}
+a.booked_court_button_9 {
+	background-image: url(img/booked_court.png);
+	background-position: -160px 0;
+}
+a.booked_court_button_10 {
+	background-image: url(img/booked_court.png);
+	background-position: 0 -20px;
+}
+a.booked_court_button_11 {
+	background-image: url(img/booked_court.png);
+	background-position: -20px -20px;
+}
+a.booked_court_button_12 {
+	background-image: url(img/booked_court.png);
+	background-position: -40px -20px;
+}
+a.booked_court_button_13 {
+	background-image: url(img/booked_court.png);
+	background-position: -60px -20px;
+}
+a.booked_court_button_14 {
+	background-image: url(img/booked_court.png);
+	background-position: -80px -20px;
+}
+a.booked_court_button_15 {
+	background-image: url(img/booked_court.png);
+	background-position: -100px -20px;
+}
+a.booked_court_button_16 {
+	background-image: url(img/booked_court.png);
+	background-position: -120px -20px;
+}
+a.booked_court_button_17 {
+	background-image: url(img/booked_court.png);
+	background-position: -140px -20px;
+}
+a.booked_court_button_18 {
+	background-image: url(img/booked_court.png);
+	background-position: -180px -20px;
+}
+a.free_court_button_1 {
+	background-image: url(img/free_court.png);
+	background-position: 0 0;
+}
+a.free_court_button_2 {
+	background-image: url(img/free_court.png);
+	background-position: -20px 0;
+}
+a.free_court_button_3 {
+	background-image: url(img/free_court.png);
+	background-position: -40px 0;
+}
+a.free_court_button_4 {
+	background-image: url(img/free_court.png);
+	background-position: -60px 0;
+}
+a.free_court_button_5 {
+	background-image: url(img/free_court.png);
+	background-position: -80px 0;
+}
+a.free_court_button_6 {
+	background-image: url(img/free_court.png);
+	background-position: -100px 0;
+}
+a.free_court_button_7 {
+	background-image: url(img/free_court.png);
+	background-position: -120px 0;
+}
+a.free_court_button_8 {
+	background-image: url(img/free_court.png);
+	background-position: -140px 0;
+}
+a.free_court_button_9 {
+	background-image: url(img/free_court.png);
+	background-position: -160px 0;
+}
+a.free_court_button_10 {
+	background-image: url(img/free_court.png);
+	background-position: 0 -20px;
+}
+a.free_court_button_11 {
+	background-image: url(img/free_court.png);
+	background-position: -20px -20px;
+}
+a.free_court_button_12 {
+	background-image: url(img/free_court.png);
+	background-position: -40px -20px;
+}
+a.free_court_button_13 {
+	background-image: url(img/free_court.png);
+	background-position: -60px -20px;
+}
+a.free_court_button_14 {
+	background-image: url(img/free_court.png);
+	background-position: -80px -20px;
+}
+a.free_court_button_15 {
+	background-image: url(img/free_court.png);
+	background-position: -100px -20px;
+}
+a.free_court_button_16 {
+	background-image: url(img/free_court.png);
+	background-position: -120px -20px;
+}
+a.free_court_button_17 {
+	background-image: url(img/free_court.png);
+	background-position: -140px -20px;
+}
+a.free_court_button_18 {
+	background-image: url(img/free_court.png);
+	background-position: -180px -20px;
+}
 
 /**
  * Container for horizontal forms
@@ -281,9 +431,6 @@ div#court_setup {
 	clear: both;
 	text-align: center;
 }
-div#court_setup a {
-	margin: 0 1em 0 1em;
-}
 table.reservation {
 	clear:both;
 	margin: 1em auto 0.5em auto;
@@ -295,7 +442,7 @@ table.reservation {
 table.reservation a, table.reservation tbody, table.reservation tfoot, 
 table.reservation tr, table.reservation th, table.reservation td {
 	font-family: Arial, Helvetica, sans-serif;
-	line-height: 2.0em;
+	line-height: 45px;
 	text-align: center;
 	color: #55595c;
 }
@@ -309,7 +456,6 @@ table.reservation caption {
 	color: #fb7e00;
 }
 table.reservation a {
-	display: block;
 	text-decoration: none;
 	color: #ff8e53;
 }
@@ -318,9 +464,6 @@ table.reservation input[type=text] {
 	color: #222;
 	text-align: center;
     border:none;
-}
-table.reservation a:hover, table.reservation a:focus {
-	text-decoration: underline;
 }
 table.reservation th a {
 	color: #FF8E53;
@@ -353,6 +496,7 @@ table.reservation tfoot th, table.reservation tfoot td {
 	color: #fff;
 }
 table.reservation tbody td {
+	padding:0 0.5em 0 0.5em;
 	line-height: 2.5em;
 	background-color:#f9f9f9;
 }
@@ -364,19 +508,23 @@ table.reservation tbody th {
 	border-bottom: 1px dotted #aeb3b6;
 	text-align: center;
 }
-table.reservation tbody th.odd {
-	background-color: #bbb;
-}
 table.reservation td {
-    color: #ff8e1c;
+	border-right: 1px dotted #aeb3b6;
 	border-bottom: 1px dotted #aeb3b6;
-	min-width: 6em;
+	min-width: 120px;
 	text-align: center;
+    color: #ff8e1c;
 }
 table.reservation tbody tr.odd {
 	border-bottom: 1px dotted #aeb3b6;
 }
-table.reservation tbody tr:hover td {
+table.reservation tbody tr.odd th {
+	background-color: #bbb;
+}
+table.reservation tbody tr.odd td {
+	background-color: #fbe4bc;
+}
+table.reservation tbody td:hover, table.reservation tbody tr.odd td:hover {
 	background-color: #f38630;
 }
 table.reservation tbody tr:hover td,

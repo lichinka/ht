@@ -1,8 +1,6 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% load url from future %}
-{% load reservation_tags %}
-
+{% load i18n %}
 
 
 {% block user_content %}
@@ -24,12 +22,15 @@
 				    {{ form.for_date.errors }}
 		        </div>
 		       
-		        {{ form.today_date }} 
-		        {{ form.prev_date }}
-		        {{ form.next_date }}
+		       	<input type="hidden" name="today_date" value="{{ today_date }}"/>
+		       	<input type="hidden" name="prev_date" value="{{ prev_date }}"/>
+		       	<input type="hidden" name="next_date" value="{{ next_date }}"/>
 		       
-		        <div id="form_action"> 
+		        <div id="form_action">
 				    <input type="submit" value="{% trans 'Show' %}" class="button"/>
+				</div>
+		        <div id="form_action">
+		       		<input type="button" value="{% trans 'Today' %}" class="button" onclick="javascript:goDay();"/> 
 				</div>
 	    	</form>
 	    </div>
@@ -40,67 +41,66 @@
 		            <script>
 						$(function ( ) 
 						{
-							$("#id_for_date").datepicker (
-								{onSelect: function (dateText, inst) 
-								 		   {
-										       document.forms[0].submit ( );
-										   }
-								});
+		                    $.blockUI ({ 
+		                        message: "{% trans 'Loading ...' %}",
+		                        css: { 
+		                            border: 'none', 
+		                            padding: '15px', 
+		                            backgroundColor: '#000', 
+		                            opacity: .5, 
+		                            color: '#fff'
+		                        }
+		                    });
+		                    loadData ( );
+							$("#id_for_date").datepicker ({
+								onSelect: function (dateText, inst) 
+								 		  {
+										      document.forms[0].submit ( );
+										  }
+							});
 						});
-		                function prevDay ( )
+						function loadData ( )
+						{
+							$.ajax ({    url: '{% url "reservations.views.club_view" %}',
+										type: 'POST',
+										data: {'for_date': $("#id_for_date").val ( ), 
+											   'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val ( )},
+									   cache: false,
+									 success: function (data)
+									          {
+										          $('#court_setup').append (data);
+										          $.unblockUI ( );
+										      },
+									});
+							return;
+						};
+		                function goDay (opt)
 		                {
-		                	document.forms[0].for_date.value = 
-		                	    document.forms[0].prev_date.value;
+		                	switch (opt)
+		                	{
+		                		case -1: 
+		                			new_d = $('input[name="prev_date"]').val ( );
+		                			break;
+		                		case 1:
+		                			new_d = $('input[name="next_date"]').val ( );
+		                			break;
+		                		default:
+		                			new_d = $('input[name="today_date"]').val ( );
+		                	}
+		                	document.forms[0].for_date.value = new_d;
 		                	document.forms[0].submit ( );
 		                	return;
-		                }
-		                function nextDay ( )
-		                {
-		                	document.forms[0].for_date.value =
-		                		document.forms[0].next_date.value;
-		                	document.forms[0].submit ( );
-		                	return;
-		                }
+		                };
 		            </script>
 		        </header>
 		        <div id="day_shortcuts_left">
-				    <a href="javascript:prevDay();" class="small_button"><< {{ form.prev_date.value|date:'l, j F Y'|capfirst }}</a>
+				    <a href="javascript:goDay(-1);" class="small_button"><< {% trans 'Previous week' %}</a>
 			    </div>
 		        <div id="day_shortcuts_right">
-				    <a href="javascript:nextDay();" class="small_button">{{ form.next_date.value|date:'l, j F Y'|capfirst }} >></a>
+				    <a href="javascript:goDay(1);" class="small_button">{% trans 'Next week' %} >></a>
 			    </div>
 		    </article>
 		</div>
-		
-		<table class="reservation">
-		    <caption>
-	            {{ form.for_date.value|date:'l, j F Y'|capfirst }}
-			</caption>
-	        <thead>
-	        	<tr>
-                <th scope="col">&nbsp;</th>
-                {% for court in court_list %}
-                    <th scope="col">{% trans 'Court' %} {{ court.number }}</th>
-                {% endfor %}
-                </tr>
-	        </thead>
-            <tbody>
-				{% for h, hour in hour_list %}
-					<tr {% if forloop.counter|divisibleby:2 %}class="odd"{% endif %}>
-						<th scope="row">
-							{{ hour }}
-	                  	</th>
-		                {% reservations_per_court court_list form.for_date.value h %}
-	                </tr>
-	            {% endfor %}
-	        </tbody>
-	       	<tfoot>
-               	<tr>
-                   	<th scope="row">&nbsp;</th>
-                       <td colspan="10">&nbsp;</td>
-                  	</tr>
-	        </tfoot>
-        </table>
 	</div>
 	
 {% endblock %}

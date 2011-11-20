@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load url from future %}
+
+<td>
+	{% for vacancy,reservation in term_list %}
+		<a href="{% url 'reservations.views.club_edit' vacancy.id for_date.toordinal %}" 
+			{% if reservation %}
+	            class="court_button booked_court_button_{{ vacancy.court.number }}" 
+				title="{{ reservation.description }}">
+			{% else %}
+					class="court_button free_court_button_{{ vacancy.court.number }}"
+					title="{% trans 'Free' %}">
+			{% endif %}
+		</a>
+	{% endfor %}
+</td>
