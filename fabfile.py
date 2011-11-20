@@ -88,7 +88,7 @@ def remote_test ( ):
 def test (app=''):
     """ Executes all tests with the corresponding settings file. Accepts app name as parameter.-
     """
-    local ("nice ./manage.py test --verbosity=2 --settings=ht.settings_test --noinput --failfast %s 2>&1" % app)
+    local ("nice ./manage.py test --verbosity=2 --settings=ht.settings_test --noinput %s 2>&1" % app)
 
 
 def generate_static ( ):
