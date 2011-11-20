@@ -31,19 +31,27 @@ class BaseViewTestCase (TestCase):
                'email': 'player@nowhere.si',
                'password': 'thepasswordof1player'}
     
-    def setUp (self):
+    def _create_superuser (self):
         """
-        Creates a superuser, club, player and a client, and fills prices
-        for some vacancy terms used during testing.-
+        Creates a superuser.-
         """
-        self.cli = Client ( )
         self.root = User.objects.create_superuser (**self.T_ROOT)
+        
+    def _create_club (self):
+        """
+        Creates a club.-
+        """
         c = User.objects.create_user (**self.T_CLUB)
         self.club = UserProfile.objects.create_club_profile (c,
                                                              "Postal address 1231",
                                                              City.objects.all ( )[0],
                                                              "111-222-333",
                                                              "The best tennis club d.o.o.")
+        
+    def _create_player (self):
+        """
+        Creates a player.-
+        """
         p = User.objects.create_user (**self.T_PLAYER)
         p.first_name = 'Andre'
         p.last_name = 'Agassi'
@@ -53,9 +61,11 @@ class BaseViewTestCase (TestCase):
         self.player.male = True
         self.player.right_handed = False
         self.player.save ( )
-        #
-        # add a couple of extra court setups
-        #
+    
+    def _add_court_setups (self):
+        """
+        Adds a couple of extra court setups to the default club.-
+        """
         self.cs_list = list ( )
         self.cs_list.append (CourtSetup.objects.get_active (self.club))
         self.cs_list.append (CourtSetup.objects.create (name="The second court setup",
@@ -67,9 +77,11 @@ class BaseViewTestCase (TestCase):
         self.cs_list.append (CourtSetup.objects.create (name="The fourth court setup",
                                                         club=self.club,
                                                         is_active=False))
-        #
-        # add a random number of courts to each court setup
-        #
+    
+    def _add_courts (self):
+        """
+        Adds a random number of courts to each court setup.-
+        """
         for cs in self.cs_list:
             for i in range (2, randint (2, 7)):
                 Court.objects.create (court_setup=cs,
@@ -79,10 +91,12 @@ class BaseViewTestCase (TestCase):
                                       surface=Court.SURFACES[i%5][0],
                                       single_only=True if i%2 == 0 else False,
                                       is_available=False if i%2 == 0 else True)
-        #
-        # set some prices for the vacancy terms of all
-        # courts in all court setups
-        #
+        
+    def _add_vacancy_prices (self):
+        """
+        Set some prices for the vacancy terms of all
+        courts in all court setups.-
+        """
         for cs in self.cs_list:
             courts = Court.objects.get_available (cs)
             for c in range (0, len(courts)):
@@ -90,11 +104,12 @@ class BaseViewTestCase (TestCase):
                 for v in range (0, len(court_vacancy_terms)):
                     court_vacancy_terms[v].price = '%10.2f' % float (10*c + v);
                     court_vacancy_terms[v].save ( )
-        #            
-        # create some random reservations on the active court setup
-        #
+    
+    def _add_reservations (self, cs):
+        """            
+        Create some random reservations to the received court setup.-
+        """
         self.res_list = list ( )
-        cs = CourtSetup.objects.get_active (self.club)
         courts = Court.objects.get_available (cs).values ( )
         for i in range (0, 10):
             if randint(0, 1) > 0:
@@ -107,11 +122,104 @@ class BaseViewTestCase (TestCase):
                     self.res_list.append (Reservation.objects.create (for_date=date.today ( ),
                                                                       type='P',
                                                                       description="Test reservation %s" % str(i),
-                                                                      user=self.player.user,
+                                                                      user=self.player.user if i%2 == 0 else self.club.user,
                                                                       vacancy=v[0]))
                 except IntegrityError:
                     pass
+                
+    def setUp (self):
+        """
+        Creates a superuser, club, player and a client, fills prices
+        for some vacancy terms and creates reservations used during testing.-
+        """
+        self.cli = self.client
+        self._create_superuser ( )
+        self._create_club ( )
+        self._create_player ( )
+        self._add_court_setups ( )
+        self._add_courts ( )
+        self._add_vacancy_prices ( )
+        self._add_reservations (CourtSetup.objects.get_active (self.club))
+        #
+        # mark some used members as empty
+        #
+        self.view_path = None
+        self.template_name = None
 
+    def _test_only_club_has_access (self, login_info=None, view_args=None):
+        """
+        Tests this view is only accessible by a club,
+        optionally logging a club in using the received info,
+        and appending 'view_args' to the URL of the view.-
+        """
+        #
+        # an anonymous user should not have access
+        # since she/he must be redirected to the login page
+        #
+        self.client.logout ( )
+        self.assertIsNotNone (self.view_path)
+        self.assertIsNotNone (self.template_name)
+        view_url = reverse (self.view_path,
+                            args=view_args)
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (resp.template[0].name, 'accounts/login.html')
+        #
+        # a player should not have access
+        # since she/he must receive the 'not found' page
+        #
+        self.client.login (username=self.T_PLAYER['username'], 
+                           password=self.T_PLAYER['password'])
+        self.assertIsNotNone (self.view_path)
+        self.assertIsNotNone (self.template_name)
+        view_url = reverse (self.view_path,
+                            args=view_args)
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 404)
+        #
+        # only a club should have access
+        #
+        if login_info is not None:
+            #
+            # log a user in, using the received information
+            #
+            self.cli.login (username=login_info['username'], 
+                            password=login_info['password'])
+        else:
+            self.client.login (username=self.T_CLUB['username'], 
+                               password=self.T_CLUB['password'])
+        self.assertIsNotNone (self.view_path)
+        self.assertIsNotNone (self.template_name)
+        view_url = reverse (self.view_path,
+                            args=view_args)
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (resp.template[0].name, self.template_name)
+        
+    def _test_existance_and_correct_template (self, login_info=None, view_args=None):
+        """
+        Tests the existance and correct rendering of the view,
+        optionally logging a user in using the received info,
+        and appending 'view_args' to the URL of the view.-
+        """
+        self.client.logout ( )
+        if login_info is not None:
+            #
+            # log a user in, using the received information
+            #
+            self.cli.login (username=login_info['username'], 
+                            password=login_info['password'])
+        #
+        # test the view
+        #
+        self.assertIsNotNone (self.view_path)
+        self.assertIsNotNone (self.template_name)
+        view_url = reverse (self.view_path,
+                            args=view_args)
+        resp = self.cli.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 200)
+        self.assertEquals (resp.template[0].name, self.template_name)
+        
 
 
 class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
