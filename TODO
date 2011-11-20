@@ -1,15 +1,12 @@
-+ NEVER DELETE RESERVATION RECORDS?
++ Deleting a court setup causes two court setups to be active.
+    - ProtectedError is not being thrown???
 + When deleting courts/court setups, catch the ProtectedError exception to not accidentally delete reservations.
     + ask the user what to do when deleting an object with reservations attached to it:
     	- transfer reservations or ignore them?
+    	- never delete reservation records?
 + When adding a reservation (or a repeating reservation), check that the target vacancy is free!
 	- Implement a book method that will take care of this and add test cases!
 	- Replace all Reservation.create calls with the book method.
-+ Check all translations marked as fuzzy in 'django.po'.
-+ Reservations club_view:
-    + show the whole week of reservations (booked terms should be marked in red color, with green those free),
-    + on mouse over show only "description",
-    + on click show all reservation details (i.e. form).
 + Check that the size of uploaded images does not exceed a defined threshold.
 + Add a logo in the club's profile. Add TAZAL's logo.
 + Add an avatar in the player's profile. Maybe extending them from UserProfile?
