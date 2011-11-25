@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from clubs.models import CourtSetup
 from ht_utils.tests import BaseViewTestCase
 from reservations.models import Reservation
+from reservations.forms import TransferOrDeleteForm
 
 
 
@@ -63,20 +64,20 @@ class TransferOrDeleteTest (BaseViewTestCase):
         #
         # transfer action options
         #
-        for choice in [1]:
-            resp = self.cli.post (view_url, 
-                                  {'user_choice': choice,
-                                   'transfer_to': ''},
-                                  follow=True)
-            self.assertEquals (resp.status_code, 200)
-            form = resp.context[-1]['form']
-            self.assertNotEquals (len (form.errors), 0)
+        choice = TransferOrDeleteForm.TRANS_OR_DEL[0]
+        resp = self.cli.post (view_url, 
+                              {'user_choice': choice[0],
+                               'transfer_to': ''},
+                              follow=True)
+        self.assertEquals (resp.status_code, 200)
+        form = resp.context[-1]['form']
+        self.assertNotEquals (len (form.errors), 0)
         #
         # not-transfer action options
         #   
-        for choice in [2, 3]:
+        for choice in TransferOrDeleteForm.TRANS_OR_DEL[1:]:
             resp = self.cli.post (view_url, 
-                                  {'user_choice': choice,
+                                  {'user_choice': choice[0],
                                    'transfer_to': ''},
                                   follow=True)
             self.assertEquals (resp.status_code, 200)
