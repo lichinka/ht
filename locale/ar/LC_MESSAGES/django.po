@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-20 19:18+0100\n"
+"POT-Creation-Date: 2011-11-25 19:47+0100\n"
 "PO-Revision-Date: 2009-11-02 00:41+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -50,76 +50,86 @@ msgstr ""
 msgid "This user has already been assigned a player profile"
 msgstr ""
 
-#: clubs/models.py:86 clubs/tests.py:609 clubs/tests.py:629
+#: clubs/models.py:106 clubs/tests/models.py:213 clubs/tests/models.py:233
 msgid "Copy of"
 msgstr ""
 
-#: clubs/models.py:124
+#: clubs/models.py:145
 msgid "Only one court setup may be active at once"
 msgstr ""
 
-#: clubs/models.py:141 clubs/tests.py:519
+#: clubs/models.py:162 clubs/tests/models.py:33
 msgid "Default"
 msgstr ""
 
-#: clubs/models.py:220
+#: clubs/models.py:241
 msgid "Clay"
 msgstr ""
 
-#: clubs/models.py:221
+#: clubs/models.py:242
 msgid "Cement"
 msgstr ""
 
-#: clubs/models.py:222
+#: clubs/models.py:243
 msgid "Grass"
 msgstr ""
 
-#: clubs/models.py:223
+#: clubs/models.py:244
 msgid "Rubber"
 msgstr ""
 
-#: clubs/models.py:224
+#: clubs/models.py:245
 msgid "Carpet"
 msgstr ""
 
-#: clubs/models.py:360
+#: clubs/models.py:381
 msgid "Monday"
 msgstr ""
 
-#: clubs/models.py:361
+#: clubs/models.py:382
 msgid "Tuesday"
 msgstr ""
 
-#: clubs/models.py:362
+#: clubs/models.py:383
 msgid "Wednesday"
 msgstr ""
 
-#: clubs/models.py:363
+#: clubs/models.py:384
 msgid "Thursday"
 msgstr ""
 
-#: clubs/models.py:364
+#: clubs/models.py:385
 msgid "Friday"
 msgstr ""
 
-#: clubs/models.py:365
+#: clubs/models.py:386
 msgid "Saturday"
 msgstr ""
 
-#: clubs/models.py:366
+#: clubs/models.py:387
 msgid "Sunday"
 msgstr ""
 
-#: clubs/models.py:413
+#: clubs/models.py:434
 msgid "Vacancy terms should be one hour long"
 msgstr ""
 
-#: clubs/models.py:417 players/models.py:22
+#: clubs/models.py:438 players/models.py:22
 msgid "from"
 msgstr ""
 
-#: clubs/models.py:419
+#: clubs/models.py:440
 msgid "to"
+msgstr ""
+
+#: clubs/views.py:71
+msgid "Cannot delete court setup"
+msgstr ""
+
+#: clubs/views.py:72
+msgid ""
+"The selected court setup cannot be deleted because it has reservations "
+"attached to it."
 msgstr ""
 
 #: comments/admin.py:12
@@ -432,7 +442,7 @@ msgstr ""
 msgid "-- any day --"
 msgstr ""
 
-#: players/forms.py:22 reservations/forms.py:194
+#: players/forms.py:22 reservations/forms.py:193
 msgid "-- anywhere --"
 msgstr ""
 
@@ -484,11 +494,11 @@ msgstr ""
 msgid "in"
 msgstr ""
 
-#: ranking/forms.py:13 templates/reservations/transfer_or_delete.html:65
+#: ranking/forms.py:13 templates/reservations/transfer_or_delete.html:68
 msgid "Yes"
 msgstr ""
 
-#: ranking/forms.py:14 templates/reservations/transfer_or_delete.html:67
+#: ranking/forms.py:14 templates/reservations/transfer_or_delete.html:70
 msgid "No"
 msgstr ""
 
@@ -537,81 +547,77 @@ msgstr ""
 msgid "Delete all reservations"
 msgstr ""
 
-#: reservations/forms.py:26
-msgid "Cancel this action"
-msgstr ""
-
-#: reservations/forms.py:43
+#: reservations/forms.py:42
 msgid "Please select a valid court setup!"
 msgstr ""
 
-#: reservations/forms.py:125
+#: reservations/forms.py:124
 msgid "No free terms for all reservations"
 msgstr ""
 
-#: reservations/forms.py:147
+#: reservations/forms.py:146
 msgid "Please check the dates!"
 msgstr ""
 
-#: reservations/forms.py:149
+#: reservations/forms.py:148
 msgid "This field is required"
 msgstr ""
 
-#: reservations/forms.py:169 templates/reservations/club_view.html:33
+#: reservations/forms.py:168 templates/reservations/club_view.html:33
 #: templates/reservations/reservation_count_per_club.html:9
 msgid "Today"
 msgstr ""
 
-#: reservations/forms.py:170
+#: reservations/forms.py:169
 #: templates/reservations/reservation_count_per_club.html:13
 msgid "Tomorrow"
 msgstr ""
 
-#: reservations/forms.py:180
+#: reservations/forms.py:179
 msgid "-- anytime --"
 msgstr ""
 
-#: reservations/forms.py:181
+#: reservations/forms.py:180
 msgid "Morning"
 msgstr ""
 
-#: reservations/forms.py:182
+#: reservations/forms.py:181
 msgid "Afternoon"
 msgstr ""
 
-#: reservations/forms.py:183
+#: reservations/forms.py:182
 msgid "Evening"
 msgstr ""
 
-#: reservations/forms.py:189
+#: reservations/forms.py:188
 msgid "1 hour"
 msgstr ""
 
-#: reservations/forms.py:190
+#: reservations/forms.py:189
 msgid "2 hours"
 msgstr ""
 
-#: reservations/forms.py:191
+#: reservations/forms.py:190
 msgid "3 hours"
 msgstr ""
 
-#: reservations/models.py:281
+#: reservations/models.py:305
 msgid "By player"
 msgstr ""
 
-#: reservations/models.py:282
+#: reservations/models.py:306
 msgid "By club"
 msgstr ""
 
-#: reservations/models.py:283
+#: reservations/models.py:307
 msgid "Repairs"
 msgstr ""
 
-#: reservations/views.py:144
+#: reservations/views.py:143
 msgid "Reservation sent"
 msgstr ""
 
-#: reservations/views.py:145
+#: reservations/views.py:144
 msgid ""
 "Your reservation has been processed!                                         "
 "Please check your message box for possible "
@@ -863,7 +869,7 @@ msgstr ""
 #: templates/clubs/edit_court_properties.html:8
 #: templates/clubs/edit_court_setup.html:58
 #: templates/reservations/player_edit.html:39
-#: templates/reservations/transfer_or_delete.html:49
+#: templates/reservations/transfer_or_delete.html:52
 #: templates/reservations/user_view.html:65
 msgid "Court"
 msgstr ""
@@ -1079,27 +1085,27 @@ msgstr ""
 #: templates/reservations/club_edit.html:46
 #: templates/reservations/club_view.html:20
 #: templates/reservations/player_edit.html:17
-#: templates/reservations/transfer_or_delete.html:46
+#: templates/reservations/transfer_or_delete.html:49
 #: templates/user_messages/view.html:10
 msgid "Date"
 msgstr "التاريخ"
 
 #: templates/reservations/club_edit.html:52
 #: templates/reservations/player_edit.html:23
-#: templates/reservations/transfer_or_delete.html:47
+#: templates/reservations/transfer_or_delete.html:50
 #: templates/user_messages/invitations.html:23
 msgid "From"
 msgstr ""
 
 #: templates/reservations/club_edit.html:57
 #: templates/reservations/player_edit.html:28
-#: templates/reservations/transfer_or_delete.html:48
+#: templates/reservations/transfer_or_delete.html:51
 #: templates/user_messages/invitations.html:38
 msgid "To"
 msgstr ""
 
 #: templates/reservations/club_edit.html:62
-#: templates/reservations/transfer_or_delete.html:50
+#: templates/reservations/transfer_or_delete.html:53
 msgid "Description"
 msgstr ""
 
@@ -1112,8 +1118,7 @@ msgid "until date"
 msgstr ""
 
 #: templates/reservations/club_edit.html:94
-#: templates/user_messages/feedback.html:37
-msgid "Cancel"
+msgid "Cancel reservation"
 msgstr ""
 
 #: templates/reservations/club_view.html:30
@@ -1189,11 +1194,16 @@ msgstr ""
 msgid "Transfer to:"
 msgstr ""
 
-#: templates/reservations/transfer_or_delete.html:41
+#: templates/reservations/transfer_or_delete.html:37
+#: templates/user_messages/feedback.html:37
+msgid "Discard"
+msgstr ""
+
+#: templates/reservations/transfer_or_delete.html:44
 msgid "Reservations found"
 msgstr ""
 
-#: templates/reservations/transfer_or_delete.html:51
+#: templates/reservations/transfer_or_delete.html:54
 #, fuzzy
 msgid "Repetition?"
 msgstr "إجراء"
