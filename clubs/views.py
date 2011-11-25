@@ -4,16 +4,18 @@ from django.db import transaction
 from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template.context import RequestContext
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+from django.db.models.deletion import ProtectedError
+from django.db.models.aggregates import Count
 from django.contrib.auth.decorators import login_required
 
-import ht_utils
+from ht_utils import number_to_default_locale
+from ht_utils.views import success
 from clubs.forms import EditCourtSetupForm, EditCourtPropertiesForm
 from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile
 from reservations.models import Reservation
-from django.core.urlresolvers import reverse
-from django.db.models.deletion import ProtectedError
-from django.db.models.aggregates import Count
 
 
 
@@ -44,29 +46,33 @@ def delete_court_setup (request, cs_id):
     cs = get_object_or_404 (CourtSetup, pk=cs_id)
     club = UserProfile.objects.get_profile (request.user)
     if (club.is_club ( )) and (cs.club == club):
-        """
-        #
-        # FIXME: Turn this on after transfer_or_delete is working correctly
         #
         #
         # number of past reservations attached to this court setup
         #
         past_count = Reservation.objects.up_to_date (cs, date.today ( )) \
                                         .aggregate (Count ('id'))
-        past_count = int (past_count['id__count'])
+        past_count = past_count['id__count']
         #
         # number of future reservations attached to this court setup
         #
         future_count = Reservation.objects.from_date (cs, date.today ( )) \
                                           .aggregate (Count ('id'))
-        future_count = int (future_count['id__count'])
+        future_count = future_count['id__count']
         if (past_count > 0) or (future_count > 0):
-            return redirect (reverse ('reservations.views.transfer_or_delete',
-                                      args=[cs.id]))
+            #
+            # cannot delete this court setup, because 
+            # it has reservations attached to it
+            #
+            # FIXME: connect this to 'reservations.views.transfer_or_delete'
+            #        when it will be implemented
+            # 
+            return success (request=request,
+                            title=_('Cannot delete court setup'),
+                            body=_('The selected court setup cannot be deleted because it has reservations attached to it.'))
         else:
-        """                                  
-        CourtSetup.objects.delete (cs)
-        return redirect ('accounts.views.display_profile')
+            CourtSetup.objects.delete (cs)
+            return redirect ('accounts.views.display_profile')
     else:
         raise Http404
     
@@ -173,7 +179,7 @@ def save_court_vacancy (request, id):
                 v_ids = [(k.split('_')[1], v) for k,v in request.POST.items ( ) if 'price' in k]
                 for k,v in v_ids:
                     try:
-                        price = '%10.2f' % float (ht_utils.number_to_default_locale (v))
+                        price = '%10.2f' % float (number_to_default_locale (v))
                     except ValueError:
                         price = None
                     if price not in prices.keys ( ):
@@ -199,8 +205,8 @@ def save_court_vacancy (request, id):
 @transaction.commit_on_success
 def toggle_active_court_setup (request, cs_id):
     """
-    Changes the state of the 'is_active' flag of court setup
-    with 'cs_id', and redisplays the club profile page.-
+    Activates the court setup with 'cs_id', and
+    redisplays the club profile page.-
     """
     cs = get_object_or_404 (CourtSetup, pk=cs_id)
     #
@@ -208,19 +214,7 @@ def toggle_active_court_setup (request, cs_id):
     #
     club = UserProfile.objects.get_profile (request.user.username)
     if (club.is_club ( )) and (cs.club == club):
-        #
-        # cannot turn off an active court setup
-        #
-        if not cs.is_active:
-            #
-            # deactivate the currently active court setup
-            # and activate the new one
-            #
-            cs_act = CourtSetup.objects.get_active (club)
-            cs_act.is_active = False
-            cs_act.save ( )
-            cs.is_active = True
-            cs.save ( )
+        CourtSetup.objects.activate (cs)
         return redirect ('accounts.views.display_profile')
     else:
         raise Http404
