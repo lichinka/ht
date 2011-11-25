@@ -38,17 +38,38 @@ class CourtSetupManager (models.Manager):
         """
         count = CourtSetup.objects.filter (club=club) \
                                   .aggregate (Count ('id'))
-        return int(count['id__count'])
+        return int (count['id__count'])
     
    
     @transaction.commit_on_success
-    def delete (self, court_setup, force=True):
+    def activate (self, court_setup):
+        """
+        Marks the received court setup as active, deactivating
+        all others, as there always should be strictly one
+        active court setup.-
+        """
+        #
+        # deactivate all court setups owned by the same club
+        #
+        for cs in CourtSetup.objects.filter (club=court_setup.club).iterator ( ):
+            cs.is_active = False
+            cs.save ( )
+        #
+        # activate the received court setup
+        #
+        court_setup.is_active = True
+        court_setup.save ( )
+            
+    
+    @transaction.commit_on_success
+    def delete (self, court_setup, force=False):
         """
         Deletes the received court setup, including all its
         referenced objects. If there are reservations attached 
         to it, the court setup (and its reservations) are deleted
         only if the 'force' flag is True.-
         """
+        from reservations.models import Reservation
         #
         # do not allow the deletion of the last court setup of a club
         #
@@ -57,23 +78,22 @@ class CourtSetupManager (models.Manager):
             # do not allow the deletion of this court setup
             # if it has any reservations attached to itself
             #
-            try:
+            res_count = Reservation.objects.by_court_setup (court_setup) \
+                                           .aggregate (Count ('id'))
+            if (res_count['id__count'] == 0) or force:
+                #
+                # delete all reservations from all
+                # courts of the received court setup
+                #
+                for court in Court.objects.filter (court_setup=court_setup):
+                    Court.objects.delete_reservations (court)
                 court_setup.delete ( )
-            except ProtectedError:
-                if force:
-                    #
-                    # delete all reservations from all
-                    # courts of the received court setup
-                    #
-                    for court in Court.objects.filter (court_setup=court_setup):
-                        Court.objects.delete_reservations (court)
-            #
-            # activate another court setup
-            #
-            cs = CourtSetup.objects.filter (club=court_setup.club).values ('id')
-            cs = CourtSetup.objects.get (pk=cs[0]['id'])
-            cs.is_active = True
-            cs.save ( )
+                #
+                # activate another court setup
+                #
+                cs = CourtSetup.objects.filter (club=court_setup.club).values ('id')
+                cs = CourtSetup.objects.get (pk=cs[0]['id'])
+                CourtSetup.objects.activate (cs)
             
             
     @transaction.commit_on_success
@@ -88,7 +108,8 @@ class CourtSetupManager (models.Manager):
                                            club=court_setup.club,
                                            is_active=False)
         #
-        # delete any existing courts in the cloned court setup
+        # delete any existing courts in the cloned court setup,
+        # that may have been created by callback functions
         #
         Court.objects.filter (court_setup=clone).delete ( )
         #
