@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 from clubs.models import CourtSetup, Court, Vacancy
 from ht_utils.views import success
-from ht_utils.profile import profile
 from accounts.models import UserProfile, ClubProfile
 from locations.models import City
 from reservations.forms import SearchFreeCourtForm, ReservationForm
