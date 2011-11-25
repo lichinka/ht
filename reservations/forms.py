@@ -22,8 +22,7 @@ class TransferOrDeleteForm (forms.Form):
     # what to do with reservations
     #   
     TRANS_OR_DEL = ((1, _('Transfer all reservations')),
-                    (2, _('Delete all reservations')),
-                    (3, _('Cancel this action')))
+                    (2, _('Delete all reservations')))
     user_choice = forms.ChoiceField (choices=TRANS_OR_DEL,
                                      initial=1)
     transfer_to = forms.ModelChoiceField (queryset=CourtSetup.objects.none ( ),
