@@ -1,5 +1,4 @@
-+ Deleting a court setup causes two court setups to be active.
-    - ProtectedError is not being thrown???
++ Revervation.objects.copy_to_court_setup is not working correctly: the test cases fail randomly.
 + When deleting courts/court setups, catch the ProtectedError exception to not accidentally delete reservations.
     + ask the user what to do when deleting an object with reservations attached to it:
     	- transfer reservations or ignore them?
