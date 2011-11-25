@@ -4,7 +4,6 @@ from datetime import date
 from django.conf import settings
 from django.test import TestCase
 from django.db.utils import IntegrityError
-from django.test.client import Client
 from django.test.simple import DjangoTestSuiteRunner
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -66,6 +65,11 @@ class BaseViewTestCase (TestCase):
         """
         Adds a couple of extra court setups to the default club.-
         """
+        #
+        # we need a club!
+        #
+        self._create_club ( )
+        
         self.cs_list = list ( )
         self.cs_list.append (CourtSetup.objects.get_active (self.club))
         self.cs_list.append (CourtSetup.objects.create (name="The second court setup",
@@ -77,11 +81,23 @@ class BaseViewTestCase (TestCase):
         self.cs_list.append (CourtSetup.objects.create (name="The fourth court setup",
                                                         club=self.club,
                                                         is_active=False))
+        self.cs_list.append (CourtSetup.objects.create (name="The fifth court setup",
+                                                        club=self.club,
+                                                        is_active=False))
+        #
+        # activate a random court setup
+        #
+        CourtSetup.objects.activate (pick_random_element (self.cs_list))
     
     def _add_courts (self):
         """
         Adds a random number of courts to each court setup.-
         """
+        #
+        # we need at least one court setup
+        #
+        self._add_court_setups ( )
+        
         for cs in self.cs_list:
             for i in range (2, randint (2, 7)):
                 Court.objects.create (court_setup=cs,
@@ -97,35 +113,54 @@ class BaseViewTestCase (TestCase):
         Set some prices for the vacancy terms of all
         courts in all court setups.-
         """
+        #
+        # we need at least one court
+        #
+        self._add_courts ( )
+        
         for cs in self.cs_list:
             courts = Court.objects.get_available (cs)
-            for c in range (0, len(courts)):
-                court_vacancy_terms = Vacancy.objects.get_all ([courts[c]])
-                for v in range (0, len(court_vacancy_terms)):
-                    court_vacancy_terms[v].price = '%10.2f' % float (10*c + v);
-                    court_vacancy_terms[v].save ( )
+            for c in courts.iterator ( ):
+                court_vacancy_terms = Vacancy.objects.get_all ([c])
+                for v in court_vacancy_terms.iterator ( ):
+                    v.price = '%10.2f' % float ((10*c.id + v.id) % 1000)
+                    v.save ( )
+                    
     
-    def _add_reservations (self, cs):
+    def _add_reservations (self, court_setup=None):
         """            
         Create some random reservations to the received court setup.-
         """
-        self.res_list = list ( )
-        courts = Court.objects.get_available (cs).values ( )
-        for i in range (0, 10):
-            if randint(0, 1) > 0:
-                v = False
-                while not v:
-                    v = Vacancy.objects.get_all_by_date (courts,
-                                                         [date.today ( )],
-                                                         [pick_random_element (Vacancy.HOURS)[0]])
-                try:
-                    self.res_list.append (Reservation.objects.create (for_date=date.today ( ),
-                                                                      type='P',
-                                                                      description="Test reservation %s" % str(i),
-                                                                      user=self.player.user if i%2 == 0 else self.club.user,
-                                                                      vacancy=v[0]))
-                except IntegrityError:
-                    pass
+        #
+        # we need at least one vacancy price
+        # and a player
+        #
+        self._create_player ( )
+        self._add_vacancy_prices ( )
+        #
+        # select random court setups or the one given
+        #
+        res_cs_list = list ( )
+        if court_setup is None:
+            for i in range (0, randint (1, len (self.cs_list))):
+                res_cs_list.append (self.cs_list[i])
+        else:
+            res_cs_list.append (court_setup)
+        for cs in res_cs_list:
+            self.res_list = list ( )
+            for i in range (0, randint (1, 10)):
+                v = None
+                while v is None:
+                    for_date = date.today ( )
+                    hour = pick_random_element (Vacancy.HOURS)
+                    v = Vacancy.objects.get_free (cs, for_date, hour[0]).values ('id')
+                    v = pick_random_element (v) if v else None
+                v = Vacancy.objects.get (pk=v['id'])
+                self.res_list.append (Reservation.objects.create (for_date=date.today ( ),
+                                                                  type='P' if i%2 == 0 else 'C',
+                                                                  description="Test reservation %s" % str(i),
+                                                                  user=self.player.user if i%2 == 0 else self.club.user,
+                                                                  vacancy=v))
                 
     def setUp (self):
         """
@@ -134,12 +169,7 @@ class BaseViewTestCase (TestCase):
         """
         self.cli = self.client
         self._create_superuser ( )
-        self._create_club ( )
-        self._create_player ( )
-        self._add_court_setups ( )
-        self._add_courts ( )
-        self._add_vacancy_prices ( )
-        self._add_reservations (CourtSetup.objects.get_active (self.club))
+        self._add_reservations ( )
         #
         # mark some used members as empty
         #
@@ -292,14 +322,3 @@ class HomeViewTest (BaseViewTestCase):
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'players/home.html')
         
-        
-        
-class SuccessViewTest (BaseViewTestCase):
-    """
-    Test cases for ht_utils.views.success.-
-    """
-    def test_existance_and_correct_template (self):
-        view_url = reverse ('ht_utils.views.success')
-        response = self.cli.get (view_url)
-        self.assertEquals (response.status_code, 200)
-        self.assertEquals (response.template[0].name, 'ht_utils/success.html')

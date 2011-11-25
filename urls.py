@@ -17,7 +17,6 @@ urlpatterns = patterns ('',
     url(r'^ranking/', include ('ranking.urls')),
     url(r'^user_messages/', include ('user_messages.urls')),
     url(r'^comments/', include ('comments.urls')),
-    url(r'^ht_utils/', include ('ht_utils.urls')),
     
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
