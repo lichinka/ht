@@ -91,9 +91,14 @@ class ReservationManager (models.Manager, ReservationMixin):
                 else:
                     return ret_value
                 #
-                # if description is empty, save the user name
+                # if description is empty, or it has not been given,
+                # save the user name
                 #
-                if len(kwargs['description'].strip ( )) == 0:
+                try:
+                    kwargs['description'] = kwargs['description'].strip ( )
+                except KeyError:
+                    kwargs['description'] = ''
+                if len (kwargs['description']) == 0:
                     kwargs['description'] = '%s %s' % (kwargs['user'].first_name,
                                                        kwargs['user'].last_name)
                 #
@@ -204,26 +209,45 @@ class ReservationManager (models.Manager, ReservationMixin):
                     else:
                         tgt_repeat_series = None
                     #
-                    # free terms in the target court setup, for
-                    # the same date and hour as the source reservation
+                    # prefer copying the reservation to the same court
+                    # in the target court setup
                     #
                     free_tgt_terms = Vacancy.objects.get_free (target_cs, 
                                                                r.for_date, 
                                                                r.vacancy.available_from)
-                    #
-                    # try to accommodate the current reservation in any
-                    # of the free vacancy terms of the target court setup
-                    #
-                    for tgt_v in free_tgt_terms.iterator ( ):
-                        tgt_r = Reservation.objects.book (for_date=r.for_date,
-                                                          vacancy=tgt_v,
+                    free_tgt_terms = free_tgt_terms.filter (court__number=r.vacancy.court.number)
+                    if free_tgt_terms:
+                        #
+                        # copy the reservation here
+                        #
+                        tgt_r = Reservation.objects.book (created_on=r.created_on,
+                                                          for_date=r.for_date,
+                                                          vacancy=free_tgt_terms[0],
                                                           user=r.user,
                                                           description=r.description,
                                                           repeat_series=tgt_repeat_series,
                                                           commit=commit)
                         if tgt_r is not None:
                             copied.append (tgt_r)
-                            break
+                    else:
+                        #
+                        # try to accommodate the current reservation in any
+                        # of the free vacancy terms of the target court setup
+                        #
+                        free_tgt_terms = Vacancy.objects.get_free (target_cs, 
+                                                                   r.for_date, 
+                                                                   r.vacancy.available_from)
+                        for tgt_v in free_tgt_terms.iterator ( ):
+                            tgt_r = Reservation.objects.book (created_on=r.created_on,
+                                                              for_date=r.for_date,
+                                                              vacancy=tgt_v,
+                                                              user=r.user,
+                                                              description=r.description,
+                                                              repeat_series=tgt_repeat_series,
+                                                              commit=commit)
+                            if tgt_r is not None:
+                                copied.append (tgt_r)
+                                break
                 else:
                     raise FieldError ("Not all reservations belong to the same court setup")
         else:

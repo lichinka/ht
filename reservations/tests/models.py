@@ -252,7 +252,7 @@ class ReservationTest (BaseViewTestCase):
                                                            r.for_date, 
                                                            r.vacancy.available_from)
                     free_terms = free_terms.aggregate (Count ('id'))
-                    if int(free_terms['id__count']) == 0:
+                    if free_terms['id__count'] == 0:
                         target_cs = None
                 #
                 # did we find a target court setup?
@@ -296,10 +296,17 @@ class ReservationTest (BaseViewTestCase):
         #
         for src_r in self.res_list:
             tgt_r = Reservation.objects.by_date (target_cs, src_r.for_date) \
-                                       .filter (vacancy__available_from = src_r.vacancy.available_from)
+                                       .filter (created_on=src_r.created_on) \
+                                       .filter (vacancy__court__number=src_r.vacancy.court.number) \
+                                       .filter (vacancy__available_from=src_r.vacancy.available_from)
+            if len(tgt_r) == 0:
+                tgt_r = Reservation.objects.by_date (target_cs, src_r.for_date) \
+                                           .filter (created_on=src_r.created_on) \
+                                           .filter (vacancy__available_from=src_r.vacancy.available_from)
             tgt_r = tgt_r[0]
             self.assertIsNotNone (tgt_r)
             self.assertIsInstance (tgt_r, Reservation)
+            self.assertEquals (src_r.created_on, tgt_r.created_on)
             self.assertEquals (src_r.for_date, tgt_r.for_date)
             self.assertEquals (src_r.vacancy.day_of_week, tgt_r.vacancy.day_of_week)
             self.assertEquals (src_r.vacancy.available_from, tgt_r.vacancy.available_from)
