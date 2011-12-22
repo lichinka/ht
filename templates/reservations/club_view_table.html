@@ -5,12 +5,12 @@
            {{ form.for_date.value|date:"l, j. F Y"|capfirst }}
 	</caption>
        <thead>
-       	<tr>
-              <th scope="col">&nbsp;</th>
-              {% for d in week_date_list %}
+           <tr>
+               <th scope="col">&nbsp;</th>
+               {% for d in week_date_list %}
                   <th scope="col">{{ d|date:"D, d.m." }}</th>
-              {% endfor %}
-              </tr>
+               {% endfor %}
+           </tr>
        </thead>
        <tbody>
            {% for h, hour in hour_list %}
@@ -26,8 +26,10 @@
        </tbody>
        <tfoot>
          	<tr>
-             	<th scope="row">&nbsp;</th>
-                <td colspan="10">&nbsp;</td>
+               <th scope="col">&nbsp;</th>
+               {% for d in week_date_list %}
+                  <th scope="col">{{ d|date:"D, d.m." }}</th>
+               {% endfor %}
             </tr>
        </tfoot>
 </table>

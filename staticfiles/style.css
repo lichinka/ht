@@ -488,9 +488,13 @@ table.reservation thead th {
 	letter-spacing: 1px;
 	color: #fff;
 }
-table.reservation tfoot {
+table.reservation tfoot th {
+	padding: 0 0.5em 0 0.5em;
 	background-image: url(img/table_header_back.png);
-	border-top: 1px solid #fff;
+	text-transform: uppercase;
+	font-weight: normal;
+	letter-spacing: 1px;
+	color: #fff;
 }
 table.reservation tfoot th, table.reservation tfoot td {
 	color: #fff;
