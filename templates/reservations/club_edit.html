@@ -37,6 +37,12 @@
 		            cont.css ("display", "none");
 		        }
 		    }
+            function cancelReservation ( )
+            {
+                $("form")[0].action="{% url 'reservations.views.club_view' %}";
+                $("form")[0].submit ( );
+                return;
+            }
 		</script>
 		
 		<form method="post" action="{% url 'reservations.views.club_edit' form.instance.vacancy.id ordinal_date %}">
@@ -89,10 +95,9 @@
                 {% if form.instance.id %}
     	            <a href="{% url 'reservations.views.cancel' form.instance.id %}" class="button">
                 {% else %}
-    	            <a href="#" class="button">
+    	            <a href="#" class="button" onclick="cancelReservation();">
                 {% endif %}
-	                {% trans 'Cancel reservation' %}
-	            </a>
+	            {% trans 'Cancel reservation' %}</a>
 			</div>
 		</form>
 	</div>
