@@ -7,7 +7,7 @@ from settings import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        'NAME': ':memory:',              # An in-memory database to speed the tests up.
         'USER': '',
         'PASSWORD': '',
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -33,3 +33,10 @@ TEST_EXCLUDE=('django')
 #
 SOUTH_TESTS_MIGRATE = False
 SKIP_SOUTH_TESTS = True
+
+#
+# User's activity stream configuration (actstream)
+# for the tests cases not to fail
+#
+for extra_model in ['auth.Group', 'sites.Site']:
+    ACTSTREAM_ACTION_MODELS.append (extra_model)

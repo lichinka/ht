@@ -76,7 +76,6 @@ STATIC_ROOT = BASE_PATH + '/static/'
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -134,14 +133,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',   # Enables serving static files during development
     'south',             # Eases model-to-database synchronization
     'accounts',          # Includes user's profile
+    'actstream',         # Feed-based tracking of user's activity
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
-    'clubs',             # An application to let the clubs run their reservation system
+    'clubs',             # Keeps clubs data and profiles 
     'user_messages',     # Lets users send private messages to each other
     'ranking',           # Keeps all match results and a players' ranking
     'comments',          # Enables model-based comments with images
     'locations',         # Enables location-lookups via cities and coordinates
-    'reservations',      # An application to enable users to book courts
+    'reservations',      # An application to enable users to book courts and let the clubs run their reservations via web
     'ht_utils',          # Various utility functions used everywhere
     # Uncomment the next line to enable the admin:
     # Uncomment the next line to enable admin documentation:
@@ -151,6 +151,13 @@ INSTALLED_APPS = (
 # Override the server-derived value of SCRIPT_NAME 
 # See http://code.djangoproject.com/wiki/BackwardsIncompatibleChanges#lighttpdfastcgiandothers
 FORCE_SCRIPT_NAME = ''
+
+#
+# User's activity stream configuration (actstream)
+#
+ACTSTREAM_ACTION_MODELS = ['auth.User']
+ACTSTREAM_ACTION_TEMPLATE = 'activity/single_action.txt'
+ACTSTREAM_MANAGER = 'actstream.managers.ActionManager'
 
 #
 # Synchronize Python locale with Django settings
