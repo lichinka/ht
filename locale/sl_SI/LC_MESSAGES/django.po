@@ -122,13 +122,13 @@ msgstr "do"
 
 #: clubs/views.py:71
 msgid "Cannot delete court setup"
-msgstr "Tega razporeda igrišč ne morete brisati"
+msgstr "Tega razporeda igrišč ne morete izbrisati"
 
 #: clubs/views.py:72
 msgid ""
 "The selected court setup cannot be deleted because it has reservations "
 "attached to it."
-msgstr "Izbranega razporeda igrišč ne morete brisati, ker obstajajo nanj vezane rezervacije."
+msgstr "Izbranega razporeda igrišč ne morete izbrisati, ker na njem obstajajo rezervacije."
 
 
 #: comments/admin.py:12

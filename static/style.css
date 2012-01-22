@@ -129,7 +129,7 @@ footer {
 div#feedback {
 	background:transparent url(img/feedback.png) no-repeat scroll 0px 0px;
 	height:170px;
-	left:0;
+	right:0;
 	position:fixed;
 	top:150px;
 	width:42px;
@@ -197,7 +197,157 @@ a.small_empty_button {
 a.small_empty_button:hover {
     background:#d87902;
     text-decoration: none;
-}   
+}
+a.court_button {
+	width: 20px;
+	height: 20px;
+	margin-left:0.2em;
+	float:left;
+}
+a.booked_court_button_1 {
+	background-image: url(img/booked_court.png);
+	background-position: 0 0;
+}
+a.booked_court_button_2 {
+	background-image: url(img/booked_court.png);
+	background-position: -20px 0;
+}
+a.booked_court_button_3 {
+	background-image: url(img/booked_court.png);
+	background-position: -40px 0;
+}
+a.booked_court_button_4 {
+	background-image: url(img/booked_court.png);
+	background-position: -60px 0;
+}
+a.booked_court_button_5 {
+	background-image: url(img/booked_court.png);
+	background-position: -80px 0;
+}
+a.booked_court_button_6 {
+	background-image: url(img/booked_court.png);
+	background-position: -100px 0;
+}
+a.booked_court_button_7 {
+	background-image: url(img/booked_court.png);
+	background-position: -120px 0;
+}
+a.booked_court_button_8 {
+	background-image: url(img/booked_court.png);
+	background-position: -140px 0;
+}
+a.booked_court_button_9 {
+	background-image: url(img/booked_court.png);
+	background-position: -160px 0;
+}
+a.booked_court_button_10 {
+	background-image: url(img/booked_court.png);
+	background-position: 0 -20px;
+}
+a.booked_court_button_11 {
+	background-image: url(img/booked_court.png);
+	background-position: -20px -20px;
+}
+a.booked_court_button_12 {
+	background-image: url(img/booked_court.png);
+	background-position: -40px -20px;
+}
+a.booked_court_button_13 {
+	background-image: url(img/booked_court.png);
+	background-position: -60px -20px;
+}
+a.booked_court_button_14 {
+	background-image: url(img/booked_court.png);
+	background-position: -80px -20px;
+}
+a.booked_court_button_15 {
+	background-image: url(img/booked_court.png);
+	background-position: -100px -20px;
+}
+a.booked_court_button_16 {
+	background-image: url(img/booked_court.png);
+	background-position: -120px -20px;
+}
+a.booked_court_button_17 {
+	background-image: url(img/booked_court.png);
+	background-position: -140px -20px;
+}
+a.booked_court_button_18 {
+	background-image: url(img/booked_court.png);
+	background-position: -180px -20px;
+}
+a.free_court_button_1 {
+	background-image: url(img/free_court.png);
+	background-position: 0 0;
+}
+a.free_court_button_2 {
+	background-image: url(img/free_court.png);
+	background-position: -20px 0;
+}
+a.free_court_button_3 {
+	background-image: url(img/free_court.png);
+	background-position: -40px 0;
+}
+a.free_court_button_4 {
+	background-image: url(img/free_court.png);
+	background-position: -60px 0;
+}
+a.free_court_button_5 {
+	background-image: url(img/free_court.png);
+	background-position: -80px 0;
+}
+a.free_court_button_6 {
+	background-image: url(img/free_court.png);
+	background-position: -100px 0;
+}
+a.free_court_button_7 {
+	background-image: url(img/free_court.png);
+	background-position: -120px 0;
+}
+a.free_court_button_8 {
+	background-image: url(img/free_court.png);
+	background-position: -140px 0;
+}
+a.free_court_button_9 {
+	background-image: url(img/free_court.png);
+	background-position: -160px 0;
+}
+a.free_court_button_10 {
+	background-image: url(img/free_court.png);
+	background-position: 0 -20px;
+}
+a.free_court_button_11 {
+	background-image: url(img/free_court.png);
+	background-position: -20px -20px;
+}
+a.free_court_button_12 {
+	background-image: url(img/free_court.png);
+	background-position: -40px -20px;
+}
+a.free_court_button_13 {
+	background-image: url(img/free_court.png);
+	background-position: -60px -20px;
+}
+a.free_court_button_14 {
+	background-image: url(img/free_court.png);
+	background-position: -80px -20px;
+}
+a.free_court_button_15 {
+	background-image: url(img/free_court.png);
+	background-position: -100px -20px;
+}
+a.free_court_button_16 {
+	background-image: url(img/free_court.png);
+	background-position: -120px -20px;
+}
+a.free_court_button_17 {
+	background-image: url(img/free_court.png);
+	background-position: -140px -20px;
+}
+a.free_court_button_18 {
+	background-image: url(img/free_court.png);
+	background-position: -180px -20px;
+}
 
 /**
  * Container for horizontal forms
@@ -281,10 +431,7 @@ div#court_setup {
 	clear: both;
 	text-align: center;
 }
-div#court_setup a {
-	margin: 0 1em 0 1em;
-}
-table {
+table.reservation {
 	clear:both;
 	margin: 1em auto 0.5em auto;
 	text-align: right;
@@ -292,51 +439,48 @@ table {
 	border: 1px solid #aeb3b6;
 	border-collapse: collapse;
 }
-table a, table, tbody, tfoot, tr, th, td {
+table.reservation a, table.reservation tbody, table.reservation tfoot, 
+table.reservation tr, table.reservation th, table.reservation td {
 	font-family: Arial, Helvetica, sans-serif;
-	line-height: 2.0em;
+	line-height: 45px;
 	text-align: center;
 	color: #55595c;
 }
-table th p {
+table.reservation th p {
 	margin-top:0.3em;
 	min-width: 128px;
 }
-table caption {
+table.reservation caption {
 	padding: .4em 0;
 	font-style: normal;
 	color: #fb7e00;
 }
-table a {
-	display: block;
+table.reservation a {
 	text-decoration: none;
 	color: #ff8e53;
 }
-table input[type=text] {
+table.reservation input[type=text] {
 	background-color: transparent;
 	color: #222;
 	text-align: center;
     border:none;
 }
-table a:hover, table a:focus {
-	text-decoration: underline;
-}
-table th a {
+table.reservation th a {
 	color: #FF8E53;
 	text-align: center;
 }
-table .odd th a,table .odd td a,table .odd td {
+table.reservation th.odd a, table.reservation td.odd a, table.reservation td.odd {
 	color: #666;
 	padding-right: 1.0 em;
 }
-table th a:hover, table th a:focus, tbody tr:hover th {   
+table.reservation th a:hover, table.reservation th a:focus, tbody.reservation tr:hover th {   
 	background-color: #cc7028;
 	color: #fff !important;
 }
-table .odd th,table .odd td {
+table.reservation th.odd,table.reservation td.odd {
 	background-color: #f7ddc6;
 }
-thead th {
+table.reservation thead th {
 	padding: 0 0.5em 0 0.5em;
 	background-image: url(img/table_header_back.png);
 	text-transform: uppercase;
@@ -344,18 +488,19 @@ thead th {
 	letter-spacing: 1px;
 	color: #fff;
 }
-tfoot {
+table.reservation tfoot {
 	background-image: url(img/table_header_back.png);
 	border-top: 1px solid #fff;
 }
-tfoot th,tfoot td {
+table.reservation tfoot th, table.reservation tfoot td {
 	color: #fff;
 }
-tbody td {
+table.reservation tbody td {
+	padding:0 0.5em 0 0.5em;
 	line-height: 2.5em;
 	background-color:#f9f9f9;
 }
-tbody th {
+table.reservation tbody th {
    	padding: 0 1.0em 0 1.0em;
 	font-style: normal;
 	font-weight: bold;
@@ -363,22 +508,28 @@ tbody th {
 	border-bottom: 1px dotted #aeb3b6;
 	text-align: center;
 }
-tbody .odd th {
+table.reservation td {
+	border-right: 1px dotted #aeb3b6;
+	border-bottom: 1px dotted #aeb3b6;
+	min-width: 120px;
+	text-align: center;
+    color: #ff8e1c;
+}
+table.reservation tbody tr.odd {
+	border-bottom: 1px dotted #aeb3b6;
+}
+table.reservation tbody tr.odd th {
 	background-color: #bbb;
 }
-td {
-    color: #ff8e1c;
-	border-bottom: 1px dotted #aeb3b6;
-	min-width: 6em;
-	text-align: center;
+table.reservation tbody tr.odd td {
+	background-color: #fbe4bc;
 }
-tbody tr.odd {
-	border-bottom: 1px dotted #aeb3b6;
-}
-tbody tr:hover td {
+table.reservation tbody td:hover, table.reservation tbody tr.odd td:hover {
 	background-color: #f38630;
 }
-tbody tr:hover td,tbody tr:hover th, tbody tr:hover a {
+table.reservation tbody tr:hover td,
+table.reservation tbody tr:hover th, 
+table.reservation tbody tr:hover a {
 	color: #fff !important;
 }
 
