@@ -1,24 +1,46 @@
++ For new reservations, make the 'cancel reservation' button work.
+    + Add a test case for the button redirecting to the club_view, displaying the
+      date of the canceled reservation.
 + Revervation.objects.copy_to_court_setup is not working correctly: the test cases fail randomly.
++ Player should not make two reservations for the same day and overlapping time in two different clubs.
++ En la factura ponemos solamente "vzdrževanje" para que no pueda ser posible "reastear" la cantidad de reservas en un club.
++ Agregar un boton en el profil del club, para que pidan el estado de la cuenta.
++ El estado de la cuenta se envia usando el sistema interno de mensajes del sitio.
++ reservations.views.club_view:
+    + show only vacancy terms that are available (i.e. have been given a price);
++ reservations.views.club_edit:
+    + repeat daily???
+    + detect a repeating reservation when editing it!
+    + changing the date makes the reservation to disappear:
+        + before correcting, implement a test case to catch this error. 
+        + this is because the date is given as part of the GET address (i.e. ordinal date)
++ Implement a test case for catching ValueError when not all terms are free for
+  booking (repeating reservations, reservations/tests.py:269
++ reservations.views.transfer_or_delete:
+    + send a msg to the user, telling about the change, together with two links: accept or reject.
+    + the term should be marked as booked until the user rejects it.
 + When deleting courts/court setups, catch the ProtectedError exception to not accidentally delete reservations.
     + ask the user what to do when deleting an object with reservations attached to it:
     	- transfer reservations or ignore them?
-    	- never delete reservation records?
+    	- never delete reservation that are not older than one month in the past.
+        - never delete future reservations.
 + When adding a reservation (or a repeating reservation), check that the target vacancy is free!
 	- Implement a book method that will take care of this and add test cases!
 	- Replace all Reservation.create calls with the book method.
++ When deleting a repeating reservation, ask the user which one to delete: this one or all.
 + Check that the size of uploaded images does not exceed a defined threshold.
+    + Changed the lighttpd configuration at the server and saved it locally at '/home/luka/etc/saion/ht_si/lighttpd'.-
 + Add a logo in the club's profile. Add TAZAL's logo.
 + Add an avatar in the player's profile. Maybe extending them from UserProfile?
-+ Changing the 'date' in create/edit reservation makes it to disappear.
-    - Before correcting, implement a test case to catch this error. 
-	- This is because the date is given as part of the GET address (i.e. ordinal date).
-	- Implement a test case for catching ValueError when not all terms are free for 
-	  booking (repeating reservations, reservations/tests.py:269)
 + Club profile: court setup square does not look good in Chrome, IE and some versions of FF.
     + change it by adding two links beside every court setup: Edit and Activate.
++ After successfully booking a term, display a button to go back to the homepage (player's reservations).
++ When selecting a court of a club, move the time by one hour (player's reservations).
 + Display the club's email address in the profile (kontakti podatki) and in the reservation search results.
+    + add the EDIT button here
 + Change all checkboxes in all forms to display a dropdown with options Yes/No.
-- Display per-user activity in the admin.
++ Add a button for "Stanje računa" in the club's profile, that will generate a message with the current state of the account.
+- Display per-user activity display in the admin.
 + Implement the reservation system.
     + When canceling a reservation: if the user that created the reservation is the same as the one canceling it,
       then delete the database record; otherwise mark the reservation as canceled and act accordingly (banning, fakture, ...)
@@ -74,6 +96,7 @@
     - For the player's side, implement a "sign-up for event" option.
 - Implement deletion confirmation for courts, court setups, ...
 - Implement the tournament system for clubs.
+- Implement the season league system for clubs.
 - When searching for an opponent, display a list of past opponents or "buddies" (catched via
   "Invitation" messages sent when a reservation is made), ordered by the number of times the 
   opponent has been invited.
