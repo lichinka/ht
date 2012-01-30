@@ -1,12 +1,21 @@
-from django.http import Http404
+import urlparse
+
+from django.conf import settings
+from django.http import HttpResponseRedirect, Http404
 from django.contrib import auth
 from django.shortcuts import redirect, render_to_response
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth import views
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.sites.models import get_current_site
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 
+from actstream import action
 from accounts.models import UserProfile
 from accounts.forms import RegisterUserForm, EditPlayerProfileForm
 
@@ -36,7 +45,7 @@ def register (request):
                 auth.login (request, new_user)
                 return redirect ('accounts.views.edit_player_profile',
                                  id=pp.id)
-        
+
         return render_to_response ('accounts/register.html',
                                    {'form': form,},
                                    context_instance=RequestContext(request))
@@ -73,7 +82,7 @@ def edit_player_profile (request):
             if not form.cleaned_data['next']:
                 form.cleaned_data['next'] = reverse ('ht.views.home')
             return redirect (form.cleaned_data['next'])
-        
+
         return render_to_response ('accounts/edit_player_profile.html',
                                    {'form': form,},
                                    context_instance=RequestContext(request))
@@ -81,7 +90,7 @@ def edit_player_profile (request):
         raise Http404
 
 
-            
+
 @login_required
 def display_profile (request):
     """
@@ -95,22 +104,68 @@ def display_profile (request):
                                    context_instance=RequestContext(request))
     else:
         raise Http404
-        
-    
-    
-def login (request):
-    """
-    Displays the login form or logs a user in.-
-    """
-    if request.user.is_authenticated ( ):
-        return redirect (reverse ('ht.views.home'))
-    else:
-        return views.login (request, 'accounts/login.html')
 
+
+@csrf_protect
+@never_cache
+def login (request, template_name='accounts/login.html',
+           redirect_field_name=REDIRECT_FIELD_NAME,
+           authentication_form=AuthenticationForm,
+           current_app=None, extra_context=None):
+    """
+    Displays the login form and handles the login action.
+    Code from 'django.contrib.auth.views.login'.-
+    """
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            netloc = urlparse.urlparse(redirect_to)[1]
+
+            # Use default setting if redirect_to is empty
+            if not redirect_to:
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Security check -- don't allow redirection
+            # to a different host.
+            elif netloc and netloc != request.get_host():
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Okay, security checks complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            # Save the action of the user logging in
+            action.send (form.get_user ( ),
+                         verb='logged in')
+
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+    request.session.set_test_cookie()
+
+    current_site = get_current_site(request)
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+    }
+    context.update(extra_context or {})
+    return render_to_response(template_name, context,
+                              context_instance=RequestContext(request, current_app=current_app))
 
 
 def logout (request):
     """
     Logs the user out, redirecting her to the home page.-
     """
+    if request.user.is_authenticated ( ):
+        action.send (request.user, verb='logged out')
     return views.logout (request, next_page=reverse ('ht.views.home'))
+

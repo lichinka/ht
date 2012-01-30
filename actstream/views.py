@@ -40,10 +40,12 @@ def stream(request):
     Index page for authenticated user's activity stream. (Eg: Your feed at
     github.com)
     """
-    return render_to_response('activity/actor.html', {
-        'ctype': ContentType.objects.get_for_model(User),
-        'actor': request.user, 'action_list': models.user_stream(request.user)
-    }, context_instance=RequestContext(request))
+    action_list = models.user_stream (request.user)
+    return render_to_response('activity/actor.html',
+                              {'ctype': ContentType.objects.get_for_model(User),
+                               'actor': request.user,
+                               'action_list': action_list},
+                              context_instance=RequestContext(request))
 
 
 def followers(request, content_type_id, object_id):
@@ -87,20 +89,22 @@ def actor(request, content_type_id, object_id):
     """
     ctype = get_object_or_404(ContentType, pk=content_type_id)
     actor = get_object_or_404(ctype.model_class(), pk=object_id)
-    return render_to_response('activity/actor.html', {
-        'action_list': models.actor_stream(actor), 'actor': actor,
-        'ctype': ctype
-    }, context_instance=RequestContext(request))
+    return render_to_response ('activity/actor.html',
+                               {'action_list': models.actor_stream(actor),
+                                'actor': actor,
+                                'ctype': ctype},
+                               context_instance=RequestContext(request))
 
 
 def model(request, content_type_id):
     """
-    ``Actor`` focused activity stream for actor defined by ``content_type_id``,
-    ``object_id``.
+    ``Actor`` focused activity stream for actor defined by ``content_type_id``.-
     """
     ctype = get_object_or_404(ContentType, pk=content_type_id)
     actor = ctype.model_class()
-    return render_to_response('activity/actor.html', {
-        'action_list': models.model_stream(actor), 'ctype': ctype,
-        'actor': ctype
-    }, context_instance=RequestContext(request))
+    return render_to_response ('activity/actor.html',
+                               {'action_list': models.model_stream(actor),
+                                'ctype': ctype,
+                                'actor': ctype},
+                               context_instance=RequestContext(request))
+

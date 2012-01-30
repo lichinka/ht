@@ -3,26 +3,81 @@ from functools import wraps
 from django.db import connection
 from django.test import TestCase
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 
+from ht_utils.tests import BaseViewTestCase
 from actstream.models import Action, Follow, model_stream, user_stream
 from actstream.actions import follow, action, unfollow
 from actstream.exceptions import ModelNotActionable
 
 
-class ActivityTestCase(TestCase):
+
+class IntegrityTestCase (BaseViewTestCase):
+    def setUp (self):
+        self._create_club ( )
+        self._create_player ( )
+
+    def test_user_own_activity (self):
+        #
+        # log the club in via the login page to
+        # generate an action
+        #
+        resp = self.client.post (reverse ('accounts.views.login'),
+                                 {'username': self.T_CLUB['username'],
+                                  'password': self.T_CLUB['password']},
+                                 follow=True)
+        self.assertEqual (resp.status_code, 200)
+        #
+        # check the 'log in' action has been saved
+        #
+        user = get_object_or_404 (User, username=self.T_CLUB['username'])
+        user_type = ContentType.objects.get (app_label="auth", model="user")
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': user_type.pk,
+                                                 'object_id': user.pk}))
+        self.assertContains (resp, self.T_CLUB['username'])
+        self.assertContains (resp, 'logged in')
+        #
+        # log the club out via the page to
+        # generate an action
+        #
+        resp = self.client.get (reverse ('accounts.views.logout'),
+                                follow=True)
+        self.assertEqual (resp.status_code, 200)
+        #
+        # check the 'log out' action is correctly saved
+        # (any user should be logged id to watch the activities)
+        #
+        self.client.login (username=self.T_PLAYER['username'],
+                           password=self.T_PLAYER['password'])
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': user_type.pk,
+                                                 'object_id': user.pk}))
+        self.assertContains (resp, self.T_CLUB['username'])
+        self.assertContains (resp, 'logged out')
+
+
+
+class ActivityTestCase (TestCase):
     urls = 'actstream.urls'
+
+    TEST_USERS = [{'username': 'admin', 'password': 'admin'},
+                  {'username': ' Two',  'password': 'second'}]
 
     def setUp(self):
         settings.DEBUG = True
         self.group = Group.objects.get_or_create(name='CoolGroup')[0]
-        self.user1 = User.objects.get_or_create(username='admin')[0]
-        self.user1.set_password('admin')
+        self.user1 = User.objects.get_or_create(username=self.TEST_USERS[0]['username'])[0]
+        self.user1.set_password(self.TEST_USERS[0]['password'])
         self.user1.is_superuser = self.user1.is_staff = True
         self.user1.save()
-        self.user2 = User.objects.get_or_create(username='Two')[0]
+        self.user2 = User.objects.get_or_create(username=self.TEST_USERS[1]['username'])[0]
+        self.user2.set_password (self.TEST_USERS[1]['password'])
+        self.user2.save ( )
 
         # User1 joins group
         self.user1.groups.add(self.group)
@@ -82,7 +137,7 @@ class ActivityTestCase(TestCase):
         references.
         """
         self.user2.delete()
-        self.assert_(not 'Two' in str(Action.objects.user(self.user1)))
+        self.assert_(not self.TEST_USERS[1]['username'] in str(Action.objects.user(self.user1)))
 
     def test_rss(self):
         rss = self.client.get('/feed/').content
@@ -146,10 +201,10 @@ class ActivityTestCase(TestCase):
                           ContentType.objects.get_for_model(self.user1))
 
     def test_hidden_action(self):
-        action = self.user1.actor_actions.all()[0]
-        action.public = False
-        action.save()
-        self.assert_(not action in self.user1.actor_actions.public())
+        my_action = self.user1.actor_actions.all()[0]
+        my_action.public = False
+        my_action.save()
+        self.assert_(not my_action in self.user1.actor_actions.public())
 
     def _the_zombies_are_coming(self, nums={'human': 10, 'zombie': 2}):
         from random import choice

@@ -5,7 +5,7 @@
     {% if user.is_authenticated %}
         {% if profile %}
 			<li>
-				<a href="{% url 'accounts.views.display_profile' %}">
+				<a href="{% url 'accounts_profile' %}">
 					{% trans 'Profile' %}
 				</a>
 			</li>

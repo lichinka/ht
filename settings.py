@@ -131,16 +131,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.markup',        # Enables wiki-like parsing and HTML rendering
     'django.contrib.staticfiles',   # Enables serving static files during development
-    'south',             # Eases model-to-database synchronization
-    'accounts',          # Includes user's profile
+    'south',             # Eases model-to-database synchronization.
+                         # For inter-app dependency, the order defined here matters!
+    'locations',         # Enables location-lookups via cities and coordinates
     'actstream',         # Feed-based tracking of user's activity
+    'accounts',          # Includes user's profile
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
     'clubs',             # Keeps clubs data and profiles 
     'user_messages',     # Lets users send private messages to each other
     'ranking',           # Keeps all match results and a players' ranking
     'comments',          # Enables model-based comments with images
-    'locations',         # Enables location-lookups via cities and coordinates
     'reservations',      # An application to enable users to book courts and let the clubs run their reservations via web
     'ht_utils',          # Various utility functions used everywhere
     # Uncomment the next line to enable the admin:
