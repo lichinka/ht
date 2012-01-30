@@ -18,8 +18,8 @@ from reservations.forms import SelectDateForm, TransferOrDeleteForm
 from reservations.models import Reservation
 from django.core.exceptions import ObjectDoesNotExist
 
-    
-    
+
+
 @login_required
 @transaction.commit_on_success
 def transfer_or_delete (request, cs_id, c_id=None):
@@ -42,21 +42,21 @@ def transfer_or_delete (request, cs_id, c_id=None):
         #
         # the reservations that may be transfered or deleted
         #
-        res_list = Reservation.objects.by_court_setup (cs).order_by ('for_date', 
+        res_list = Reservation.objects.by_court_setup (cs).order_by ('for_date',
                                                                      'vacancy__available_from',
                                                                      'vacancy__court__number') \
                                                           .values ('id')
         res_list = [Reservation.objects.get (pk=r['id']) for r in res_list]
-                                                                
+
         if form.is_valid ( ):
             #
             # to transfer reservations means copying and then deleting
             #
             if form.cleaned_data['user_choice'] == 1:
                 copied_res = Reservation.objects.copy_to_court_setup (form.cleaned_data['transfer_to'],
-                                                                      res_list, 
+                                                                      res_list,
                                                                       commit=False)
-        
+
         return render_to_response ('reservations/transfer_or_delete.html',
                                    {'form': form,
                                     'res_list': res_list},
@@ -65,7 +65,7 @@ def transfer_or_delete (request, cs_id, c_id=None):
         raise Http404
 
 
-   
+
 @login_required
 def cancel (request, r_id):
     """
@@ -81,16 +81,16 @@ def cancel (request, r_id):
         if UserProfile.objects.get_profile (request.user.username).is_player ( ):
             return redirect ('ht.views.home')
         elif UserProfile.objects.get_profile (request.user.username).is_club ( ):
-            return redirect ('reservations.views.club_view') 
+            return redirect ('reservations.views.club_view')
     else:
         #
         # TODO voting for banning a user goes here
         #
         if UserProfile.objects.get_profile (request.user.username).is_club ( ):
             Reservation.objects.delete (r)
-            return redirect ('reservations.views.club_view') 
-    
-    
+            return redirect ('reservations.views.club_view')
+
+
 @login_required
 def player_edit (request, v_id, ordinal_date):
     """
@@ -152,18 +152,18 @@ def player_edit (request, v_id, ordinal_date):
             raise Http404
     else:
         raise Http404
-    
-    
-    
+
+
+
 @login_required
-def club_edit (request, vid, ordinal_date):
+def club_edit (request, v_id, ordinal_date):
     """
     Displays a form to create/edit a reservation for the
-    given date (ordinal_date) and vacancy (vid).
+    given date (ordinal_date) and vacancy (v_id).
     The user must be a club and own the court where the
     reservation is being made.-
     """
-    v = get_object_or_404 (Vacancy, pk=vid)
+    v = get_object_or_404 (Vacancy, pk=v_id)
     club = UserProfile.objects.get_profile (request.user.username)
     if (club.is_club ( )) and (v.court.court_setup.club == club):
         for_date = date.fromordinal (int (ordinal_date))
@@ -202,7 +202,7 @@ def club_edit (request, vid, ordinal_date):
                                    context_instance=RequestContext(request))
     else:
         raise Http404
-    
+
 
 @login_required
 def club_view (request):
@@ -234,7 +234,7 @@ def club_view (request):
                                    locale.nl_langinfo (locale.D_FMT))
         today_date = today_date.replace (' ', '')
         prev_date = week_date_list[0] - timedelta (days=1)
-        prev_date = date.strftime (prev_date, 
+        prev_date = date.strftime (prev_date,
                                    locale.nl_langinfo (locale.D_FMT))
         prev_date = prev_date.replace (' ', '')
         next_date = week_date_list[-1] + timedelta (days=1)
@@ -243,7 +243,7 @@ def club_view (request):
         next_date = next_date.replace (' ', '')
         #
         # court setup
-        # 
+        #
         cs = CourtSetup.objects.get_active (club)
         #
         # up-to-here we've generated data for the upper part
@@ -253,7 +253,7 @@ def club_view (request):
         if request.is_ajax ( ):
             #
             # hour list
-            # 
+            #
             hour_list = Vacancy.HOURS[:-1]
             #
             # create the matrix containing the terms that will be displayed
@@ -283,7 +283,7 @@ def club_view (request):
                         terms[d][h][c_id]['reservation'] = None
             #
             # finally render the table containing reservations for the week
-            #            
+            #
             return render_to_response ('reservations/club_view_table.html',
                                        {'week_date_list': week_date_list,
                                         'court_setup': cs,
@@ -303,7 +303,7 @@ def club_view (request):
                                        context_instance=RequestContext(request))
     else:
         raise Http404
-    
+
 
 
 def search (request, template_name='reservations/search.html'):
@@ -323,7 +323,7 @@ def search (request, template_name='reservations/search.html'):
             else:
                 club_list = ClubProfile.objects.all ( )
             params['club_list'] = club_list.values ( )
-            
+
             for club in params['club_list']:
                 club['name'] = User.objects.get (pk=club['user_id'])
                 club['name'] = "%s %s" % (club['name'].first_name,
@@ -338,7 +338,7 @@ def search (request, template_name='reservations/search.html'):
             #
             # filter by time
             #
-            hour_list = [int(k) for k,v in Vacancy.HOURS]
+            hour_list = [int(k) for k, v in Vacancy.HOURS]
             selected_time = params['form'].cleaned_data['for_time']
             if selected_time == 'XX':
                 selected_time = hour_list.index (14)
@@ -369,14 +369,14 @@ def search (request, template_name='reservations/search.html'):
             #
             min_date = date.fromordinal (int (SearchFreeCourtForm.DATES[0][0]))
             max_date = date.fromordinal (int (SearchFreeCourtForm.DATES[-1][0]))
-            
+
             if params['for_date'] == min_date:
                 params['prev_day'] = None
             else:
                 params['prev_day'] = params['for_date'] - timedelta (days=1)
                 params['prev_day'] = date.strftime (params['prev_day'],
                                                     '%A, %x')
-                
+
             if params['for_date'] == max_date:
                 params['next_day'] = None
             else:
@@ -396,7 +396,7 @@ def search (request, template_name='reservations/search.html'):
             template_name = 'reservations/user_view.html'
     else:
         params['form'] = SearchFreeCourtForm ( )
-        
+
     return render_to_response (template_name,
                                params,
                                context_instance=RequestContext(request))

@@ -17,8 +17,8 @@ class UserProfileManager (models.Manager):
         Returns all player profiles.-
         """
         return PlayerProfile.objects.all ( )
-   
-    
+
+
     def get_profile (self, username):
         """
         Returns the profile of the correct type (ie. player or club).-
@@ -28,14 +28,14 @@ class UserProfileManager (models.Manager):
         pp = PlayerProfile.objects.filter (user=u)
         if pp:
             ret_value = PlayerProfile.objects.get (user=u)
-            
+
         cp = ClubProfile.objects.filter (user=u)
         if cp:
             ret_value = ClubProfile.objects.get (user=u)
-            
+
         return ret_value
-        
-        
+
+
     def create_player_profile (self, username):
         """
         Associates a player profile to the received user.-
@@ -47,8 +47,8 @@ class UserProfileManager (models.Manager):
             return pp
         else:
             return None
-       
-        
+
+
     def create_club_profile (self, username, address, city, phone, company):
         """
         Associates a club profile to the received user.-
@@ -63,32 +63,32 @@ class UserProfileManager (models.Manager):
             return cp
         else:
             return None
-    
-    
+
+
 class UserProfile (models.Model):
     """
     Holds extra data about the registered user of the site.
     If the foreign key to 'PlayerProfile' exists, then the user is
     registered as a player. When the foreign key to 'ClubProfile'
-    exists, the user is registered as a club. 
+    exists, the user is registered as a club.
     It is an error for both foreign keys to be NULL (or None).-
     """
     user = models.ForeignKey (User,
                               unique=True,
                               blank=True)
     objects = UserProfileManager ( )
-    
+
     class Meta:
         abstract = True
-  
-    @abstractmethod 
+
+    @abstractmethod
     def is_player (self):
         """
         Returns TRUE if this profile belongs to a Player.-
         """
         return False
 
-    @abstractmethod    
+    @abstractmethod
     def is_club (self):
         """
         Returns TRUE is this profile belongs to a Club.-
@@ -97,21 +97,21 @@ class UserProfile (models.Model):
 
     def __unicode__ (self):
         return self.user.username
-    
-    
+
+
 class PlayerProfile (UserProfile):
     """
     Holds extra data about the registered player.-
     """
-    LEVELS=(('B', _('Beginner')),
-            ('I', _('Intermediate')),
-            ('A', _('Advanced')),
-            ('F', _('Registered')))
+    LEVELS = (('B', _('Beginner')),
+              ('I', _('Intermediate')),
+              ('A', _('Advanced')),
+              ('F', _('Registered')))
     level = models.CharField (max_length=1,
                               choices=LEVELS,
                               default='B')
     male = models.BooleanField (default=True)
-    right_handed = models.BooleanField (default=True) 
+    right_handed = models.BooleanField (default=True)
 
     def clean (self):
         """
@@ -121,8 +121,8 @@ class PlayerProfile (UserProfile):
             raise ValidationError (_('This user has already been assigned a club profile'))
 
     def is_player (self):
-        return True                                     
-    
+        return True
+
     def is_club (self):
         return False
 
@@ -139,20 +139,20 @@ class ClubProfile (UserProfile):
     company = models.CharField (max_length=200,
                                 null=False,
                                 blank=False)
-    
+
     def clean (self):
         """
         Don't allow a club to have a player profile.-
         """
         if PlayerProfile.objects.filter (user=self.user):
             raise ValidationError (_('This user has already been assigned a player profile'))
-        
+
     def is_player (self):
         return False
-    
+
     def is_club (self):
         return True
-       
+
 
 @receiver(pre_delete, sender=User)
 def delete_associated_profile (sender, instance, **kwargs):
@@ -170,9 +170,4 @@ def delete_associated_profile (sender, instance, **kwargs):
             PlayerProfile.objects.get (pk=prof.id).delete ( )
         if prof.is_club ( ):
             ClubProfile.objects.get (pk=prof.id).delete ( )
-    else:
-        #
-        # nothing to delete
-        #
-        pass
-            
+

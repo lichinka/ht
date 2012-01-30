@@ -109,12 +109,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',	
+    'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.doc.XViewMiddleware',
 )
 
 ROOT_URLCONF = 'ht.urls'
-LOGIN_URL='/accounts/login'
+LOGIN_URL = '/accounts/login'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     'accounts',          # Includes user's profile
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
-    'clubs',             # Keeps clubs data and profiles 
+    'clubs',             # Keeps clubs data and profiles
     'user_messages',     # Lets users send private messages to each other
     'ranking',           # Keeps all match results and a players' ranking
     'comments',          # Enables model-based comments with images
@@ -149,14 +149,14 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
-# Override the server-derived value of SCRIPT_NAME 
+# Override the server-derived value of SCRIPT_NAME
 # See http://code.djangoproject.com/wiki/BackwardsIncompatibleChanges#lighttpdfastcgiandothers
 FORCE_SCRIPT_NAME = ''
 
 #
 # User's activity stream configuration (actstream)
 #
-ACTSTREAM_ACTION_MODELS = ['auth.User']
+ACTSTREAM_ACTION_MODELS = ['auth.User', 'reservations.Reservation']
 ACTSTREAM_ACTION_TEMPLATE = 'activity/single_action.txt'
 ACTSTREAM_MANAGER = 'actstream.managers.ActionManager'
 
@@ -197,7 +197,7 @@ LOGGING = {
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
-        },  
+        },
         'request_handler': {
                 'level':'DEBUG',
                 'class':'logging.handlers.RotatingFileHandler',

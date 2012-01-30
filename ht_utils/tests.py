@@ -29,13 +29,13 @@ class BaseViewTestCase (TestCase):
     T_PLAYER ={'username': 'test_player',
                'email': 'player@nowhere.si',
                'password': 'thepasswordof1player'}
-    
+
     def _create_superuser (self):
         """
         Creates a superuser.-
         """
         self.root = User.objects.create_superuser (**self.T_ROOT)
-        
+
     def _create_club (self):
         """
         Creates a club.-
@@ -46,7 +46,7 @@ class BaseViewTestCase (TestCase):
                                                              City.objects.all ( )[0],
                                                              "111-222-333",
                                                              "The best tennis club d.o.o.")
-        
+
     def _create_player (self):
         """
         Creates a player.-
@@ -60,7 +60,7 @@ class BaseViewTestCase (TestCase):
         self.player.male = True
         self.player.right_handed = False
         self.player.save ( )
-    
+
     def _add_court_setups (self):
         """
         Adds a couple of extra court setups to the default club.-
@@ -69,7 +69,7 @@ class BaseViewTestCase (TestCase):
         # we need a club!
         #
         self._create_club ( )
-        
+
         self.cs_list = list ( )
         self.cs_list.append (CourtSetup.objects.get_active (self.club))
         self.cs_list.append (CourtSetup.objects.create (name="The second court setup",
@@ -88,7 +88,7 @@ class BaseViewTestCase (TestCase):
         # activate a random court setup
         #
         CourtSetup.objects.activate (pick_random_element (self.cs_list))
-    
+
     def _add_courts (self):
         """
         Adds a random number of courts to each court setup.-
@@ -97,7 +97,7 @@ class BaseViewTestCase (TestCase):
         # we need at least one court setup
         #
         self._add_court_setups ( )
-        
+
         for cs in self.cs_list:
             for i in range (2, randint (2, 7)):
                 Court.objects.create (court_setup=cs,
@@ -107,7 +107,7 @@ class BaseViewTestCase (TestCase):
                                       surface=Court.SURFACES[i%5][0],
                                       single_only=True if i%2 == 0 else False,
                                       is_available=False if i%2 == 0 else True)
-        
+
     def _add_vacancy_prices (self):
         """
         Set some prices for the vacancy terms of all
@@ -117,7 +117,8 @@ class BaseViewTestCase (TestCase):
         # we need at least one court
         #
         self._add_courts ( )
-        
+
+        self.vacancy_list = []
         for cs in self.cs_list:
             courts = Court.objects.get_available (cs)
             for c in courts.iterator ( ):
@@ -125,10 +126,11 @@ class BaseViewTestCase (TestCase):
                 for v in court_vacancy_terms.iterator ( ):
                     v.price = '%10.2f' % float ((10*c.id + v.id) % 1000)
                     v.save ( )
-                    
-    
+                    self.vacancy_list.append (v)
+
+
     def _add_reservations (self, court_setup=None):
-        """            
+        """
         Create some random reservations to the received court setup.-
         """
         #
@@ -161,7 +163,7 @@ class BaseViewTestCase (TestCase):
                                                                   description="Test reservation %s" % str(i),
                                                                   user=self.player.user if i%2 == 0 else self.club.user,
                                                                   vacancy=v))
-                
+
     def setUp (self):
         """
         Creates a superuser, club, player and a client, fills prices
@@ -198,7 +200,7 @@ class BaseViewTestCase (TestCase):
         # a player should not have access
         # since she/he must receive the 'not found' page
         #
-        self.client.login (username=self.T_PLAYER['username'], 
+        self.client.login (username=self.T_PLAYER['username'],
                            password=self.T_PLAYER['password'])
         self.assertIsNotNone (self.view_path)
         self.assertIsNotNone (self.template_name)
@@ -213,10 +215,10 @@ class BaseViewTestCase (TestCase):
             #
             # log a user in, using the received information
             #
-            self.cli.login (username=login_info['username'], 
+            self.cli.login (username=login_info['username'],
                             password=login_info['password'])
         else:
-            self.client.login (username=self.T_CLUB['username'], 
+            self.client.login (username=self.T_CLUB['username'],
                                password=self.T_CLUB['password'])
         self.assertIsNotNone (self.view_path)
         self.assertIsNotNone (self.template_name)
@@ -225,7 +227,7 @@ class BaseViewTestCase (TestCase):
         resp = self.cli.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, self.template_name)
-        
+
     def _test_existance_and_correct_template (self, login_info=None, view_args=None):
         """
         Tests the existance and correct rendering of the view,
@@ -237,7 +239,7 @@ class BaseViewTestCase (TestCase):
             #
             # log a user in, using the received information
             #
-            self.cli.login (username=login_info['username'], 
+            self.cli.login (username=login_info['username'],
                             password=login_info['password'])
         #
         # test the view
@@ -249,7 +251,7 @@ class BaseViewTestCase (TestCase):
         resp = self.cli.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, self.template_name)
-        
+
 
 
 class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
@@ -258,10 +260,10 @@ class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
     specified in settings.TEST_EXCLUDE.-
     """
     EXCLUDED_APPS = getattr (settings, 'TEST_EXCLUDE', [])
-    
+
     def __init__(self, *args, **kwargs):
         super (AdvancedTestSuiteRunner, self).__init__ (*args, **kwargs)
-    
+
     def build_suite (self, *args, **kwargs):
         suite = super (AdvancedTestSuiteRunner, self).build_suite (*args, **kwargs)
         if not args[0] and not getattr(settings, 'RUN_ALL_TESTS', False):
@@ -270,9 +272,9 @@ class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
                 pkg = case.__class__.__module__.split('.')[0]
                 if pkg not in self.EXCLUDED_APPS:
                     tests.append (case)
-            suite._tests = tests 
+            suite._tests = tests
         return suite
-    
+
 
 class HomeViewTest (BaseViewTestCase):
     """
@@ -286,7 +288,7 @@ class HomeViewTest (BaseViewTestCase):
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template.name, 'welcome.html')
-        
+
     def test_superuser_not_allowed_in_the_public_site (self):
         view_url = reverse ('ht.views.home')
         #
@@ -298,7 +300,7 @@ class HomeViewTest (BaseViewTestCase):
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template.name, 'superuser_not_allowed.html')
-        
+
     def test_clubs_redirected_to_their_home_page (self):
         view_url = reverse ('ht.views.home')
         #
@@ -309,7 +311,7 @@ class HomeViewTest (BaseViewTestCase):
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'clubs/home.html')
-    
+
     def test_players_redirected_to_their_home_page (self):
         view_url = reverse ('ht.views.home')
         #
@@ -321,4 +323,4 @@ class HomeViewTest (BaseViewTestCase):
         resp = self.cli.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'players/home.html')
-        
+

@@ -1,11 +1,14 @@
 from datetime import datetime, timedelta
 
 from django.db import models
+from django.dispatch import receiver
 from django.db.models import Count, Max
 from django.db.models.query import QuerySet
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
+from actstream import action
 from clubs.models import Vacancy
 from django.core.exceptions import FieldError
 from accounts.models import UserProfile
@@ -26,29 +29,29 @@ class ReservationMixin (object):
 
     def by_date (self, cs, for_date):
         """
-        Returns a query set containing all reservations 
+        Returns a query set containing all reservations
         for the given date and court setup.
         WARNING: reservations of inactive courts are also returned.-
         """
         return self.by_court_setup (cs).filter (for_date=for_date)
-    
+
     def from_date (self, cs, from_date):
         """
-        Returns a query set containing all reservations 
+        Returns a query set containing all reservations
         starting from (and including) the given date.
         WARNING: reservations of inactive courts are also returned.-
         """
         return self.by_court_setup (cs).filter (for_date__gte=from_date)
-    
+
     def up_to_date (self, cs, until_date):
         """
-        Returns a query set containing all reservations 
+        Returns a query set containing all reservations
         up to (but NOT including) the given date.
         WARNING: reservations of inactive courts are also returned.-
         """
         return self.by_court_setup (cs).filter (for_date__lt=until_date)
-    
-    
+
+
 class ReservationQuerySet (QuerySet, ReservationMixin):
     """
     Glue class to build a manager that supports method chaining.-
@@ -62,7 +65,7 @@ class ReservationManager (models.Manager, ReservationMixin):
     """
     def get_query_set (self):
         return ReservationQuerySet (self.model, using=self._db)
-    
+
     def book (self, commit=True, **kwargs):
         """
         Creates a reservation by booking a free vacancy term.
@@ -111,8 +114,8 @@ class ReservationManager (models.Manager, ReservationMixin):
                 else:
                     ret_value = r
         return ret_value
-    
-    
+
+
     def book_weekly (self, from_date, until_date, commit=True, **kwargs):
         """
         Creates weekly reservations, starting from 'from_date'.
@@ -145,7 +148,7 @@ class ReservationManager (models.Manager, ReservationMixin):
                 if new_r is not None:
                     ret_value.append (new_r)
         return ret_value
-   
+
 
     def get_weekly_reservation_count (self, from_date, until_date):
         """
@@ -158,8 +161,8 @@ class ReservationManager (models.Manager, ReservationMixin):
             ret_value += 7 - (ret_value % 7)
             ret_value /= 7
         return ret_value
-    
-    
+
+
     def get_next_repeat_series (self):
         """
         Returns an integer that can be safely used as a series
@@ -172,13 +175,13 @@ class ReservationManager (models.Manager, ReservationMixin):
         else:
             ret_value = 1
         return ret_value
-    
-    
+
+
     def copy_to_court_setup (self, target_cs, reservation_list, commit=True):
         """
         Copies the received reservations to the target court setup. It
         returns a list with the target reservations that were successfully
-        copied. If the 'commit' parameter is False, no new reservations are 
+        copied. If the 'commit' parameter is False, no new reservations are
         actually created in the DB.
         WARNING: all repeating reservations are given a new
                  repeat_series identifier!
@@ -199,7 +202,7 @@ class ReservationManager (models.Manager, ReservationMixin):
                 #
                 if r.vacancy.court.court_setup == source_cs:
                     #
-                    # give a new repeat_series identifier if this 
+                    # give a new repeat_series identifier if this
                     # reservation is part of one
                     #
                     if r.repeat_series is not None:
@@ -212,8 +215,8 @@ class ReservationManager (models.Manager, ReservationMixin):
                     # prefer copying the reservation to the same court
                     # in the target court setup
                     #
-                    free_tgt_terms = Vacancy.objects.get_free (target_cs, 
-                                                               r.for_date, 
+                    free_tgt_terms = Vacancy.objects.get_free (target_cs,
+                                                               r.for_date,
                                                                r.vacancy.available_from)
                     free_tgt_terms = free_tgt_terms.filter (court__number=r.vacancy.court.number)
                     if free_tgt_terms:
@@ -234,8 +237,8 @@ class ReservationManager (models.Manager, ReservationMixin):
                         # try to accommodate the current reservation in any
                         # of the free vacancy terms of the target court setup
                         #
-                        free_tgt_terms = Vacancy.objects.get_free (target_cs, 
-                                                                   r.for_date, 
+                        free_tgt_terms = Vacancy.objects.get_free (target_cs,
+                                                                   r.for_date,
                                                                    r.vacancy.available_from)
                         for tgt_v in free_tgt_terms.iterator ( ):
                             tgt_r = Reservation.objects.book (created_on=r.created_on,
@@ -253,8 +256,8 @@ class ReservationManager (models.Manager, ReservationMixin):
         else:
             raise FieldError ("Source and target court setups are the same")
         return copied
-            
-    
+
+
     def delete (self, r):
         """
         Deletes the received reservation object, or the whole
@@ -265,7 +268,7 @@ class ReservationManager (models.Manager, ReservationMixin):
         else:
             Reservation.objects.filter (repeat_series=r.repeat_series) \
                                .delete ( )
-        
+
     def get_count_for_today (self):
         """
         Returns the number of reservations for today.-
@@ -274,7 +277,7 @@ class ReservationManager (models.Manager, ReservationMixin):
         count = Reservation.objects.filter (for_date=today) \
                                    .aggregate (Count ('id'))
         return int(count['id__count'])
-        
+
     def get_count_for_tomorrow (self):
         """
         Returns the number of reservations for tomorrow.-
@@ -284,7 +287,7 @@ class ReservationManager (models.Manager, ReservationMixin):
         count = Reservation.objects.filter (for_date=tomorrow) \
                                    .aggregate (Count ('id'))
         return int(count['id__count'])
-    
+
     def get_count_for_week (self):
         """
         Returns the number of reservations for next week.-
@@ -295,17 +298,17 @@ class ReservationManager (models.Manager, ReservationMixin):
         count = Reservation.objects.filter (for_date__range=(today, next_week)) \
                                    .aggregate (Count ('id'))
         return int(count['id__count'])
-    
-   
-    
+
+
+
 class Reservation (models.Model):
     """
     Represents a court reservation.-
     """
-    TYPES=(('P', _('By player')),
-           ('C', _('By club')),
-           ('R', _('Repairs')))
-    
+    TYPES = (('P', _('By player')),
+             ('C', _('By club')),
+             ('R', _('Repairs')))
+
     created_on = models.DateTimeField (default=datetime.now ( ))
     for_date = models.DateField ( )
     type = models.CharField (max_length=1,
@@ -320,16 +323,34 @@ class Reservation (models.Model):
     repeat_series = models.IntegerField (null=True,
                                          blank=True)
     objects = ReservationManager ( )
-   
+
     class Meta:
         #
-        # don't allow the same vacancy term to be 
-        # reserved twice within the same day 
-        # 
+        # don't allow the same vacancy term to be
+        # reserved twice within the same day
+        #
         unique_together = ('for_date', 'vacancy')
-    
+
     def __unicode__ (self):
         return "%s, %s: %s" % (self.created_on,
                                self.user.username,
                                self.vacancy)
-        
+
+
+@receiver (post_save, sender=Reservation)
+def reservation_handler (sender, instance, created, raw, **kwargs):
+    """
+    Callback function used whenever a reservation is created, updated
+    or deleted. It generates a user's action.-
+    """
+    #
+    # Make sure a new reservation has been created by hand
+    #
+    if created and not raw:
+        action.send (instance.user, verb='created', target=instance)
+    elif not created:
+        #
+        # A reservation has been updated
+        #
+        action.send (instance.user, verb='updated', target=instance)
+
