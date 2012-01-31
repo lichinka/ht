@@ -1,0 +1,29 @@
+Project-level file layout
+-------------------------
+    * __init__.py, which will be empty. This file is required to tell Python that the directory is a Python module and can be imported (and imported from).
+    * manage.py, which provides a number of convenience functions for working with the project.
+    * settings.py, which will be the project settings file.
+    * urls.py, which will be the project?s root URL configuration.
+
+
+Application-level file layout
+-----------------------------
+    * __init__.py, which serves the same purpose as at the project level.
+    * models.py, which should hold the application's model classes.
+
+The __init__.py and models.py files (or, if you want to split up your models across multiple files, a directory called models which can act as a Python module) are required; without __init__.py, Python won't be able to import from the application, and Django is hard-wired to expect models in a file or module called models.
+
+    * views.py, which is for any custom views the application wants to provide.
+    * templatetags, contains custom template tags or filters, and it must contain a file named __init__.py so that it can be imported as a Python module.
+    * tests.py/tests, contains test cases. The testing framework will also find any doctests in that module, but the preferred place for those is, of course, the docstrings of the classes or functions they're designed to test.
+    * sql, provides custom SQL which will be executed immediately after your application is installed: the file names should be the same as the names of the models whose tables they'll operate on; for example, if you have an app named weblog containing a model named Entry, then the file sql/entry.sql inside the app?s directory can be used to modify or insert data into the entries table as soon as it?s been created.
+    * management.py, provides custom Python functions which will run when the application is installed. Uses Django's internal dispatcher to connect your functions to the post_syncdb signal. 
+    * forms.py, application defined custom manipulators or forms.
+    * managers.py, contains multiple custom managers in the app.
+    * context_processors.py, contains the definition any custom context processors.
+    * signals.py, contains custom dispatcher signals.
+    * feeds.py, contains classes and setting up any syndication feeds.
+    * sitemaps.py, contains classes for SiteMaps.
+    * middleware.py, contains middleware classes.
+    * utils.py/utils, contains miscellaneous code which doesn't clearly go anywhere else.
+
