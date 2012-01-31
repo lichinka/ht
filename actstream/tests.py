@@ -179,7 +179,7 @@ class ActivityTestCase (TestCase):
     urls = 'actstream.urls'
 
     TEST_USERS = [{'username': 'admin', 'password': 'admin'},
-                  {'username': ' Two',  'password': 'second'}]
+                  {'username': 'Two',  'password': 'second'}]
 
     def setUp(self):
         settings.DEBUG = True
