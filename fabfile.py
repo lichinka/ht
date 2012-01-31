@@ -7,7 +7,7 @@ from fabric.contrib import project, console
 # We want to run migrations (South) on them.
 #
 env.apps = ['ht_utils', 'locations', 'accounts', 'wiki', 'players',
-            'clubs', 'user_messages', 'ranking', 'comments', 
+            'clubs', 'user_messages', 'ranking', 'comments',
             'reservations']
 #
 # Where the project code lives locally
@@ -53,7 +53,7 @@ def update_translations ( ):
     """ Updates the message files for further translating.-
     """
     local ("./manage.py makemessages --all")
-    
+
 
 def remote_init_db ( ):
     """ Initializes the database on the server, applying the initial schema migration step.-
@@ -86,7 +86,8 @@ def remote_test ( ):
 
 
 def test (app=''):
-    """ Executes all tests with the corresponding settings file. Accepts app name as parameter.-
+    """ Executes all tests with the corresponding settings file.
+        Accepts app name as parameter.-
     """
     local ("nice ./manage.py test --verbosity=2 --settings=ht.settings_test --noinput %s 2>&1" % app)
 
