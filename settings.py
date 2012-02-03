@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.markup',        # Enables wiki-like parsing and HTML rendering
     'django.contrib.staticfiles',   # Enables serving static files during development
+    'template_repl',                # Enables interactive debugging of templates during development
     'south',             # Eases model-to-database synchronization.
                          # For inter-app dependency, the order defined here matters!
     'locations',         # Enables location-lookups via cities and coordinates
