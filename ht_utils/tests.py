@@ -3,7 +3,6 @@ from datetime import date
 
 from django.conf import settings
 from django.test import TestCase
-from django.db.utils import IntegrityError
 from django.test.simple import DjangoTestSuiteRunner
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -23,12 +22,17 @@ class BaseViewTestCase (TestCase):
     T_ROOT = {'username': 'superman',
               'email': 'superman@kripton.si',
               'password': 'ineednopassword'}
-    T_CLUB = {'username': 'test_club',
-              'email': 'club@nowhere.si',
-              'password': 'averygoodpassword'}
-    T_PLAYER ={'username': 'test_player',
-               'email': 'player@nowhere.si',
-               'password': 'thepasswordof1player'}
+    T_CLUB = {'username'  : 'test_club',
+              'email'     : 'club@nowhere.si',
+              'password'  : 'averygoodpassword',
+              'company'   : 'The best tennis club d.o.o.',
+              'tax_number': 'SI 1112223344',
+              'address'   : 'Postal address 1231',
+              'city'      : None,
+              'telephone' : '111-222-333',}
+    T_PLAYER = {'username': 'test_player',
+                'email': 'player@nowhere.si',
+                'password': 'thepasswordof1player'}
 
     def _create_superuser (self):
         """
@@ -40,12 +44,19 @@ class BaseViewTestCase (TestCase):
         """
         Creates a club.-
         """
-        c = User.objects.create_user (**self.T_CLUB)
+        c = User.objects.create_user (username=self.T_CLUB['username'],
+                                      email=self.T_CLUB['email'],
+                                      password=self.T_CLUB['password'])
+        #
+        # this cannot happen before, otherwise the 'City'
+        # table does not exist
+        #
+        self.T_CLUB['city'] = pick_random_element (City.objects.all ( ))
         self.club = UserProfile.objects.create_club_profile (c,
-                                                             "Postal address 1231",
-                                                             City.objects.all ( )[0],
-                                                             "111-222-333",
-                                                             "The best tennis club d.o.o.")
+                                                             self.T_CLUB['address'],
+                                                             self.T_CLUB['city'],
+                                                             self.T_CLUB['telephone'],
+                                                             self.T_CLUB['company'])
 
     def _create_player (self):
         """
@@ -169,6 +180,9 @@ class BaseViewTestCase (TestCase):
         Creates a superuser, club, player and a client, fills prices
         for some vacancy terms and creates reservations used during testing.-
         """
+        #
+        # backward compatibility name of the test client
+        #
         self.cli = self.client
         self._create_superuser ( )
         self._add_reservations ( )
@@ -193,7 +207,7 @@ class BaseViewTestCase (TestCase):
         self.assertIsNotNone (self.template_name)
         view_url = reverse (self.view_path,
                             args=view_args)
-        resp = self.cli.get (view_url, follow=True)
+        resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'accounts/login.html')
         #
@@ -206,7 +220,7 @@ class BaseViewTestCase (TestCase):
         self.assertIsNotNone (self.template_name)
         view_url = reverse (self.view_path,
                             args=view_args)
-        resp = self.cli.get (view_url, follow=True)
+        resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 404)
         #
         # only a club should have access
@@ -215,7 +229,7 @@ class BaseViewTestCase (TestCase):
             #
             # log a user in, using the received information
             #
-            self.cli.login (username=login_info['username'],
+            self.client.login (username=login_info['username'],
                             password=login_info['password'])
         else:
             self.client.login (username=self.T_CLUB['username'],
@@ -224,7 +238,7 @@ class BaseViewTestCase (TestCase):
         self.assertIsNotNone (self.template_name)
         view_url = reverse (self.view_path,
                             args=view_args)
-        resp = self.cli.get (view_url, follow=True)
+        resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, self.template_name)
 
@@ -239,8 +253,8 @@ class BaseViewTestCase (TestCase):
             #
             # log a user in, using the received information
             #
-            self.cli.login (username=login_info['username'],
-                            password=login_info['password'])
+            self.client.login (username=login_info['username'],
+                               password=login_info['password'])
         #
         # test the view
         #
@@ -248,7 +262,7 @@ class BaseViewTestCase (TestCase):
         self.assertIsNotNone (self.template_name)
         view_url = reverse (self.view_path,
                             args=view_args)
-        resp = self.cli.get (view_url, follow=True)
+        resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, self.template_name)
 
@@ -285,7 +299,7 @@ class HomeViewTest (BaseViewTestCase):
         #
         # unauthenticated users should see the welcome screen
         #
-        resp = self.cli.get (view_url)
+        resp = self.client.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template.name, 'welcome.html')
 
@@ -294,10 +308,10 @@ class HomeViewTest (BaseViewTestCase):
         #
         # superusers should not be allowed in this site
         #
-        self.cli.logout ( )
-        self.cli.login (username=self.T_ROOT['username'],
+        self.client.logout ( )
+        self.client.login (username=self.T_ROOT['username'],
                         password=self.T_ROOT['password'])
-        resp = self.cli.get (view_url)
+        resp = self.client.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template.name, 'superuser_not_allowed.html')
 
@@ -306,9 +320,9 @@ class HomeViewTest (BaseViewTestCase):
         #
         # log the club in
         #
-        self.cli.login (username=self.T_CLUB['username'],
+        self.client.login (username=self.T_CLUB['username'],
                         password=self.T_CLUB['password'])
-        resp = self.cli.get (view_url)
+        resp = self.client.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'clubs/home.html')
 
@@ -317,10 +331,10 @@ class HomeViewTest (BaseViewTestCase):
         #
         # log the player in
         #
-        self.cli.logout ( )
-        self.cli.login (username=self.T_PLAYER['username'],
+        self.client.logout ( )
+        self.client.login (username=self.T_PLAYER['username'],
                         password=self.T_PLAYER['password'])
-        resp = self.cli.get (view_url)
+        resp = self.client.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'players/home.html')
 

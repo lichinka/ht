@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-25 19:47+0100\n"
+"POT-Creation-Date: 2012-02-03 21:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,36 +18,64 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/forms.py:44
+#: accounts/forms.py:53
 msgid "Please choose a different email address"
 msgstr ""
 
-#: accounts/forms.py:57
+#: accounts/forms.py:66
 msgid "Passwords do not match, please retype them"
 msgstr ""
 
-#: accounts/models.py:106
+#: accounts/models.py:107
 msgid "Beginner"
 msgstr ""
 
-#: accounts/models.py:107
+#: accounts/models.py:108
 msgid "Intermediate"
 msgstr ""
 
-#: accounts/models.py:108
+#: accounts/models.py:109
 msgid "Advanced"
 msgstr ""
 
-#: accounts/models.py:109
+#: accounts/models.py:110
 msgid "Registered"
 msgstr ""
 
-#: accounts/models.py:121
+#: accounts/models.py:122
 msgid "This user has already been assigned a club profile"
 msgstr ""
 
-#: accounts/models.py:148
+#: accounts/models.py:136
+msgid "Address"
+msgstr ""
+
+#: accounts/models.py:139
+msgid "Telephone numbers"
+msgstr ""
+
+#: accounts/models.py:141
+msgid "Club or company name"
+msgstr ""
+
+#: accounts/models.py:143
+msgid "empty"
+msgstr ""
+
+#: accounts/models.py:144
+msgid "Tax number"
+msgstr ""
+
+#: accounts/models.py:151
 msgid "This user has already been assigned a player profile"
+msgstr ""
+
+#: actstream/actions.py:34
+msgid "started following"
+msgstr ""
+
+#: actstream/actions.py:58
+msgid "stopped following"
 msgstr ""
 
 #: clubs/models.py:106 clubs/tests/models.py:213 clubs/tests/models.py:233
@@ -577,15 +605,15 @@ msgstr ""
 msgid "3 hours"
 msgstr ""
 
-#: reservations/models.py:305
+#: reservations/models.py:308
 msgid "By player"
 msgstr ""
 
-#: reservations/models.py:306
+#: reservations/models.py:309
 msgid "By club"
 msgstr ""
 
-#: reservations/models.py:307
+#: reservations/models.py:310
 msgid "Repairs"
 msgstr ""
 
@@ -656,10 +684,11 @@ msgid "Login"
 msgstr ""
 
 #: templates/accounts/club_information.html:10
+#: templates/accounts/edit_club_profile.html:21
 msgid "Institutional data"
 msgstr ""
 
-#: templates/accounts/club_information.html:21
+#: templates/accounts/club_information.html:22
 #: templates/accounts/player_information.html:38 templates/admin/index.html:35
 #: templates/clubs/court_setup.html:56 templates/players/availability.html:45
 msgid "Edit"
@@ -686,6 +715,19 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: templates/accounts/edit_club_profile.html:16
+msgid "Login data"
+msgstr ""
+
+#: templates/accounts/edit_club_profile.html:38
+#: templates/accounts/edit_player_profile.html:49
+#: templates/clubs/edit_court_properties.html:58
+#: templates/clubs/edit_court_setup.html:37
+#: templates/clubs/edit_court_setup.html:97
+#: templates/reservations/club_edit.html:92 templates/wiki/edit.html:51
+msgid "Save"
+msgstr ""
+
 #: templates/accounts/edit_player_profile.html:16
 msgid "First name"
 msgstr ""
@@ -704,14 +746,6 @@ msgstr ""
 
 #: templates/accounts/edit_player_profile.html:40
 msgid "Right handed?"
-msgstr ""
-
-#: templates/accounts/edit_player_profile.html:49
-#: templates/clubs/edit_court_properties.html:58
-#: templates/clubs/edit_court_setup.html:37
-#: templates/clubs/edit_court_setup.html:97
-#: templates/reservations/club_edit.html:86 templates/wiki/edit.html:51
-msgid "Save"
 msgstr ""
 
 #: templates/accounts/login.html:8
@@ -764,6 +798,37 @@ msgstr ""
 
 #: templates/accounts/user_menu.html:15
 msgid "Reservations"
+msgstr ""
+
+#: templates/activity/action.html:8
+msgid "ago"
+msgstr ""
+
+#: templates/activity/actor.html:24
+msgid "UNFOLLOW"
+msgstr ""
+
+#: templates/activity/actor.html:25
+msgid "FOLLOW"
+msgstr ""
+
+#: templates/activity/actor.html:33
+#, fuzzy
+msgid "View my actions"
+msgstr "Handling"
+
+#: templates/activity/actor.html:39
+msgid "No actions yet"
+msgstr ""
+
+#: templates/activity/detail.html:3
+#, python-format
+msgid "On %(date)s at %(time)s"
+msgstr ""
+
+#: templates/activity/followers.html:2
+#, python-format
+msgid "Users following %(actor)s"
 msgstr ""
 
 #: templates/admin/base_site.html:4
@@ -1059,7 +1124,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/reservations/club_edit.html:46
+#: templates/reservations/club_edit.html:52
 #: templates/reservations/club_view.html:20
 #: templates/reservations/player_edit.html:17
 #: templates/reservations/transfer_or_delete.html:49
@@ -1067,34 +1132,34 @@ msgstr ""
 msgid "Date"
 msgstr "Dato"
 
-#: templates/reservations/club_edit.html:52
+#: templates/reservations/club_edit.html:58
 #: templates/reservations/player_edit.html:23
 #: templates/reservations/transfer_or_delete.html:50
 #: templates/user_messages/invitations.html:23
 msgid "From"
 msgstr ""
 
-#: templates/reservations/club_edit.html:57
+#: templates/reservations/club_edit.html:63
 #: templates/reservations/player_edit.html:28
 #: templates/reservations/transfer_or_delete.html:51
 #: templates/user_messages/invitations.html:38
 msgid "To"
 msgstr ""
 
-#: templates/reservations/club_edit.html:62
+#: templates/reservations/club_edit.html:68
 #: templates/reservations/transfer_or_delete.html:53
 msgid "Description"
 msgstr ""
 
-#: templates/reservations/club_edit.html:68
+#: templates/reservations/club_edit.html:74
 msgid "Repeat weekly?"
 msgstr ""
 
-#: templates/reservations/club_edit.html:74
+#: templates/reservations/club_edit.html:80
 msgid "until date"
 msgstr ""
 
-#: templates/reservations/club_edit.html:94
+#: templates/reservations/club_edit.html:100
 msgid "Cancel reservation"
 msgstr ""
 

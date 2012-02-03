@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-25 19:46+0100\n"
+"POT-Creation-Date: 2012-02-03 21:10+0100\n"
 "PO-Revision-Date: 2011-11-03 21:00+CEST\n"
 "Last-Translator: B+Lu\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,37 +16,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/forms.py:44
+#: accounts/forms.py:53
 msgid "Please choose a different email address"
 msgstr "Izberite drugačen naslov elektronske pošte"
 
-#: accounts/forms.py:57
+#: accounts/forms.py:66
 msgid "Passwords do not match, please retype them"
 msgstr "Gesli nista enaki, poskusite znova"
 
-#: accounts/models.py:106
+#: accounts/models.py:107
 msgid "Beginner"
 msgstr "Začetnik"
 
-#: accounts/models.py:107
+#: accounts/models.py:108
 msgid "Intermediate"
 msgstr "Srednji"
 
-#: accounts/models.py:108
+#: accounts/models.py:109
 msgid "Advanced"
 msgstr "Napredni"
 
-#: accounts/models.py:109
+#: accounts/models.py:110
 msgid "Registered"
 msgstr "Včlanjen igralec"
 
-#: accounts/models.py:121
+#: accounts/models.py:122
 msgid "This user has already been assigned a club profile"
 msgstr "Ta uporabnik je že registriran kot klub"
 
-#: accounts/models.py:148
+#: accounts/models.py:136
+msgid "Address"
+msgstr "Naslov"
+
+#: accounts/models.py:139
+msgid "Telephone numbers"
+msgstr "Telefonske številke"
+
+#: accounts/models.py:141
+msgid "Club or company name"
+msgstr "Naziv kluba oz. podjetja"
+
+#: accounts/models.py:143
+msgid "empty"
+msgstr "prazno"
+
+#: accounts/models.py:144
+msgid "Tax number"
+msgstr "Davčna številka"
+
+#: accounts/models.py:151
 msgid "This user has already been assigned a player profile"
 msgstr "Ta uporabnik je že registriran kot igralec"
+
+#: actstream/actions.py:34
+msgid "started following"
+msgstr "sledi"
+
+#: actstream/actions.py:58
+msgid "stopped following"
+msgstr "ne sledi"
 
 #: clubs/models.py:106 clubs/tests/models.py:213 clubs/tests/models.py:233
 msgid "Copy of"
@@ -128,8 +156,9 @@ msgstr "Tega razporeda igrišč ne morete izbrisati"
 msgid ""
 "The selected court setup cannot be deleted because it has reservations "
 "attached to it."
-msgstr "Izbranega razporeda igrišč ne morete izbrisati, ker na njem obstajajo rezervacije."
-
+msgstr ""
+"Izbranega razporeda igrišč ne morete izbrisati, ker na njem obstajajo "
+"rezervacije."
 
 #: comments/admin.py:12
 msgid "Content"
@@ -575,15 +604,15 @@ msgstr "2 uri"
 msgid "3 hours"
 msgstr "3 ure"
 
-#: reservations/models.py:305
+#: reservations/models.py:308
 msgid "By player"
 msgstr "S strani igralca"
 
-#: reservations/models.py:306
+#: reservations/models.py:309
 msgid "By club"
 msgstr "S strani kluba"
 
-#: reservations/models.py:307
+#: reservations/models.py:310
 msgid "Repairs"
 msgstr "Vzdrževanje"
 
@@ -658,10 +687,11 @@ msgid "Login"
 msgstr "Prijava"
 
 #: templates/accounts/club_information.html:10
+#: templates/accounts/edit_club_profile.html:21
 msgid "Institutional data"
 msgstr "Kontakni podatki"
 
-#: templates/accounts/club_information.html:21
+#: templates/accounts/club_information.html:22
 #: templates/accounts/player_information.html:38 templates/admin/index.html:35
 #: templates/clubs/court_setup.html:56 templates/players/availability.html:45
 msgid "Edit"
@@ -692,6 +722,19 @@ msgstr ""
 msgid "Search"
 msgstr "Išči"
 
+#: templates/accounts/edit_club_profile.html:16
+msgid "Login data"
+msgstr "Prijavni podatki"
+
+#: templates/accounts/edit_club_profile.html:38
+#: templates/accounts/edit_player_profile.html:49
+#: templates/clubs/edit_court_properties.html:58
+#: templates/clubs/edit_court_setup.html:37
+#: templates/clubs/edit_court_setup.html:97
+#: templates/reservations/club_edit.html:92 templates/wiki/edit.html:51
+msgid "Save"
+msgstr "Shrani"
+
 #: templates/accounts/edit_player_profile.html:16
 msgid "First name"
 msgstr "Ime"
@@ -711,14 +754,6 @@ msgstr "Moški"
 #: templates/accounts/edit_player_profile.html:40
 msgid "Right handed?"
 msgstr "Desničar"
-
-#: templates/accounts/edit_player_profile.html:49
-#: templates/clubs/edit_court_properties.html:58
-#: templates/clubs/edit_court_setup.html:37
-#: templates/clubs/edit_court_setup.html:97
-#: templates/reservations/club_edit.html:86 templates/wiki/edit.html:51
-msgid "Save"
-msgstr "Shrani"
 
 #: templates/accounts/login.html:8
 msgid "Wrong email address or password"
@@ -771,6 +806,36 @@ msgstr "Profil"
 #: templates/accounts/user_menu.html:15
 msgid "Reservations"
 msgstr "Rezervacije"
+
+#: templates/activity/action.html:8
+msgid "ago"
+msgstr ""
+
+#: templates/activity/actor.html:24
+msgid "UNFOLLOW"
+msgstr ""
+
+#: templates/activity/actor.html:25
+msgid "FOLLOW"
+msgstr ""
+
+#: templates/activity/actor.html:33
+msgid "View my actions"
+msgstr "Moje aktivnosti"
+
+#: templates/activity/actor.html:39
+msgid "No actions yet"
+msgstr "Ni aktivnosti"
+
+#: templates/activity/detail.html:3
+#, python-format
+msgid "On %(date)s at %(time)s"
+msgstr ""
+
+#: templates/activity/followers.html:2
+#, python-format
+msgid "Users following %(actor)s"
+msgstr ""
 
 #: templates/admin/base_site.html:4
 msgid "::: HT site admin"
@@ -1068,7 +1133,7 @@ msgstr ""
 "            Reservacija igrišča %(num)s\n"
 "        "
 
-#: templates/reservations/club_edit.html:46
+#: templates/reservations/club_edit.html:52
 #: templates/reservations/club_view.html:20
 #: templates/reservations/player_edit.html:17
 #: templates/reservations/transfer_or_delete.html:49
@@ -1076,34 +1141,34 @@ msgstr ""
 msgid "Date"
 msgstr "Datum"
 
-#: templates/reservations/club_edit.html:52
+#: templates/reservations/club_edit.html:58
 #: templates/reservations/player_edit.html:23
 #: templates/reservations/transfer_or_delete.html:50
 #: templates/user_messages/invitations.html:23
 msgid "From"
 msgstr "Od"
 
-#: templates/reservations/club_edit.html:57
+#: templates/reservations/club_edit.html:63
 #: templates/reservations/player_edit.html:28
 #: templates/reservations/transfer_or_delete.html:51
 #: templates/user_messages/invitations.html:38
 msgid "To"
 msgstr "Do"
 
-#: templates/reservations/club_edit.html:62
+#: templates/reservations/club_edit.html:68
 #: templates/reservations/transfer_or_delete.html:53
 msgid "Description"
 msgstr "Opis"
 
-#: templates/reservations/club_edit.html:68
+#: templates/reservations/club_edit.html:74
 msgid "Repeat weekly?"
 msgstr "Ponavljaj tedensko?"
 
-#: templates/reservations/club_edit.html:74
+#: templates/reservations/club_edit.html:80
 msgid "until date"
 msgstr "do dne"
 
-#: templates/reservations/club_edit.html:94
+#: templates/reservations/club_edit.html:100
 msgid "Cancel reservation"
 msgstr "Prekliči rezervacijo"
 
@@ -1327,7 +1392,7 @@ msgstr "skupina"
 
 #: user_messages/admin.py:22
 msgid "Creates the message optionally for all users or a group of users."
-msgstr ""
+msgstr "Pošlji sporočilo vsem uporabnikom ali skupini uporabnikov."
 
 #: user_messages/admin.py:29
 msgid "All users"
@@ -1396,11 +1461,11 @@ msgstr ""
 
 #: user_messages/management.py:14
 msgid "you have undeleted a message"
-msgstr ""
+msgstr "izbrisali ste sporočilo"
 
 #: user_messages/models.py:67
 msgid "Parent message"
-msgstr ""
+msgstr "Predhodno sporočilo"
 
 #: user_messages/models.py:68
 msgid "sent at"
@@ -1445,7 +1510,7 @@ msgstr ""
 
 #: user_messages/views.py:118 user_messages/views.py:164
 msgid "Message successfully sent."
-msgstr ""
+msgstr "Sporočilo poslano!"
 
 #: user_messages/views.py:171
 #, python-format
@@ -1454,7 +1519,7 @@ msgstr ""
 
 #: user_messages/views.py:207
 msgid "Message successfully deleted."
-msgstr ""
+msgstr "Izbrisali ste sporočilo."
 
 #: user_messages/views.py:234
 msgid "Message successfully recovered."

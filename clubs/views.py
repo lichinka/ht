@@ -72,7 +72,7 @@ def delete_court_setup (request, cs_id):
                             body=_('The selected court setup cannot be deleted because it has reservations attached to it.'))
         else:
             CourtSetup.objects.delete (cs)
-            return redirect (reverse ('accounts_profile'))
+            return redirect (reverse ('accounts_display_profile'))
     else:
         raise Http404
 
@@ -137,7 +137,7 @@ def edit_court_setup (request, cs_id, c_id=None):
             form = EditCourtSetupForm (request.POST, instance=cs)
             if form.is_valid ( ):
                 form.save ( )
-                return redirect (reverse ('accounts_profile'))
+                return redirect (reverse ('accounts_display_profile'))
         else:
             form = EditCourtSetupForm (instance=cs)
         day_list = Vacancy.DAYS
@@ -215,7 +215,7 @@ def toggle_active_court_setup (request, cs_id):
     club = UserProfile.objects.get_profile (request.user.username)
     if (club.is_club ( )) and (cs.club == club):
         CourtSetup.objects.activate (cs)
-        return redirect (reverse ('accounts_profile'))
+        return redirect (reverse ('accounts_display_profile'))
     else:
         raise Http404
 

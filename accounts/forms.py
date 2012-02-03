@@ -1,11 +1,21 @@
 from django import forms
+from django.forms import widgets
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from accounts.models import PlayerProfile
-from django.forms import widgets
+from accounts.models import PlayerProfile, ClubProfile
 
+
+
+
+class EditClubProfileForm (forms.ModelForm):
+    """
+    A form to edit the club's profile.-
+    """
+    class Meta:
+        model = ClubProfile
+        fields = ('company', 'tax_number', 'address', 'city', 'phone')
 
 
 class EditPlayerProfileForm (forms.ModelForm):
@@ -20,9 +30,8 @@ class EditPlayerProfileForm (forms.ModelForm):
                             required=False)
     class Meta:
         model = PlayerProfile
-        
-        
-        
+
+
 class RegisterUserForm (forms.Form):
     """
     A form to register a new user.-
@@ -32,7 +41,7 @@ class RegisterUserForm (forms.Form):
                              widget=forms.PasswordInput ( ))
     pass2 = forms.CharField (max_length=30,
                              widget=forms.PasswordInput ( ))
-   
+
     def clean_email (self):
         """
         Checks that the email does not yet exist, since

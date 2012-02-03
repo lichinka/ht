@@ -350,7 +350,49 @@ a.free_court_button_18 {
 }
 
 /**
- * Container for horizontal forms
+ * Vertical forms
+ */
+div.vertical_form {
+	margin: 1em auto;
+	overflow:hidden;
+	background-color:#fff;
+	border: 1px solid #aaa;
+    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    box-shadow: inset 0 1px 3px #fff, 1px 1px 3px #aaa;
+    -moz-box-shadow: inset 0 1px 3px #fff, 1px 1px 3px #aaa;
+    -webkit-box-shadow: inset 0 1px 3px #fff, 1px 1px 3px #aaa;
+    -o-box-shadow: inset 0 1px 3px #fff, 1px 1px 3px #aaa;
+}
+div.form_elem {
+	margin-right: 0.5em;
+	padding: 0.5em;
+	text-align:center;
+}
+div.form_elem .errorlist {
+	color:red;
+}
+div.form_elem label {
+	display: block;
+	text-align: left;
+	font-weight: bold;
+	font-size: 80%;
+}
+div.form_elem select,input,textarea {
+	margin:auto;
+	width:100%;
+	border: 1px solid #aaa;
+    border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;
+}
+div.form_action {
+	float:right;
+	margin:1.5em;
+}
+div.form_action a {
+	font-size: 80%;
+}
+
+/**
+ * Horizontal forms
  */
 div#form {
 	margin: 1em auto;

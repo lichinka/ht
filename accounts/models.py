@@ -3,6 +3,7 @@ from abc import abstractmethod
 from django.db import models
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_delete
 from django.contrib.auth.models import User
@@ -131,14 +132,16 @@ class ClubProfile (UserProfile):
     """
     Holds extra data about the registered club.-
     """
-    address = models.CharField (max_length=200)
+    address = models.CharField (max_length=200,
+                                verbose_name=_('Address'))
     city = models.ForeignKey (City)
     phone = models.CharField (max_length=50,
-                              null=False,
-                              blank=False)
+                              verbose_name=_('Telephone numbers'))
     company = models.CharField (max_length=200,
-                                null=False,
-                                blank=False)
+                                verbose_name=_('Club or company name'))
+    tax_number = models.CharField (max_length=50,
+                                   default='* %s *' % ugettext ('empty'),
+                                   verbose_name=_('Tax number'))
 
     def clean (self):
         """

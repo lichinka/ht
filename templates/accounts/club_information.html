@@ -12,14 +12,15 @@
 		<div class="panel_content">
 			<ul>
 				<li>{{ club.company }}</li>
-				<li>{{ club.address }}, {{ club.city }}</li>
+                <li>{{ club.address }}, {{ club.city }}</li>
 				<li>{{ club.phone }}</li>
+                <li>{{ club.user.email }}</li>
 			</ul>
 		</div>
-		<!--
-		<div class="panel_buttons">
-		    <a href="#" class="button">{% trans 'Edit' %}</a>
+        <div class="panel_buttons">
+            <a href="{% url 'accounts_edit_club_profile' %}" class="button">
+                {% trans 'Edit' %}
+            </a>
 		</div>
-		-->
 	{% endif %}
 </div>

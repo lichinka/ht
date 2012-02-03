@@ -16,8 +16,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 
 from actstream import action
+from accounts.forms import RegisterUserForm, EditPlayerProfileForm, EditClubProfileForm
 from accounts.models import UserProfile
-from accounts.forms import RegisterUserForm, EditPlayerProfileForm
 
 
 
@@ -52,6 +52,29 @@ def register (request):
     else:
         return redirect (reverse ('ht.views.home'))
 
+
+@login_required
+def edit_club_profile (request,
+                       template_name='accounts/edit_club_profile.html'):
+    """
+    Displays a form to edit a club's profile.-
+    """
+    cp = UserProfile.objects.get_profile (request.user.username)
+    if cp.is_club ( ):
+        post_data = request.POST if request.method == 'POST' else None
+        form = EditClubProfileForm (post_data,
+                                    instance=cp)
+        if form.is_valid ( ):
+            cp = form.save (commit=False)
+            cp.user = request.user
+            cp.save ( )
+            # go back to the profile page
+            return redirect (reverse ('accounts_display_profile'))
+        return render_to_response (template_name,
+                                   {'form': form,},
+                                   context_instance=RequestContext(request))
+    else:
+        raise Http404
 
 
 @login_required

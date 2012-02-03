@@ -1,23 +1,17 @@
 from collections import deque
 
-from django.test import TestCase, Client
+from django.test import Client
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
-import ht_utils
-from accounts.models import UserProfile, ClubProfile, PlayerProfile
+from ht_utils import random_ascii_string, pick_random_element
+from ht_utils.tests import BaseViewTestCase
+from accounts.models import UserProfile, PlayerProfile
 from locations.models import City
 
 
 
-class TemplateTagTest (TestCase):
-    """
-    All the test cases for the template tags of this app.-
-    """
-    pass
 
-
-class ViewTest (TestCase):
+class ViewTest (BaseViewTestCase):
     """
     All the test cases for the views of this app.-
     """
@@ -25,18 +19,48 @@ class ViewTest (TestCase):
         """
         Creates a club and a player used during testing.-
         """
-        c = User.objects.create_user ('club@nowhere.si', 'club@nowhere.si', 'pass')
-        self.club = UserProfile.objects.create_club_profile (c,
-                                                             "Postal address 1231",
-                                                             City.objects.all ( )[0],
-                                                             "111-222-333",
-                                                             "The best tennis club d.o.o.")
-        p = User.objects.create_user ('some_player@somewhere.si', 'some_player@somewhere.si', 'pass')
-        self.player = UserProfile.objects.create_player_profile (p.username)
-        self.player.level = 'I'
-        self.player.male = True
-        self.player.right_handed = False
-        self.player.save ( )
+        self._create_club ( )
+        self._create_player ( )
+
+
+    def test_edit_club_profile (self):
+        """
+        Checks the behavior of accounts.views.edit_club_profile.-
+        """
+        self.view_path = 'accounts_edit_club_profile'
+        self.template_name = 'accounts/edit_club_profile.html'
+
+        self._test_existance_and_correct_template (login_info={'username': self.T_CLUB['username'],
+                                                               'password': self.T_CLUB['password']})
+        self._test_only_club_has_access ( )
+        #
+        # test displayed data is correct
+        #
+        self.client.login (username=self.T_CLUB['username'],
+                           password=self.T_CLUB['password'])
+        resp = self.client.get (reverse (self.view_path))
+
+        self.assertContains (resp, self.club.address, 1)
+        self.assertContains (resp, unicode (self.club.city), 1)
+        self.assertContains (resp, self.club.phone, 1)
+        self.assertContains (resp, self.club.company, 1)
+
+        #
+        # test saved data is correct
+        #
+        self.T_CLUB['company']    = "Ghetto d.o.o."
+        self.T_CLUB['tax_number'] = 'SI 1234567890123'
+        self.T_CLUB['address']    = "A totally new address 9873"
+        self.T_CLUB['city']       = pick_random_element (City.objects.all ( )).pk
+        self.T_CLUB['phone']      = "111 222 333 444"
+        resp = self.client.post (reverse (self.view_path),
+                                 self.T_CLUB,
+                                 follow=True)
+        self.assertContains (resp, self.T_CLUB['company'])
+        self.club = UserProfile.objects.get_profile (self.T_CLUB['username'])
+        self.T_CLUB['city'] = City.objects.get (pk=self.T_CLUB['city'])
+        for field in ['company', 'tax_number', 'address', 'city', 'phone']:
+            self.assertEquals (getattr (self.club, field, None), self.T_CLUB[field])
 
 
     def test_register (self):
@@ -70,8 +94,8 @@ class ViewTest (TestCase):
                          'View %s did not recognize the username %s was already taken' % (view_url,
                                                                                           self.club.user.username))
 
-        self.assertTrue (cli.login (username=self.club.user.username, password='pass'),
-                         'Could not log %s in' % self.club)
+        self.assertTrue (cli.login (username=self.club.user.username,
+                                    password=self.T_CLUB['password']))
 
         resp = cli.get (view_url, follow=True)
         self.assertEquals (resp.request['PATH_INFO'], reverse ('ht.views.home'),
@@ -99,8 +123,7 @@ class ViewTest (TestCase):
         view_url = reverse ('accounts.views.edit_player_profile')
 
         self.assertTrue (cli.login (username=self.club.user.username,
-                                    password='pass'),
-                         'Could not log club %s in' % self.club)
+                                    password=self.T_CLUB['password']))
 
         resp = cli.get (view_url, follow=True)
         self.assertTrue (resp.status_code == 404,
@@ -112,8 +135,7 @@ class ViewTest (TestCase):
         cli.logout ( )
 
         self.assertTrue (cli.login (username=self.player.user.username,
-                                    password='pass'),
-                         'Could not log player %s in' % self.player)
+                                    password=self.T_PLAYER['password']))
 
         resp = cli.get (view_url)
         self.assertTrue (resp.status_code == 200,
@@ -142,8 +164,8 @@ class ViewTest (TestCase):
         #
         # test view save
         #
-        first_name = ht_utils.random_ascii_string (form.fields['first_name'].max_length)
-        last_name  = ht_utils.random_ascii_string (form.fields['last_name'].max_length)
+        first_name = random_ascii_string (form.fields['first_name'].max_length)
+        last_name  = random_ascii_string (form.fields['last_name'].max_length)
         level = form.fields['level'].choices[-1][0]
         male  = False
         right_handed = False
@@ -202,92 +224,4 @@ class ViewTest (TestCase):
                                                       resp.status_code))
         self.assertEquals (resp.request['PATH_INFO'], reverse('ht.views.home'),
                            'View %s did not redirect to home page' % view_url)
-
-
-
-class UserProfileTest (TestCase):
-    """
-    All tests regarding the UserProfile model.
-    """
-    def setUp (self):
-        """
-        Creates some test players and clubs used during testing.-
-        """
-        p = User.objects.create_user ('test_player', 'player@nowhere.si', 'pass')
-        UserProfile.objects.create_player_profile (p)
-        c = User.objects.create_user ('test_club', 'club@nowhere.si', 'pass')
-        UserProfile.objects.create_club_profile (c,
-                                                 "Postal address 1231",
-                                                 City.objects.all ( )[0],
-                                                 "111-222-333",
-                                                 "The best tennis club d.o.o.")
-
-
-    def test_player_cannot_be_club (self):
-        """
-        Checks that a player cannot have a club's profile associated.-
-        """
-        pp = UserProfile.objects.get_profile ('test_player')
-        cp = UserProfile.objects.create_club_profile (pp.user.username,
-                                                      "Some address",
-                                                      City.objects.all ( )[0],
-                                                      "Some phone",
-                                                      "Some company")
-        self.assertTrue (cp is None,
-                         "A club's profile has been associated with an existing player")
-        self.assertTrue (len (ClubProfile.objects.filter (user__username='test_player')) == 0,
-                         "A club's profile has been associated with an existing player")
-
-
-    def test_player_profile_creation (self):
-        """
-        Checks that the player profile is correctly created.-
-        """
-        up = UserProfile.objects.get_profile ('test_player')
-
-        self.assertTrue (up.is_player ( ),
-                         "The created player's profile is incorrect")
-        self.assertTrue (up.is_club ( ) == False,
-                         "The created player's profile is incorrect")
-        self.assertTrue (up.level == 'B')
-        self.assertTrue (up.male)
-        self.assertTrue (up.right_handed)
-
-
-    def test_player_profile_deletion (self):
-        """
-        Checks that the corresponding profile is deleted with the user.-
-        """
-        u = User.objects.get (username='test_player')
-        up = UserProfile.objects.get_profile (u.username)
-        u.delete ( )
-        self.assertTrue (len (PlayerProfile.objects.filter (pk=up.id)) == 0,
-                         "The related player's profile has not been deleted")
-
-
-    def test_club_profile_creation (self):
-        """
-        Checks that the club profile is correctly created.-
-        """
-        up = UserProfile.objects.get_profile ('test_club')
-
-        self.assertTrue (up.is_club ( ),
-                         "The created club's profile is incorrect")
-        self.assertTrue (up.is_player ( ) == False,
-                         "The created club's profile is incorrect")
-        self.assertTrue (up.address == 'Postal address 1231')
-        self.assertTrue (up.city == City.objects.all ( )[0])
-        self.assertTrue (up.phone == '111-222-333')
-        self.assertTrue (up.company == 'The best tennis club d.o.o.')
-
-
-    def test_club_profile_deletion (self):
-        """
-        Checks that the corresponding profile is deleted with the user.-
-        """
-        u = User.objects.get (username='test_club')
-        up = UserProfile.objects.get_profile (u.username)
-        u.delete ( )
-        self.assertTrue (len (ClubProfile.objects.filter (pk=up.id)) == 0,
-                         "The related club's profile has not been deleted")
 
