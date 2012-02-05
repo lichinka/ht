@@ -99,12 +99,8 @@ def edit_player_profile (request):
             pp.user.last_name = form.cleaned_data['last_name']
             pp.user.save ( )
             pp.save ( )
-            #
-            # go to the next page
-            #
-            if not form.cleaned_data['next']:
-                form.cleaned_data['next'] = reverse ('ht.views.home')
-            return redirect (form.cleaned_data['next'])
+            # go back to the profile page
+            return redirect (reverse ('accounts_display_profile'))
 
         return render_to_response ('accounts/edit_player_profile.html',
                                    {'form': form,},

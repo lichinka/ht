@@ -1,22 +1,13 @@
-from random import randint
+import random
 from decimal import Decimal, ROUND_HALF_UP
-from datetime import date
 
-from django.test import TestCase
 from django.db.models import Count
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext
-from django.contrib.auth.models import User
 
-from ht_utils import number_to_default_locale, pick_random_element
-from ht_utils.tests import BaseViewTestCase
 from clubs.models import CourtSetup, Court, Vacancy
-from accounts.models import UserProfile
-from locations.models import City
-from clubs.templatetags import vacancy_tags
 from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 from clubs.templatetags.vacancy_tags import vacancy_prices_per_day
-from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -34,7 +25,7 @@ class DeleteCourtSetupTest (BaseViewTestCase):
         #
         # get a court setup 
         #
-        cs = pick_random_element (self.cs_list)
+        cs = random.choice (self.cs_list)
         #
         # delete all its reservations
         #

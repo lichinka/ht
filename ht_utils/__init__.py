@@ -9,14 +9,6 @@ from django.contrib.auth.models import User
 
 
 
-def pick_random_element (list):
-    """
-    Returns a random element from the received list.-
-    """
-    idx = random.randint (1, len(list))
-    return list[idx - 1]
-
-
 def random_id_list (id_dict, length=None):
     """
     Returns a shuffled list of length 'length' of randomly selected IDs

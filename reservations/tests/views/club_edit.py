@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Count
 
 from clubs.models import CourtSetup, Vacancy
-from ht_utils.tests import BaseViewTestCase
 from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 
 
 

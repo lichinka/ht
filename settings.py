@@ -157,7 +157,9 @@ FORCE_SCRIPT_NAME = ''
 #
 # User's activity stream configuration (actstream)
 #
-ACTSTREAM_ACTION_MODELS = ['auth.User', 'reservations.Reservation']
+ACTSTREAM_ACTION_MODELS = ['auth.User',
+                           'accounts.ClubProfile', 'accounts.PlayerProfile',
+                           'reservations.Reservation']
 ACTSTREAM_ACTION_TEMPLATE = 'activity/single_action.txt'
 ACTSTREAM_MANAGER = 'actstream.managers.ActionManager'
 

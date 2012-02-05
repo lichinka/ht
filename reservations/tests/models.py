@@ -1,4 +1,4 @@
-from random import randint
+import random
 from datetime import date, timedelta
 
 from django.db.utils import IntegrityError
@@ -7,9 +7,8 @@ from django.db.models.deletion import ProtectedError
 from django.db.models.aggregates import Count
 
 from clubs.models import CourtSetup, Court, Vacancy
-from ht_utils.tests import BaseViewTestCase
 from reservations.models import Reservation
-from ht_utils import pick_random_element
+from ht_utils.tests.views import BaseViewTestCase
 
 
 
@@ -24,8 +23,8 @@ class ReservationTest (BaseViewTestCase):
         #
         # no reservations are booked if invalid dates are given
         #
-        from_date = date.today ( ) + timedelta (days=randint (0, 10))
-        until_date = from_date - timedelta (days=randint (5, 15))
+        from_date = date.today ( ) + timedelta (days=random.randint (0, 10))
+        until_date = from_date - timedelta (days=random.randint (5, 15))
         res_count = Reservation.objects.all ( ) \
                                        .aggregate (Count ('id'))
         # number of days between the two dates
@@ -41,10 +40,10 @@ class ReservationTest (BaseViewTestCase):
         #
         # not all reservations are booked if any term is not free
         #
-        res = pick_random_element (self.res_list)
+        res = random.choice (self.res_list)
         from_date = res.for_date
         v = res.vacancy
-        until_date = from_date + timedelta (days=randint (5, 15))
+        until_date = from_date + timedelta (days=random.randint (5, 15))
         res_count = Reservation.objects.all ( ) \
                                        .aggregate (Count ('id'))
         # number of days between the two dates
@@ -69,11 +68,11 @@ class ReservationTest (BaseViewTestCase):
         cs = CourtSetup.objects.get_active (self.club)
         v = None
         while v is None:
-            from_date = date.today ( ) + timedelta (days=randint (0, 10))
-            v = Vacancy.objects.get_free (cs, from_date, Vacancy.HOURS[randint (0, 15)][0])
+            from_date = date.today ( ) + timedelta (days=random.randint (0, 10))
+            v = Vacancy.objects.get_free (cs, from_date, Vacancy.HOURS[random.randint (0, 15)][0])
             v = v[0] if v else None
                 
-        until_date = from_date + timedelta (days=randint (5, 15))
+        until_date = from_date + timedelta (days=random.randint (5, 15))
         res_count = Reservation.objects.all ( ) \
                                        .aggregate (Count ('id'))
         # number of days between the two dates
@@ -147,7 +146,7 @@ class ReservationTest (BaseViewTestCase):
         #
         # cannot book a taken term
         #
-        r = pick_random_element (self.res_list)
+        r = random.choice (self.res_list)
         taken_term = r.vacancy
         for_date = r.for_date
         description = "Testing the book (...) method"
@@ -166,8 +165,8 @@ class ReservationTest (BaseViewTestCase):
                                  .filter (is_available=False)
         if court_off:
             court_off = court_off[0]
-            for_date = date.today ( ) + timedelta(days=randint (0, 5))
-            hour = Vacancy.HOURS[randint(0, 15)][0]
+            for_date = date.today ( ) + timedelta(days=random.randint (0, 5))
+            hour = Vacancy.HOURS[random.randint(0, 15)][0]
             term = Vacancy.objects.get (court=court_off,
                                         day_of_week=for_date.isoweekday ( ),
                                         available_from=hour)
@@ -185,8 +184,8 @@ class ReservationTest (BaseViewTestCase):
         #
         cs = CourtSetup.objects.get_active (self.club)
         for court in Court.objects.get_available (cs).iterator ( ):
-            for_date = date.today ( ) + timedelta(days=randint (0, 5))
-            hour = Vacancy.HOURS[randint(0, 15)][0]
+            for_date = date.today ( ) + timedelta(days=random.randint (0, 5))
+            hour = Vacancy.HOURS[random.randint(0, 15)][0]
             term = Vacancy.objects.get (court=court,
                                         day_of_week=for_date.isoweekday ( ),
                                         available_from=hour)
@@ -325,13 +324,13 @@ class ReservationTest (BaseViewTestCase):
         # add a repeating reservation, making sure we can accommodate it
         #
         source_cs = CourtSetup.objects.get_active (self.club)
-        from_date = date.today ( ) + timedelta (days=randint (0, 10))
-        until_date = from_date + timedelta (days=randint (8, 25))
+        from_date = date.today ( ) + timedelta (days=random.randint (0, 10))
+        until_date = from_date + timedelta (days=random.randint (8, 25))
         vacancy = None
         while vacancy is None:
             vacancy = Vacancy.objects.get_free (source_cs, 
                                                 from_date, 
-                                                Vacancy.HOURS[randint(0, 15)][0])
+                                                Vacancy.HOURS[random.randint(0, 15)][0])
             vacancy = vacancy[0] if vacancy else None
             
         booked = Reservation.objects.book_weekly (from_date, until_date, commit=False,
@@ -353,7 +352,7 @@ class ReservationTest (BaseViewTestCase):
         #
         target_cs = source_cs
         while target_cs == source_cs:
-            target_cs = pick_random_element (self.cs_list)
+            target_cs = random.choice (self.cs_list)
         
         booked_copy = Reservation.objects.copy_to_court_setup (target_cs, booked, commit=False)
         self.assertTrue (len (booked_copy) <= len (booked))
@@ -392,7 +391,7 @@ class ReservationTest (BaseViewTestCase):
         """
         cs = CourtSetup.objects.get_active (self.club)
         c = Court.objects.get_available (cs)
-        for i in range (0, randint (1, 7)):
+        for i in range (0, random.randint (1, 7)):
             v = Vacancy.objects.get_all ([c[0]], [Vacancy.DAYS[i][0]])
             try:
                 r = Reservation.objects.create (for_date=date.today ( ),
@@ -430,7 +429,7 @@ class ReservationTest (BaseViewTestCase):
         Checks that the number of reservations returned
         by this method is correct.-
         """
-        cs = pick_random_element (self.cs_list)
+        cs = random.choice (self.cs_list)
         court_count = Court.objects.get_count (cs)
         hour_count = len (Vacancy.HOURS) - 1
         term_count = court_count * hour_count
@@ -449,7 +448,7 @@ class ReservationTest (BaseViewTestCase):
         Checks that the number of reservations returned
         by this method is correct.-
         """
-        cs = pick_random_element (self.cs_list)
+        cs = random.choice (self.cs_list)
         court_count = Court.objects.get_count (cs)
         from_date = date.today ( )
         booked_dates = Reservation.objects.from_date (cs, from_date) \

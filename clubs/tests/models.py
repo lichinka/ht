@@ -1,13 +1,12 @@
-from random import randint
+import random
 from datetime import date, timedelta
 
 from django.db.models import Count
 from django.utils.translation import ugettext
 
-from ht_utils import pick_random_element
-from ht_utils.tests import BaseViewTestCase
 from clubs.models import CourtSetup, Court, Vacancy
 from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 
         
     
@@ -52,8 +51,8 @@ class CourtSetupTest (BaseViewTestCase):
         #
         # activate random court setups
         #
-        for i in range (0, randint (2, 5)):
-            rand_cs = pick_random_element (self.cs_list)
+        for i in range (0, random.randint (2, 5)):
+            rand_cs = random.choice (self.cs_list)
             CourtSetup.objects.activate (rand_cs)
             self.assertEquals (active.aggregate (Count ('id'))['id__count'], 1)
             for cs in CourtSetup.objects.filter (club=self.club).iterator ( ):
@@ -73,13 +72,13 @@ class CourtSetupTest (BaseViewTestCase):
         # activate a random court setup, so that we will check
         # that it remains active after calling delete
         #
-        CourtSetup.objects.activate (pick_random_element (self.cs_list))
+        CourtSetup.objects.activate (random.choice (self.cs_list))
         act_cs = CourtSetup.objects.get_active (self.club)
         #
         # find a court setup with reservations attached to it
         #
-        for i in range (0, randint (1, len (self.res_list))):
-            rand_res = pick_random_element (self.res_list)
+        for i in range (0, random.randint (1, len (self.res_list))):
+            rand_res = random.choice (self.res_list)
             cs = rand_res.vacancy.court.court_setup
             #
             # avoid working with the active court setup,
@@ -138,7 +137,7 @@ class CourtSetupTest (BaseViewTestCase):
         #
         # find a court setup with reservations attached to it
         #
-        rand_res = pick_random_element (self.res_list)
+        rand_res = random.choice (self.res_list)
         cs = rand_res.vacancy.court.court_setup
         #
         # force the deletion of the court setup
@@ -158,7 +157,7 @@ class CourtSetupTest (BaseViewTestCase):
         #
         # successful deletion of a random court setup ...
         #
-        cs = pick_random_element (self.cs_list)
+        cs = random.choice (self.cs_list)
         self.assertEquals (cs.club, self.club)
         cs_count = CourtSetup.objects.get_count (self.club)
         CourtSetup.objects.delete (cs, force=True)
@@ -288,7 +287,7 @@ class CourtTest (BaseViewTestCase):
         #
         # pick a random reservation
         #
-        res = pick_random_element (self.res_list)
+        res = random.choice (self.res_list)
         court = res.vacancy.court
         #
         # count reservations at court setup level
@@ -316,13 +315,13 @@ class CourtTest (BaseViewTestCase):
         # add a repeating reservation
         #
         cs = CourtSetup.objects.get_active (self.club)
-        hour = pick_random_element (Vacancy.HOURS[:-1])
+        hour = random.choice (Vacancy.HOURS[:-1])
         from_date = date.today ( )
-        until_date = from_date + timedelta (days=randint (10, 35))
+        until_date = from_date + timedelta (days=random.randint (10, 35))
         v = None
         while v is None:
             v = Vacancy.objects.get_free (cs, from_date, hour[0]).values ('id')
-            v = pick_random_element (v) if v else None
+            v = random.choice (v) if v else None
         v = Vacancy.objects.get (pk=v['id'])
         booked = Reservation.objects.book_weekly (from_date,
                                                   until_date,
@@ -443,8 +442,8 @@ class VacancyTest (BaseViewTestCase):
         # test everything with available courts only
         #
         for_date = date.today ( )
-        hour = pick_random_element (Vacancy.HOURS[:-1])
-        cs = pick_random_element (self.cs_list)
+        hour = random.choice (Vacancy.HOURS[:-1])
+        cs = random.choice (self.cs_list)
         term_count = Court.objects.get_available (cs) \
                                   .aggregate (Count ('id'))
         term_count = term_count['id__count']
@@ -458,13 +457,13 @@ class VacancyTest (BaseViewTestCase):
         #
         # randomly deactivate a court and repeat the test
         #
-        court_off = pick_random_element (Court.objects.get_available (cs).values ('id'))
+        court_off = random.choice (Court.objects.get_available (cs).values ('id'))
         court_off = Court.objects.get (pk=court_off['id'])
         court_off.is_available = False
         court_off.save ( )
         for_date = date.today ( )
-        hour = pick_random_element (Vacancy.HOURS[:-1])
-        cs = pick_random_element (self.cs_list)
+        hour = random.choice (Vacancy.HOURS[:-1])
+        cs = random.choice (self.cs_list)
         term_count = Court.objects.get_available (cs)
         term_count = term_count.aggregate (Count ('id'))['id__count']
         booked = Reservation.objects.by_date (cs, for_date) \
@@ -484,7 +483,7 @@ class VacancyTest (BaseViewTestCase):
         #
         BaseViewTestCase._add_vacancy_prices (self)
         
-        cs = pick_random_element (self.cs_list)
+        cs = random.choice (self.cs_list)
         courts = Court.objects.get_available (cs)
         vacancy_terms = Vacancy.objects.get_all (courts)
         vacancy_term_count = vacancy_terms.aggregate (Count ('id'))

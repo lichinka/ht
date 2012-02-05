@@ -3,9 +3,9 @@ from random import randint
 from django.core.urlresolvers import reverse
 
 from clubs.models import CourtSetup
-from ht_utils.tests import BaseViewTestCase
-from reservations.models import Reservation
 from reservations.forms import TransferOrDeleteForm
+from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 
 
 

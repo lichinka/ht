@@ -3,11 +3,13 @@ from abc import abstractmethod
 from django.db import models
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_delete
 from django.contrib.auth.models import User
 
+from actstream import action
 from locations.models import City
 
 
@@ -157,11 +159,24 @@ class ClubProfile (UserProfile):
         return True
 
 
-@receiver(pre_delete, sender=User)
+@receiver (post_save, sender=ClubProfile, dispatch_uid="club_profile_post_save")
+def club_profile_handler (sender, instance, created, **kwargs):
+    """
+    Callback function used whenever a club's profile is created or
+    updated. It generates a user's action in the 'activity' app.-
+    """
+    if created:
+        action.send (instance.user, verb='created', target=instance)
+    else:
+        action.send (instance.user, verb='updated', target=instance)
+
+
+@receiver (pre_delete, sender=User, dispatch_uid="user_profile_pre_delete")
 def delete_associated_profile (sender, instance, **kwargs):
     """
     Callback function used whenever a user is to be
-    deleted. It deletes the associated Player/Club Profile.-
+    deleted. It deletes the associated Player/Club Profile and
+    generates a user's action in the 'activity' app.-
     """
     #
     # Make sure a player/club profile exists, associated
@@ -173,4 +188,5 @@ def delete_associated_profile (sender, instance, **kwargs):
             PlayerProfile.objects.get (pk=prof.id).delete ( )
         if prof.is_club ( ):
             ClubProfile.objects.get (pk=prof.id).delete ( )
+        action.send (instance, verb='deleted', target=prof)
 

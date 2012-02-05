@@ -1,15 +1,14 @@
-from random import randint
+import sys
+import random
 from datetime import date
 
-from django.conf import settings
+from django.db import models
 from django.test import TestCase
-from django.test.simple import DjangoTestSuiteRunner
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from ht_utils import pick_random_element
 from clubs.models import CourtSetup, Court, Vacancy
-from accounts.models import UserProfile
+from accounts.models import UserProfile, PlayerProfile
 from locations.models import City
 from reservations.models import Reservation
 
@@ -30,9 +29,66 @@ class BaseViewTestCase (TestCase):
               'address'   : 'Postal address 1231',
               'city'      : None,
               'telephone' : '111-222-333',}
-    T_PLAYER = {'username': 'test_player',
-                'email': 'player@nowhere.si',
-                'password': 'thepasswordof1player'}
+    T_PLAYER = {'username'    : 'test_player',
+                'email'       : 'player@nowhere.si',
+                'password'    : 'thepasswordof1player',
+                'first_name'  : 'Andre',
+                'last_name'   : 'Agassi',
+                'level'       : random.choice (PlayerProfile.LEVELS)[0],
+                'male'        : random.randint (1, 2) % 2 == 0,
+                'right_handed': random.randint (1, 9) % 3 == 0}
+
+    # This attribute indicates whether the current test case
+    # runs within its own transaction (the default) or not.
+    own_transaction = True
+
+    # An attribute with a valid superuser
+    root = None
+
+    # An attribute holding a reference to a valid club profile
+    club = None
+
+    # An attribute holding a reference to a valid player profile
+    player = None
+
+    # An attribute containing a list of randomly-generated
+    # court setups
+    cs_list = []
+
+    # An attribute containing a list of randomly-generated
+    # vacancies
+    vacancy_list = []
+
+    # An attribute containing a list of randomly-generated
+    # reservations
+    res_list = []
+
+    def __init__ (self, methodName='runTest', own_transaction=True):
+        """
+        Initializes this test case, optionally turning transaction
+        support off, thus enabling test-case reuse.-
+        """
+        super (BaseViewTestCase, self).__init__ (methodName)
+        self.own_transaction = own_transaction
+
+    def _fixture_setup (self):
+        """
+        Creates a transaction, within which the test is run.-
+        """
+        if self.own_transaction:
+            super (BaseViewTestCase, self)._fixture_setup ( )
+        else:
+            sys.stdout.write ('\n\tSkipping transaction creation\n')
+
+    def _fixture_teardown(self):
+        """
+        Rolls the transaction back, to give the next test case
+        the same initial state.-
+        """
+        if self.own_transaction:
+            super (BaseViewTestCase, self)._fixture_teardown ( )
+        else:
+            sys.stdout.write ('\n\tSkipping transaction creation\n')
 
     def _create_superuser (self):
         """
@@ -51,7 +107,7 @@ class BaseViewTestCase (TestCase):
         # this cannot happen before, otherwise the 'City'
         # table does not exist
         #
-        self.T_CLUB['city'] = pick_random_element (City.objects.all ( ))
+        self.T_CLUB['city'] = random.choice (City.objects.all ( ))
         self.club = UserProfile.objects.create_club_profile (c,
                                                              self.T_CLUB['address'],
                                                              self.T_CLUB['city'],
@@ -62,14 +118,16 @@ class BaseViewTestCase (TestCase):
         """
         Creates a player.-
         """
-        p = User.objects.create_user (**self.T_PLAYER)
-        p.first_name = 'Andre'
-        p.last_name = 'Agassi'
+        p = User.objects.create_user (username=self.T_PLAYER['username'],
+                                      password=self.T_PLAYER['password'],
+                                      email=self.T_PLAYER['email'])
+        p.first_name = self.T_PLAYER['first_name']
+        p.last_name = self.T_PLAYER['last_name']
         p.save ( )
-        self.player = UserProfile.objects.create_player_profile (p.username)
-        self.player.level = 'I'
-        self.player.male = True
-        self.player.right_handed = False
+        self.player = UserProfile.objects.create_player_profile (self.T_PLAYER['username'])
+        self.player.level = self.T_PLAYER['level']
+        self.player.male = self.T_PLAYER['male']
+        self.player.right_handed = self.T_PLAYER['right_handed']
         self.player.save ( )
 
     def _add_court_setups (self):
@@ -98,7 +156,7 @@ class BaseViewTestCase (TestCase):
         #
         # activate a random court setup
         #
-        CourtSetup.objects.activate (pick_random_element (self.cs_list))
+        CourtSetup.objects.activate (random.choice (self.cs_list))
 
     def _add_courts (self):
         """
@@ -110,7 +168,7 @@ class BaseViewTestCase (TestCase):
         self._add_court_setups ( )
 
         for cs in self.cs_list:
-            for i in range (2, randint (2, 7)):
+            for i in range (2, random.randint (2, 7)):
                 Court.objects.create (court_setup=cs,
                                       number=i,
                                       indoor=True if i%2 == 0 else False,
@@ -155,19 +213,19 @@ class BaseViewTestCase (TestCase):
         #
         res_cs_list = list ( )
         if court_setup is None:
-            for i in range (0, randint (1, len (self.cs_list))):
+            for i in range (0, random.randint (1, len (self.cs_list))):
                 res_cs_list.append (self.cs_list[i])
         else:
             res_cs_list.append (court_setup)
         for cs in res_cs_list:
             self.res_list = list ( )
-            for i in range (0, randint (1, 10)):
+            for i in range (0, random.randint (1, 10)):
                 v = None
                 while v is None:
                     for_date = date.today ( )
-                    hour = pick_random_element (Vacancy.HOURS)
+                    hour = random.choice (Vacancy.HOURS)
                     v = Vacancy.objects.get_free (cs, for_date, hour[0]).values ('id')
-                    v = pick_random_element (v) if v else None
+                    v = random.choice (v) if v else None
                 v = Vacancy.objects.get (pk=v['id'])
                 self.res_list.append (Reservation.objects.create (for_date=date.today ( ),
                                                                   type='P' if i%2 == 0 else 'C',
@@ -192,11 +250,22 @@ class BaseViewTestCase (TestCase):
         self.view_path = None
         self.template_name = None
 
-    def _test_only_club_has_access (self, login_info=None, view_args=None):
+
+    def _test_only_player_has_access (self, view_args=None):
+        self._test_only_user_has_access (self.T_PLAYER['username'],
+                                         self.T_PLAYER['password'],
+                                         view_args)
+        
+    def _test_only_club_has_access (self, view_args=None):
+        self._test_only_user_has_access (self.T_CLUB['username'],
+                                         self.T_CLUB['password'],
+                                         view_args)
+        
+    def _test_only_user_has_access (self, username, password, view_args=None):
         """
-        Tests this view is only accessible by a club,
-        optionally logging a club in using the received info,
-        and appending 'view_args' to the URL of the view.-
+        Tests this view is only accessible by a the user whose credentials
+        were given. This function accepts appending 'view_args' to the URL of
+        the view.-
         """
         #
         # an anonymous user should not have access
@@ -211,27 +280,13 @@ class BaseViewTestCase (TestCase):
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'accounts/login.html')
         #
-        # a player should not have access
-        # since she/he must receive the 'not found' page
+        # check other profiles do not have access
         #
-        self.client.login (username=self.T_PLAYER['username'],
-                           password=self.T_PLAYER['password'])
-        self.assertIsNotNone (self.view_path)
-        self.assertIsNotNone (self.template_name)
-        view_url = reverse (self.view_path,
-                            args=view_args)
-        resp = self.client.get (view_url, follow=True)
-        self.assertEquals (resp.status_code, 404)
-        #
-        # only a club should have access
-        #
-        if login_info is not None:
-            #
-            # log a user in, using the received information
-            #
-            self.client.login (username=login_info['username'],
-                            password=login_info['password'])
-        else:
+        profile = UserProfile.objects.get_profile (username)
+        if profile.is_club ( ):
+            self.client.login (username=self.T_PLAYER['username'],
+                               password=self.T_PLAYER['password'])
+        elif profile.is_player ( ):
             self.client.login (username=self.T_CLUB['username'],
                                password=self.T_CLUB['password'])
         self.assertIsNotNone (self.view_path)
@@ -239,8 +294,19 @@ class BaseViewTestCase (TestCase):
         view_url = reverse (self.view_path,
                             args=view_args)
         resp = self.client.get (view_url, follow=True)
+        self.assertEquals (resp.status_code, 404)
+        #
+        # log a user in, using the received information
+        #
+        self.client.login (username=username,
+                           password=password)
+        self.assertIsNotNone (self.view_path)
+        self.assertIsNotNone (self.template_name)
+        view_url = reverse (self.view_path,
+                            args=view_args)
+        resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
-        self.assertEquals (resp.template[0].name, self.template_name)
+        self.assertTemplateUsed (resp, self.template_name)
 
     def _test_existance_and_correct_template (self, login_info=None, view_args=None):
         """
@@ -265,31 +331,105 @@ class BaseViewTestCase (TestCase):
         resp = self.client.get (view_url, follow=True)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, self.template_name)
+    
+       
+    def _test_multiple_model_instances_save (self, instance_data, form_name='form'): 
+        """
+        Tests that data from multiple models are correctly saved via a view.
+        This method returns the last 'response' object used, after all 
+        assertions of the last model checked are successful.
+       
+            instance_data: a list containing a two-level dictionary with the
+                           instances (key 'instance') and the data (key 'data')
+                           against which they have to be checked, e.g.
+                           
+                           [{'instance': self.club.user,
+                             'data':     {'first_name': 'Pepe',
+                                          'last_name' : 'Gomez'}},
+                            ...]
+                                         
+                           instance_data['data'] is a dictionary which keys 
+                           are field names of the instance held in 
+                           instance_data['instance'];
+                form_name: the name of the form included in the tested view,
+                           defaults to 'form'.-
+              
+        """
+        for model in instance_data:
+            resp = self._test_model_instance_save (model['instance'],
+                                                   model['data'],
+                                                   form_name)
+        return resp
+            
+    def _test_model_instance_save (self, instance, data, tested_fields=None,
+                                   form_name='form'):
+        """
+        Tests that a model data is correctly saved via a view. This method
+        returns the 'response' object used, after all assertions have been
+        successful.
+        
+                 instance: the instance object to test;
+                     data: a dictionary which keys are field names of the
+                           tested instance;
+            tested_fields: a tuple of field names that are to be tested.
+                           It defaults to test all the fields (i.e. keys) 
+                           of the 'data' dictionary;
+                form_name: the name of the form included in the tested view,
+                           defaults to 'form'.-
+              
+        """
+        try:
+            if tested_fields is None:
+                tested_fields = data.keys ( )
+        except AttributeError:
+            raise AttributeError ("Parameter 'data' should be a dictionary.")
+        
+        resp = self.client.post (reverse (self.view_path), data, follow=True)
+        #
+        # inspect the form object, if it is available
+        #
+        try:
+            form = resp.context[-1][form_name]
+            if len (form.errors) > 0:
+                sys.stderr.write ("The form '%s' has validation errors:\n" % form_name)
+                for f in form.errors.keys ( ):
+                    sys.stderr.write ('\t%s -> %s\n' % (f, form.errors[f]))
+            self.assertEquals (len (form.errors), 0)
+        except KeyError:
+            #
+            #sys.stderr.write ("*** WARNING: Form '%s' not found in view '%s'\n" % (form_name,
+            #                                                                       view_url))
+            pass
+        #
+        # load fresh instance data from the DB
+        #
+        if isinstance (instance, models.Model):
+            pk = instance.pk
+            instance_model = instance.__class__
+            instance = instance_model.objects.get (pk=pk)
+        else:
+            raise TypeError ("Instance '%s' is not a Model." % str (instance))
+        #
+        # check saved data is correct
+        #
+        for field in tested_fields:
+            field_data = getattr (instance, field, None) 
+            #
+            # foreign-keys are compared by model instance
+            #
+            if isinstance (field_data, models.Model):
+                fk_model    = field_data.__class__
+                data[field] = fk_model.objects.get (pk=int (data[field]))
+                self.assertEquals (field_data, data[field])
+            else:
+                #
+                # other fields are compared by their unicode representation
+                #
+                self.assertEquals (unicode (field_data), unicode (data[field]))
+        return resp
 
 
-
-class AdvancedTestSuiteRunner (DjangoTestSuiteRunner):
-    """
-    A custom test suite to avoid running tests of applications
-    specified in settings.TEST_EXCLUDE.-
-    """
-    EXCLUDED_APPS = getattr (settings, 'TEST_EXCLUDE', [])
-
-    def __init__(self, *args, **kwargs):
-        super (AdvancedTestSuiteRunner, self).__init__ (*args, **kwargs)
-
-    def build_suite (self, *args, **kwargs):
-        suite = super (AdvancedTestSuiteRunner, self).build_suite (*args, **kwargs)
-        if not args[0] and not getattr(settings, 'RUN_ALL_TESTS', False):
-            tests = []
-            for case in suite:
-                pkg = case.__class__.__module__.split('.')[0]
-                if pkg not in self.EXCLUDED_APPS:
-                    tests.append (case)
-            suite._tests = tests
-        return suite
-
-
+        
 class HomeViewTest (BaseViewTestCase):
     """
     All the test cases for home page of the site.-
@@ -337,4 +477,3 @@ class HomeViewTest (BaseViewTestCase):
         resp = self.client.get (view_url)
         self.assertEquals (resp.status_code, 200)
         self.assertEquals (resp.template[0].name, 'players/home.html')
-

@@ -22,14 +22,12 @@ class EditPlayerProfileForm (forms.ModelForm):
     """
     A form to edit the player's profile.-
     """
-    user = forms.ModelChoiceField (queryset=User.objects.all ( ),
-                                   widget=widgets.HiddenInput ( ))
     first_name = forms.CharField (max_length=30)
     last_name = forms.CharField (max_length=30)
-    next = forms.CharField (widget=widgets.HiddenInput ( ),
-                            required=False)
+    
     class Meta:
         model = PlayerProfile
+        fields = ('male', 'right_handed', 'level')
 
 
 class RegisterUserForm (forms.Form):

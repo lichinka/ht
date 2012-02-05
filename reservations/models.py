@@ -337,7 +337,7 @@ class Reservation (models.Model):
                                self.vacancy)
 
 
-@receiver (post_save, sender=Reservation)
+@receiver (post_save, sender=Reservation, dispatch_uid="reservation_post_save")
 def reservation_handler (sender, instance, created, raw, **kwargs):
     """
     Callback function used whenever a reservation is created, updated
@@ -353,4 +353,3 @@ def reservation_handler (sender, instance, created, raw, **kwargs):
         # A reservation has been updated
         #
         action.send (instance.user, verb='updated', target=instance)
-

@@ -3,10 +3,10 @@ from decimal import Decimal, ROUND_HALF_UP
 from datetime import date
 
 from ht_utils import number_to_default_locale
-from ht_utils.tests import BaseViewTestCase
 from clubs.models import CourtSetup, Court, Vacancy
 from clubs.templatetags import vacancy_tags
 from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 
 
 

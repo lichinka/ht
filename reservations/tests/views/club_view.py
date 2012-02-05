@@ -1,16 +1,11 @@
-import time
-import locale
 from random import randint
 from datetime import date, timedelta
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
-from django.db.models.aggregates import Count
 
 from clubs.models import CourtSetup, Vacancy, Court
-from ht_utils.tests import BaseViewTestCase
-from reservations.models import Reservation
+from ht_utils.tests.views import BaseViewTestCase
 
 
 
