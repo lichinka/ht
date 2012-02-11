@@ -7,7 +7,6 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from clubs.models import CourtSetup, Court, Vacancy
 from accounts.models import UserProfile, PlayerProfile
 from locations.models import City
 from reservations.models import Reservation
@@ -19,16 +18,18 @@ class BaseViewTestCase (TestCase):
     A base class for test cases of views.-
     """
     T_ROOT = {'username': 'superman',
-              'email': 'superman@kripton.si',
+              'email'   : 'superman@kripton.si',
               'password': 'ineednopassword'}
-    T_CLUB = {'username'  : 'test_club',
-              'email'     : 'club@nowhere.si',
-              'password'  : 'averygoodpassword',
-              'company'   : 'The best tennis club d.o.o.',
-              'tax_number': 'SI 1112223344',
-              'address'   : 'Postal address 1231',
-              'city'      : None,
-              'telephone' : '111-222-333',}
+    T_CLUB = {'username'             : 'test_club',
+              'email'                : 'club@nowhere.si',
+              'password'             : 'averygoodpassword',
+              'company'              : 'The best tennis club d.o.o.',
+              'address'              : 'Postal address 1231',
+              'city'                 : None,
+              'tax_number'           : 'SI1112223344',
+              'telephone'            : '111-222-333',
+              'representative'       : 'Al Gore',
+              'representative_title' : 'Vicepresident',}
     T_PLAYER = {'username'    : 'test_player',
                 'email'       : 'player@nowhere.si',
                 'password'    : 'thepasswordof1player',
@@ -134,6 +135,7 @@ class BaseViewTestCase (TestCase):
         """
         Adds a couple of extra court setups to the default club.-
         """
+        from clubs.models import CourtSetup
         #
         # we need a club!
         #
@@ -162,6 +164,7 @@ class BaseViewTestCase (TestCase):
         """
         Adds a random number of courts to each court setup.-
         """
+        from clubs.models import Court
         #
         # we need at least one court setup
         #
@@ -182,6 +185,7 @@ class BaseViewTestCase (TestCase):
         Set some prices for the vacancy terms of all
         courts in all court setups.-
         """
+        from clubs.models import Court, Vacancy
         #
         # we need at least one court
         #
@@ -202,6 +206,7 @@ class BaseViewTestCase (TestCase):
         """
         Create some random reservations to the received court setup.-
         """
+        from clubs.models import Vacancy
         #
         # we need at least one vacancy price
         # and a player

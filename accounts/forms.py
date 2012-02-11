@@ -15,7 +15,8 @@ class EditClubProfileForm (forms.ModelForm):
     """
     class Meta:
         model = ClubProfile
-        fields = ('company', 'tax_number', 'address', 'city', 'phone')
+        fields = ('company', 'address', 'city', 'tax_number', 'phone',
+                  'representative', 'representative_title')
 
 
 class EditPlayerProfileForm (forms.ModelForm):

@@ -149,7 +149,7 @@ div#feedback a {
  * Buttons
  */
 a.button, .button, input.button, button.button {
-    background: url(img/button_back.png) repeat-x  0 0 #C96503;
+    background: url(img/button_back.png) repeat-x 0 0 #C96503;
     border: 1px solid #C47917;
     text-shadow: -1px -1px 0 #C47917;
     border-radius: 5px;-moz-border-radius: 5px; -webkit-border-radius: 5px;

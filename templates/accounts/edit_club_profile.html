@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load url from future %}
-
+{% load ht_utils_tags %}
 
 
 {% block user_content %}
@@ -34,6 +34,7 @@
                 </div>
             {% endfor %}
 
+			{% discard_button next_url %}
 			<div class="form_action">
 			    <input type="submit" value="{% trans 'Save' %}" class="button"/>
 			</div>
@@ -41,4 +42,3 @@
     </div>	
 
 {% endblock %}
-

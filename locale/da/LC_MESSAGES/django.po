@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-03 21:11+0100\n"
+"POT-Creation-Date: 2012-02-08 13:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,55 +18,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/forms.py:53
+#: accounts/forms.py:52
 msgid "Please choose a different email address"
 msgstr ""
 
-#: accounts/forms.py:66
+#: accounts/forms.py:65
 msgid "Passwords do not match, please retype them"
 msgstr ""
 
-#: accounts/models.py:107
+#: accounts/models.py:108
 msgid "Beginner"
 msgstr ""
 
-#: accounts/models.py:108
+#: accounts/models.py:109
 msgid "Intermediate"
 msgstr ""
 
-#: accounts/models.py:109
+#: accounts/models.py:110
 msgid "Advanced"
 msgstr ""
 
-#: accounts/models.py:110
+#: accounts/models.py:111
 msgid "Registered"
 msgstr ""
 
-#: accounts/models.py:122
+#: accounts/models.py:123
 msgid "This user has already been assigned a club profile"
 msgstr ""
 
-#: accounts/models.py:136
+#: accounts/models.py:137
 msgid "Address"
 msgstr ""
 
-#: accounts/models.py:139
+#: accounts/models.py:140
 msgid "Telephone numbers"
 msgstr ""
 
-#: accounts/models.py:141
+#: accounts/models.py:142
 msgid "Club or company name"
 msgstr ""
 
-#: accounts/models.py:143
-msgid "empty"
+#: accounts/models.py:145
+msgid "Representative's full name"
 msgstr ""
 
-#: accounts/models.py:144
-msgid "Tax number"
+#: accounts/models.py:148
+msgid "Representative's title"
 msgstr ""
 
 #: accounts/models.py:151
+msgid "Tax number"
+msgstr ""
+
+#: accounts/models.py:158
 msgid "This user has already been assigned a player profile"
 msgstr ""
 
@@ -78,7 +82,7 @@ msgstr ""
 msgid "stopped following"
 msgstr ""
 
-#: clubs/models.py:106 clubs/tests/models.py:213 clubs/tests/models.py:233
+#: clubs/models.py:106 clubs/tests/models.py:212 clubs/tests/models.py:232
 msgid "Copy of"
 msgstr ""
 
@@ -86,7 +90,7 @@ msgstr ""
 msgid "Only one court setup may be active at once"
 msgstr ""
 
-#: clubs/models.py:162 clubs/tests/models.py:33
+#: clubs/models.py:162 clubs/tests/models.py:32
 msgid "Default"
 msgstr ""
 
@@ -442,6 +446,14 @@ msgstr ""
 msgid "or make changes"
 msgstr ""
 
+#: locations/models.py:13
+msgid "City"
+msgstr ""
+
+#: locations/models.py:14
+msgid "Cities"
+msgstr ""
+
 #: players/forms.py:17
 msgid "-- any day --"
 msgstr ""
@@ -629,7 +641,7 @@ msgid ""
 "other unexpected events."
 msgstr ""
 
-#: reservations/tests/views/club_view.py:48
+#: reservations/tests/views/club_view.py:42
 #: templates/reservations/club_view.html:45
 msgid "Loading ..."
 msgstr ""

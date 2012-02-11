@@ -11,9 +11,9 @@ from django.db.models.aggregates import Count
 from django.contrib.auth.decorators import login_required
 
 from ht_utils import number_to_default_locale
-from ht_utils.views import success
 from clubs.forms import EditCourtSetupForm, EditCourtPropertiesForm
 from clubs.models import CourtSetup, Court, Vacancy
+from ht_utils.views import success
 from accounts.models import UserProfile
 from reservations.models import Reservation
 

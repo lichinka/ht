@@ -22,16 +22,20 @@ def test_club_profile_saving (instance, data, test_case,
             view_path: path of the tested view (without reversing!).-
           
     """
-    data['company']    = "Ghetto d.o.o."
-    data['tax_number'] = 'SI 1234567890123'
-    data['address']    = "A totally new address 9873"
-    data['city']       = random.choice (City.objects.all ( )).pk
-    data['phone']      = "111 222 333 444"
+    data['company']              = 'Ghetto d.o.o.'
+    data['address']              = 'A totally new address 9873'
+    data['city']                 = random.choice (City.objects.all ( )).pk
+    data['tax_number']           = 'SI 1234567890123'
+    data['phone']                = '111 222 333 444'
+    data['representative']       = 'Mahatma Ghandi'
+    data['representative_title'] = 'Spiritual leader'
     changed_data = dict ([(k, data[k]) for k in ('company', 
-                                                 'tax_number', 
                                                  'address',
                                                  'city',
-                                                 'phone')])
+                                                 'tax_number', 
+                                                 'phone',
+                                                 'representative',
+                                                 'representative_title')])
     test_case.view_path = view_path
     resp = test_case._test_model_instance_save (instance, changed_data)
     test_case.assertContains (resp, data['company'])

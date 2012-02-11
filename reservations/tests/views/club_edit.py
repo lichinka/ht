@@ -30,18 +30,16 @@ class ClubEditTest (BaseViewTestCase):
                                           Vacancy.HOURS[randint(0, 15)][0])
             v = v[0] if v else None
         self.view_args = [v.id, date.today ( ).toordinal ( )]
-        
+
     def test_only_object_owner_has_access (self):
-        BaseViewTestCase._test_only_club_has_access (self,
-                                                     self.T_CLUB,
-                                                     self.view_args)
-        
+        self._test_only_club_has_access (self.view_args)
+
     def test_existance_and_correct_template (self):
         BaseViewTestCase._test_existance_and_correct_template (self,
                                                                self.T_CLUB,
                                                                self.view_args)
-        
-        
+
+
     def test_description_should_not_be_empty_if_weekly_repeat_is_on (self):
         #
         # log the club in
@@ -86,8 +84,8 @@ class ClubEditTest (BaseViewTestCase):
         self.assertTrue (len (form.errors.keys ( )) > 0)
         self.assertEquals (Reservation.objects.all ( ).aggregate (Count ('id'))['id__count'],
                            reservation_count['id__count'])
-   
-    
+
+
     def test_single_term_reservation_by_club (self):
         #
         # log the club in
@@ -142,12 +140,12 @@ class ClubEditTest (BaseViewTestCase):
                     self.assertEquals (r.user, self.club.user)
                     self.assertEquals (r.vacancy, v)
                     self.assertIsNone (r.repeat_series)
-                    
+
                 except ObjectDoesNotExist:
                     self.assertTrue (False,
                                      'The view did not save the reservation correctly.-')
-                    
-    
+
+
     def test_invalid_reservation_by_club_with_weekly_repetition (self):
         #
         # log the club in
@@ -193,8 +191,8 @@ class ClubEditTest (BaseViewTestCase):
                 self.assertTrue (len (form.errors.keys ( )) > 0)
                 self.assertEquals (Reservation.objects.all ( ).aggregate (Count ('id'))['id__count'],
                                    reservation_count['id__count'])
-                
-                    
+
+
     def test_term_reservation_by_club_with_weekly_repetition (self):
         #
         # log the club in

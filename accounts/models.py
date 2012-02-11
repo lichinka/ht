@@ -4,7 +4,6 @@ from django.db import models
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
-from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_delete
 from django.contrib.auth.models import User
@@ -136,13 +135,20 @@ class ClubProfile (UserProfile):
     """
     address = models.CharField (max_length=200,
                                 verbose_name=_('Address'))
-    city = models.ForeignKey (City)
+    city = models.ForeignKey (City,
+                              verbose_name=City._meta.verbose_name)
     phone = models.CharField (max_length=50,
                               verbose_name=_('Telephone numbers'))
     company = models.CharField (max_length=200,
                                 verbose_name=_('Club or company name'))
+    representative = models.CharField (max_length=100,
+                                       default='-',
+                                       verbose_name=_("Representative's full name"))
+    representative_title = models.CharField (max_length=50,
+                                             default='-',
+                                             verbose_name=_("Representative's title"))
     tax_number = models.CharField (max_length=50,
-                                   default='* %s *' % ugettext ('empty'),
+                                   default='-',
                                    verbose_name=_('Tax number'))
 
     def clean (self):

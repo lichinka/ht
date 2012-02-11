@@ -25,15 +25,14 @@ class ClubViewTest (BaseViewTestCase):
         #
         self.cli.login (username=self.T_CLUB['username'],
                         password=self.T_CLUB['password'])
-        
+
     def test_only_object_owner_has_access (self):
-        BaseViewTestCase._test_only_club_has_access (self,
-                                                     self.T_CLUB)
-        
+        self._test_only_club_has_access ( )
+
     def test_existance_and_correct_template (self):
         BaseViewTestCase._test_existance_and_correct_template (self,
                                                                self.T_CLUB)
-   
+
     def test_loading_sign_is_displayed_before_showing_contents (self):
         view_url = reverse (self.view_path)
         resp = self.client.get (view_url)
@@ -49,8 +48,8 @@ class ClubViewTest (BaseViewTestCase):
                                  {'for_date': date.today ( ),},
                                  HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertContains (resp, 'table class="reservation"')
-       
-        
+
+
     def test_requested_date_is_included_in_displayed_data (self):
         view_url = reverse (self.view_path)
         rand_date = date.today ( ) + timedelta (days=randint (-10, 10))
@@ -69,8 +68,8 @@ class ClubViewTest (BaseViewTestCase):
         displayed_dates = resp.context['week_date_list']
         self.assertTrue (rand_date in displayed_dates)
         self.test_all_active_courts_within_the_active_court_setup_are_displayed (rand_date)
-        
-            
+
+
     def test_data_displayed_from_monday_to_sunday (self):
         view_url = reverse (self.view_path)
         for_date = date.today ( )
@@ -83,14 +82,14 @@ class ClubViewTest (BaseViewTestCase):
         #
         # check that the correct dates are being displayed,
         # for the current week
-        #    
+        #
         for dow in range (1, 8):
             d = for_date + timedelta (days=dow - for_date.isoweekday ( ))
             self.assertContains (resp, d.day)
             self.assertContains (resp, d.month)
-            
-    
-    def test_all_active_courts_within_the_active_court_setup_are_displayed (self, 
+
+
+    def test_all_active_courts_within_the_active_court_setup_are_displayed (self,
                                                                             for_date=date.today ( )):
         hour_list = Vacancy.HOURS[:-1]
         cs = CourtSetup.objects.get_active (self.club)
@@ -113,11 +112,11 @@ class ClubViewTest (BaseViewTestCase):
                 target_address = reverse ('reservations.views.club_edit',
                                           args=[v.id, for_date.toordinal ( )])
                 self.assertContains (resp, target_address, 1)
-        
-        
+
+
     def test_booked_terms_are_displayed_differently_from_those_free (self):
         print "Not yet implemented!"
-    
+
     def test_free_is_displayed_on_mouse_over_not_booked_term (self):
         print "Not yet implemented!"
 
@@ -126,4 +125,4 @@ class ClubViewTest (BaseViewTestCase):
 
     def test_click_on_a_term_brings_the_edit_form (self):
         print "Not yet implemented!"
-    
+

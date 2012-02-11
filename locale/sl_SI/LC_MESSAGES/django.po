@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-03 21:10+0100\n"
+"POT-Creation-Date: 2012-02-08 13:02+0100\n"
 "PO-Revision-Date: 2011-11-03 21:00+CEST\n"
 "Last-Translator: B+Lu\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,55 +16,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/forms.py:53
+#: accounts/forms.py:52
 msgid "Please choose a different email address"
 msgstr "Izberite drugačen naslov elektronske pošte"
 
-#: accounts/forms.py:66
+#: accounts/forms.py:65
 msgid "Passwords do not match, please retype them"
 msgstr "Gesli nista enaki, poskusite znova"
 
-#: accounts/models.py:107
+#: accounts/models.py:108
 msgid "Beginner"
 msgstr "Začetnik"
 
-#: accounts/models.py:108
+#: accounts/models.py:109
 msgid "Intermediate"
 msgstr "Srednji"
 
-#: accounts/models.py:109
+#: accounts/models.py:110
 msgid "Advanced"
 msgstr "Napredni"
 
-#: accounts/models.py:110
+#: accounts/models.py:111
 msgid "Registered"
 msgstr "Včlanjen igralec"
 
-#: accounts/models.py:122
+#: accounts/models.py:123
 msgid "This user has already been assigned a club profile"
 msgstr "Ta uporabnik je že registriran kot klub"
 
-#: accounts/models.py:136
+#: accounts/models.py:137
 msgid "Address"
 msgstr "Naslov"
 
-#: accounts/models.py:139
+#: accounts/models.py:140
 msgid "Telephone numbers"
 msgstr "Telefonske številke"
 
-#: accounts/models.py:141
+#: accounts/models.py:142
 msgid "Club or company name"
 msgstr "Naziv kluba oz. podjetja"
 
-#: accounts/models.py:143
-msgid "empty"
-msgstr "prazno"
+#: accounts/models.py:145
+msgid "Representative's full name"
+msgstr "Ime in priimek zastopnika"
 
-#: accounts/models.py:144
-msgid "Tax number"
-msgstr "Davčna številka"
+#: accounts/models.py:148
+msgid "Representative's title"
+msgstr "Naziv zastopnika"
 
 #: accounts/models.py:151
+msgid "Tax number"
+msgstr "Identifikacijska številka za DDV"
+
+#: accounts/models.py:158
 msgid "This user has already been assigned a player profile"
 msgstr "Ta uporabnik je že registriran kot igralec"
 
@@ -76,7 +80,7 @@ msgstr "sledi"
 msgid "stopped following"
 msgstr "ne sledi"
 
-#: clubs/models.py:106 clubs/tests/models.py:213 clubs/tests/models.py:233
+#: clubs/models.py:106 clubs/tests/models.py:212 clubs/tests/models.py:232
 msgid "Copy of"
 msgstr "Kopija"
 
@@ -84,7 +88,7 @@ msgstr "Kopija"
 msgid "Only one court setup may be active at once"
 msgstr "Samo en razpored igrišč mora biti aktiviran naenkrat"
 
-#: clubs/models.py:162 clubs/tests/models.py:33
+#: clubs/models.py:162 clubs/tests/models.py:32
 msgid "Default"
 msgstr "Privzeto"
 
@@ -441,6 +445,14 @@ msgstr "Pošlji svoj komentar"
 msgid "or make changes"
 msgstr "ali jih uredi"
 
+#: locations/models.py:13
+msgid "City"
+msgstr "Mesto"
+
+#: locations/models.py:14
+msgid "Cities"
+msgstr "Mesta"
+
 #: players/forms.py:17
 msgid "-- any day --"
 msgstr "-- kadarkoli --"
@@ -631,7 +643,7 @@ msgstr ""
 "sporočila v zvezi z morebitnim preklicem rezervacije zaradi slabega vremena "
 "ali drugih nepročakovanih dogodkov."
 
-#: reservations/tests/views/club_view.py:48
+#: reservations/tests/views/club_view.py:42
 #: templates/reservations/club_view.html:45
 msgid "Loading ..."
 msgstr "Nalagam ..."
@@ -689,7 +701,7 @@ msgstr "Prijava"
 #: templates/accounts/club_information.html:10
 #: templates/accounts/edit_club_profile.html:21
 msgid "Institutional data"
-msgstr "Kontakni podatki"
+msgstr "Osebna izkaznica"
 
 #: templates/accounts/club_information.html:22
 #: templates/accounts/player_information.html:38 templates/admin/index.html:35
@@ -724,7 +736,7 @@ msgstr "Išči"
 
 #: templates/accounts/edit_club_profile.html:16
 msgid "Login data"
-msgstr "Prijavni podatki"
+msgstr "Podatki za prijavo"
 
 #: templates/accounts/edit_club_profile.html:38
 #: templates/accounts/edit_player_profile.html:49
@@ -1524,6 +1536,9 @@ msgstr "Izbrisali ste sporočilo."
 #: user_messages/views.py:234
 msgid "Message successfully recovered."
 msgstr ""
+
+#~ msgid "empty"
+#~ msgstr "prazno"
 
 #~ msgid "Cancel this action"
 #~ msgstr "Prekliči"

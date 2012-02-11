@@ -16,7 +16,9 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 
 from actstream import action
-from accounts.forms import RegisterUserForm, EditPlayerProfileForm, EditClubProfileForm
+from ht_utils.views import get_next_url
+from accounts.forms import (RegisterUserForm, EditPlayerProfileForm, 
+                            EditClubProfileForm)
 from accounts.models import UserProfile
 
 
@@ -61,6 +63,8 @@ def edit_club_profile (request,
     """
     cp = UserProfile.objects.get_profile (request.user.username)
     if cp.is_club ( ):
+        next_url = get_next_url (request,
+                                 reverse ('accounts_display_profile'))
         post_data = request.POST if request.method == 'POST' else None
         form = EditClubProfileForm (post_data,
                                     instance=cp)
@@ -68,10 +72,13 @@ def edit_club_profile (request,
             cp = form.save (commit=False)
             cp.user = request.user
             cp.save ( )
-            # go back to the profile page
-            return redirect (reverse ('accounts_display_profile'))
+            #
+            # go back to where 'next_url' points
+            #
+            return redirect (next_url)
         return render_to_response (template_name,
-                                   {'form': form,},
+                                   {'form': form,
+                                    'next_url': next_url},
                                    context_instance=RequestContext(request))
     else:
         raise Http404
