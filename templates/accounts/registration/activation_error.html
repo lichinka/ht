@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load ht_utils_tags %}
+
+{% block anonymous_content %}
+	{% text_only _('This account cannot be activated. If you feel this is not correct, please leave us a message and we will contact you back.') _('Account not activated') 'OK' %} 
+{% endblock %}

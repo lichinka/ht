@@ -125,7 +125,7 @@ class BaseViewTestCase (TestCase):
         p.first_name = self.T_PLAYER['first_name']
         p.last_name = self.T_PLAYER['last_name']
         p.save ( )
-        self.player = UserProfile.objects.create_player_profile (self.T_PLAYER['username'])
+        self.player = UserProfile.objects.get_profile (self.T_PLAYER['username'])
         self.player.level = self.T_PLAYER['level']
         self.player.male = self.T_PLAYER['male']
         self.player.right_handed = self.T_PLAYER['right_handed']

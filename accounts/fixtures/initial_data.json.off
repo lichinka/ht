@@ -1,6 +1,6 @@
 [
     {
-        "pk": 1, 
+        "pk": 10, 
         "model": "auth.user", 
         "fields": {
             "username": "root", 
@@ -18,7 +18,7 @@
         }
     }, 
     {
-        "pk": 2, 
+        "pk": 20, 
         "model": "auth.user", 
         "fields": {
             "username": "lucas", 
@@ -36,7 +36,7 @@
         }
     }, 
     {
-        "pk": 3, 
+        "pk": 30, 
         "model": "auth.user", 
         "fields": {
             "username": "tazal", 
@@ -59,7 +59,7 @@
         "fields": {
             "right_handed": true, 
             "male": true, 
-            "user": 2, 
+            "user": 20, 
             "level": "I"
         }
     }, 
@@ -69,7 +69,7 @@
         "fields": {
             "city": 41, 
             "company": "Toma\u017e s.p.", 
-            "user": 3, 
+            "user": 30, 
             "phone": "333333", 
             "address": "Naslov kluba 221"
         }

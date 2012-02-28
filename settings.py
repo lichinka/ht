@@ -9,6 +9,10 @@ BASE_PATH = os.path.dirname(__file__)
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+#
+# Email settings
+#
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SERVER_EMAIL = 'webmaster@hocemtenis.si'
 
 ADMINS = (
@@ -17,6 +21,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+#
+# Database settings
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -135,7 +142,10 @@ INSTALLED_APPS = (
     'south',             # Eases model-to-database synchronization.
                          # For inter-app dependency, the order defined here matters!
     'locations',         # Enables location-lookups via cities and coordinates
-    'actstream',         # Feed-based tracking of user's activity
+    'actstream',         # Feed-based tracking of user's activity;
+                         # forked from https://github.com/justquick/django-activity-stream.git
+    'registration',      # Enables registration of new user's, including forms to change mail or password;
+                         # installed in virtualenv from https://bitbucket.org/ubernostrum/django-registration
     'accounts',          # Includes user's profile
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
@@ -162,6 +172,14 @@ ACTSTREAM_ACTION_MODELS = ['auth.User',
                            'reservations.Reservation']
 ACTSTREAM_ACTION_TEMPLATE = 'activity/single_action.txt'
 ACTSTREAM_MANAGER = 'actstream.managers.ActionManager'
+
+#
+# How many days to wait for a user to activate her account (registration)
+# This setting value defines a one-week activation window,
+# and whether the registration process is currently active.
+#
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
 
 #
 # Synchronize Python locale with Django settings

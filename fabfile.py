@@ -52,7 +52,7 @@ def compile_translations ( ):
 def update_translations ( ):
     """ Updates the message files for further translating.-
     """
-    local ("./manage.py makemessages --all")
+    local ("./manage.py makemessages --extension='.html' --extension='.txt' --locale=sl_SI")
 
 
 def remote_init_db ( ):

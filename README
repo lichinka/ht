@@ -27,3 +27,22 @@ The __init__.py and models.py files (or, if you want to split up your models acr
     * middleware.py, contains middleware classes.
     * utils.py/utils, contains miscellaneous code which doesn't clearly go anywhere else.
 
+About translations
+------------------
+Taken from the Django book (http://www.djangobook.com/en/1.0/chapter18/):
+
+    Finally, you should give some thought to the structure of your translation files. If your applications need to be delivered to other users and will be used in other projects, you might want to use application-specific translations. But using application-specific translations and project translations could produce weird problems with make-messages. make-messages will traverse all directories below the current path and so might put message IDs into the project message file that are already in application message files.
+
+    The easiest way out is to store applications that are not part of the project (and so carry their own translations) outside the project tree. That way, make-messages on the project level will only translate strings that are connected to your explicit project and not strings that are distributed independently.
+
+From actual experience I know the project-wide translation files override those that are application-specific. Thus, if there is any application-specific translation that needs to be overwritten, maybe because of an error or a different context that changes its meaning, the entry in question should be put in the project-wide .po file. This entry should override or shadow the application-specific translation with the same key.-
+
+Local vs. third-party applications
+----------------------------------
+Taken from 'Django Best Practices' (http://lincolnloop.com/django-best-practices/projects.html#local-applications)
+
+    Local applications are Django applications that are domain-specific to your project. They typically live inside the project module and are so closely tied to your project, they would have little use outside of it.
+
+    There are hundreds [1] of third-party open source Django applications available. Before you reinvent the wheel, make sure somebody hasn’t already solved your problem by searching on Google or Django Packages. If you find something that will work do not put it your project code, instead add it to your pip requirements.
+    [1] http://djangopackages.com/categories/apps/
+

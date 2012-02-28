@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load url from future %}
+
+{% load ht_utils_tags %}
+
+
+{% if form.errors %}
+	{{ form.non_field_errors }}
+{% endif %}
+
+<div class="vertical_form">
+	<form method="post" action="{% url action_view %}">
+	    {% csrf_token %}
+	
+	          {% for field in form.visible_fields %}
+	              <div class="form_elem">
+	                  {{ field.errors }}
+	                  {{ field.label_tag }} {{ field }}
+	              </div>
+	          {% endfor %}
+	          
+	          {% for hidden in form.hidden_fields %}
+    			{{ hidden }}
+    		  {% endfor %}
+	
+		{% discard_button next_text next_url %}
+		
+		<div class="form_action">
+		    <input type="submit" value="{% trans action_text %}" class="button"/>
+		</div>
+	</form>
+</div>	

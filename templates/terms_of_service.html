@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load ht_utils_tags %}
+
+{% block anonymous_content %}
+	{% text_only _('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia laoreet tellus, gravida luctus nisl tempor quis. Sed ut lectus vel tortor tempor porttitor sit amet ac nulla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce eu tortor eu sapien interdum suscipit sed non.') _('Terms of service') 'OK' %} 
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import url, patterns
 from django.views.generic.simple import redirect_to
 
 from user_messages.views import inbox, outbox, compose, reply
@@ -17,5 +17,5 @@ urlpatterns = patterns ('',
         url(r'^delete/(?P<message_id>[\d]+)/$', delete, name='user_messages_delete'),
         url(r'^undelete/(?P<message_id>[\d]+)/$', undelete, name='user_messages_undelete'),
         url(r'^trash/$', trash, name='user_messages_trash'),
-        url (r'^feedback/$', feedback),
+        url(r'^feedback/$', feedback, name='user_messages_feedback'),
 )

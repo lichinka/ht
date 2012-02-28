@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% load ht_utils_tags %}
+
+{% block anonymous_content %}
+	{% vertical_form form 'accounts_registration_register' _('Register me!') %}
+{% endblock %}

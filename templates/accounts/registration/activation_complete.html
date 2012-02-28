@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load ht_utils_tags %}
+
+{% block anonymous_content %}
+	{% text_only _('Your account has been activated! Enjoy!') _('Account activated') _('Login') 'accounts_login' %} 
+{% endblock %}

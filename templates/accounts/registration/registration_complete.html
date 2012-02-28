@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load ht_utils_tags %}
+
+{% block anonymous_content %}
+	{% text_only _('An activation email has been sent. It contains all the instructions for activating your account.') _('Activation mail sent') 'OK' %} 
+{% endblock %}

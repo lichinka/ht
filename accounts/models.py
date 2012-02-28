@@ -40,7 +40,7 @@ class UserProfileManager (models.Manager):
 
     def create_player_profile (self, username):
         """
-        Associates a player profile to the received user.-
+        Associates a player profile with the received user and returns it.-
         """
         if self.get_profile (username) is None:
             u = User.objects.get (username=username)
@@ -48,12 +48,18 @@ class UserProfileManager (models.Manager):
                                                user=u)
             return pp
         else:
-            return None
+            #
+            # return this player's existing profile
+            #
+            return self.get_profile (username)
 
 
     def create_club_profile (self, username, address, city, phone, company):
         """
-        Associates a club profile to the received user.-
+        Associates a club profile to the received user. Because every created
+        user is always first a player, the (possibly) existing player profile
+        connected with the received 'username' is deleted, and thus the user
+        is transformed from player to club.-
         """
         if self.get_profile (username) is None:
             u = User.objects.get (username=username)
@@ -64,7 +70,23 @@ class UserProfileManager (models.Manager):
                                              company=company)
             return cp
         else:
-            return None
+            #
+            # replace the (possible) player's profile with a club's one
+            #
+            if self.get_profile (username).is_player ( ):
+                PlayerProfile.objects.filter (user__username=username).delete ( )
+                u = User.objects.get (username=username)
+                cp = ClubProfile.objects.create (user=u,
+                                                 address=address,
+                                                 city=city,
+                                                 phone=phone,
+                                                 company=company)
+                return cp
+            else:
+                #
+                # return the existing club profile
+                #
+                return self.get_profile (username)
 
 
 class UserProfile (models.Model):
@@ -98,7 +120,8 @@ class UserProfile (models.Model):
         return False
 
     def __unicode__ (self):
-        return self.user.username
+        return "Profile data for (%s)" % self.user.username
+
 
 
 class PlayerProfile (UserProfile):
@@ -177,6 +200,22 @@ def club_profile_handler (sender, instance, created, **kwargs):
         action.send (instance.user, verb='updated', target=instance)
 
 
+
+@receiver (post_save, sender=User, dispatch_uid="user_profile_post_save")
+def link_user_with_player_profile (sender, instance, created, **kwargs):
+    """
+    Callback function used whenever an existing user's data are updated
+    or a new user is created. In this case, a player's profile is created
+    and linked to it.
+    """
+    if created:
+        #
+        # create a new player profile and link it with the user
+        #
+        pp = UserProfile.objects.create_player_profile (instance.username)
+        action.send (instance, verb='has profile', target=pp)
+        
+        
 @receiver (pre_delete, sender=User, dispatch_uid="user_profile_pre_delete")
 def delete_associated_profile (sender, instance, **kwargs):
     """

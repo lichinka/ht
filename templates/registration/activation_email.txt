@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load url from future %}
+
+{% blocktrans with site.name as site_name %}
+Welcome to {{ site_name }}!
+
+To activate your account, simply click on the link below or paste into the url field on your favorite browser:
+{% endblocktrans %}
+
+http://www.{{ site.domain }}{% url 'accounts_registration_activate' activation_key %}
+
+{% blocktrans with site.name as site_name %}
+By signing up for a {{ site_name }} account I acknowledge that I have read and agree to the Terms of Use and Privacy Policy located at the following link:
+{% endblocktrans %}
+
+http://www.{{ site.domain }}{% url 'terms_of_service' %}
+
+{% blocktrans %}
+The activation link will only be good for {{ expiration_days }} days, after that you will have to try again from the beginning.
+
+If you have any questions about the system, feel free to contact us anytime at
+{% endblocktrans %}
+
+http://www.{{ site.domain }}{% url 'user_messages_feedback' %}
+
+{% blocktrans with site.name as site_name %}
+Thank you for your registration!
+{{ site_name }} team.
+{% endblocktrans %}

@@ -25,58 +25,6 @@ class ViewTest (BaseViewTestCase):
         self._create_player ( )
 
 
-    def test_register (self):
-        """
-        Checks the behavior of accounts.views.register.-
-        """
-        cli = Client ( )
-
-        view_url = reverse ('accounts.views.register')
-        resp = cli.get (view_url)
-        self.assertTrue (resp.status_code == 200,
-                         "The view %s returned %s" % (view_url,
-                                                      resp.status_code))
-
-        resp = cli.post (view_url,
-                         {'email': 'iztok', 'pass2': 'iztok', 'pass1': 'iztok', })
-        form = resp.context[-1]['form']
-        self.assertTrue ('email' in form.errors.keys ( ),
-                         'View %s did not recognize an invalid email address' % view_url)
-
-        resp = cli.post (view_url,
-                         {'email': 'iztok.fajdiga@mobitel.si', 'pass2': 'izt', 'pass1': 'iztok', })
-        form = resp.context[-1]['form']
-        self.assertTrue ('__all__' in form.errors.keys ( ),
-                         'View %s did not recognize no-matching passwords' % view_url)
-
-        resp = cli.post (view_url,
-                         {'email': self.club.user.username, 'pass2': 'iztok', 'pass1': 'iztok', })
-        form = resp.context[-1]['form']
-        self.assertTrue ('email' in form.errors.keys ( ),
-                         'View %s did not recognize the username %s was already taken' % (view_url,
-                                                                                          self.club.user.username))
-
-        self.assertTrue (cli.login (username=self.club.user.username,
-                                    password=self.T_CLUB['password']))
-
-        resp = cli.get (view_url, follow=True)
-        self.assertEquals (resp.request['PATH_INFO'], reverse ('ht.views.home'),
-                           'View %s did not redirect to home page, despite %s being logged-in' % (view_url,
-                                                                                                  self.club))
-        #
-        # log the club out
-        #
-        cli.logout ( )
-
-        resp = cli.post (view_url,
-                         {'email': 'iztok.fajdiga@mobitel.si', 'pass2': 'iztok', 'pass1': 'iztok', },
-                         follow=True)
-        next_url = reverse ('accounts.views.edit_player_profile')
-        next_url = next_url.split ('/')[2]
-        self.assertTrue (next_url in resp.request['PATH_INFO'],
-                         'View %s did not redirect to %s after registering a new user' % (view_url,
-                                                                                          next_url))
-
     def test_edit_player_profile (self):
         """
         Checks the behavior of accounts.views.edit_player_profile.-

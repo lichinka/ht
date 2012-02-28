@@ -1,0 +1,11 @@
+{% load ht_utils_tags %}
+
+{% if title %}
+	<h1>{{ title }}</h1>
+{% endif %}
+
+<div class="text">
+	{{ text }}
+</div>
+
+{% discard_button next_text next_url %}

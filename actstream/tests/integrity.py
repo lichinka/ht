@@ -21,6 +21,20 @@ class IntegrityTestCase (BaseViewTestCase):
         self.user_type = ContentType.objects.get (app_label="auth",
                                                   model="user")
 
+    def test_player_profile_creation_is_tracked (self):
+        """
+        Makes sure the player's profile creation is being tracked.-
+        """
+        self.client.login (username=self.T_PLAYER['username'],
+                           password=self.T_PLAYER['password'])
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': self.user_type.pk,
+                                                 'object_id': self.player.user.pk}))
+        self.assertContains (resp, self.T_PLAYER['username'])
+        self.assertContains (resp, 'has profile', 1)
+        self.assertContains (resp, unicode (self.player))
+        
+        
     def test_club_profile_is_tracked (self):
         """
         Checks that an action is saved whenever a new

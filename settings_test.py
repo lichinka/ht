@@ -2,7 +2,7 @@
 #
 # Django settings for testing the HT project.
 #
-from settings import *
+from ht.settings import *
 
 DATABASES = {
     'default': {
@@ -21,14 +21,14 @@ DATABASES = {
 TEST_RUNNER="ht_utils.tests.AdvancedTestSuiteRunner"
 
 #
-# we assume all apps belonging to the Django package 
-# work correctly, therefore there is no need to run 
-# their built-in tests every time
+# we assume all apps belonging to the Django package, including the
+# third-party apps used, work correctly. Therefore there is no need
+# to run their built-in tests along with ours.
 #
-TEST_EXCLUDE=('django')
+TEST_EXCLUDE=('django', 'registration')
 
 #
-# do not run South migrations, nor their 
+# do not run South migrations, nor their
 # built-in tests during our testing
 #
 SOUTH_TESTS_MIGRATE = False

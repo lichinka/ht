@@ -1,0 +1,2 @@
+This two templates need to live here to keep 'django-registration' happy.
+Namely, both the path and template names are hard-coded inside the 'RegistrationProfile' model, which in turn is hard-imported within the app.

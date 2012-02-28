@@ -30,15 +30,7 @@ class UserProfileTest (TestCase):
         Checks that a player cannot have a club's profile associated.-
         """
         pp = UserProfile.objects.get_profile ('test_player')
-        cp = UserProfile.objects.create_club_profile (pp.user.username,
-                                                      "Some address",
-                                                      City.objects.all ( )[0],
-                                                      "Some phone",
-                                                      "Some company")
-        self.assertTrue (cp is None,
-                         "A club's profile has been associated with an existing player")
-        self.assertTrue (len (ClubProfile.objects.filter (user__username='test_player')) == 0,
-                         "A club's profile has been associated with an existing player")
+        self.failIf (pp.is_club ( ))
 
 
     def test_player_profile_creation (self):

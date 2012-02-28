@@ -17,42 +17,9 @@ from django.contrib.auth.decorators import login_required
 
 from actstream import action
 from ht_utils.views import get_next_url
-from accounts.forms import (RegisterUserForm, EditPlayerProfileForm, 
-                            EditClubProfileForm)
+from accounts.forms import (EditPlayerProfileForm, EditClubProfileForm)
 from accounts.models import UserProfile
 
-
-
-def register (request):
-    """
-    Displays a form to register a new player.-
-    """
-    if not request.user.is_authenticated ( ):
-        post_data = request.POST if request.method == 'POST' else None
-        form = RegisterUserForm (post_data)
-        if form.is_valid ( ):
-            #
-            # use the email address as user name
-            #
-            new_user = User.objects.create_user (username=form.cleaned_data['email'],
-                                                 email=form.cleaned_data['email'],
-                                                 password=form.cleaned_data['pass1'])
-            new_user = auth.authenticate (username=new_user.username,
-                                          password=form.cleaned_data['pass1'])
-            if new_user:
-                #
-                # create a default profile and log the new user in
-                #
-                pp = UserProfile.objects.create_player_profile (new_user.username)
-                auth.login (request, new_user)
-                return redirect ('accounts.views.edit_player_profile',
-                                 id=pp.id)
-
-        return render_to_response ('accounts/register.html',
-                                   {'form': form,},
-                                   context_instance=RequestContext(request))
-    else:
-        return redirect (reverse ('ht.views.home'))
 
 
 @login_required
