@@ -2,12 +2,12 @@ import datetime
 import os
 
 from django.db import models
+from django.dispatch import receiver
+from django.utils.encoding import smart_str
 from django.core.files.base import ContentFile
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from django.utils.hashcompat import md5_constructor
-from django.utils.encoding import smart_str
-from django.db.models import signals
-
 from django.contrib.auth.models import User
 
 try:
@@ -22,6 +22,7 @@ try:
 except ImportError:
     import Image
 
+from actstream import action
 from .util import invalidate_cache
 from .settings import (AVATAR_STORAGE_DIR, AVATAR_RESIZE_METHOD,
                        AVATAR_MAX_AVATARS_PER_USER, AVATAR_THUMB_FORMAT,
@@ -132,10 +133,10 @@ class Avatar(models.Model):
             ext=ext
         )
 
-
-def create_default_thumbnails(instance=None, created=False, **kwargs):
+@receiver (post_save, sender=Avatar, dispatch_uid='avatar_post_save')
+def create_default_thumbnails (instance=None, created=False, **kwargs):
     if created:
         for size in AUTO_GENERATE_AVATAR_SIZES:
             instance.create_thumbnail(size)
-
-signals.post_save.connect(create_default_thumbnails, sender=Avatar)
+        action.send (instance.user, verb='uploaded an avatar')
+        
