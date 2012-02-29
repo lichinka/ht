@@ -4,4 +4,5 @@
 .ropeproject
 log
 *.pyc
+media/avatars/test
 
