@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block user_content %}
+
+	{% block tab_menu %}
+	    <ol id="message_menu">
+	        <li {% block login_data_current %}{% endblock %}>
+	            <a href="#">
+	                {% trans 'Login data' %}
+	            </a>
+	        </li>
+	        <li {% block profile_data_current %}{% endblock %}>
+	            <a href="{% url 'accounts_edit_club_profile' %}">
+	                {% trans 'Institutional data' %}
+	            </a>
+	        </li>
+	        <li {% block avatar_data_current %}{% endblock %}>
+	            <a href="{% url 'avatar_change' %}">
+	                {% trans 'Badge' %}
+	            </a>
+	        </li>
+	    </ol>
+	{% endblock %}
+
+	{% block tab_content %}
+	{% endblock %}
+	
+{% endblock %}

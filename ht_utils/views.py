@@ -17,7 +17,7 @@ def get_next_url (request, fallback_url=None):
         return request.REQUEST['next_url']
     else:
         if fallback_url is None:
-            fallback_url = reverse ('home')
+            fallback_url = 'home'
         return fallback_url
     
     

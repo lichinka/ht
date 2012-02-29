@@ -1,0 +1,22 @@
+{% extends "accounts/club_profile_base.html" %}
+
+{% load i18n %}
+{% load avatar_tags %}
+{% load ht_utils_tags %}
+
+
+{% block avatar_data_current %}
+	class="current"
+{% endblock %}
+
+{% block tab_content %}
+
+    <p>{% trans "Your current avatar: " %}</p>
+    {% avatar user %}
+    {% if not avatars %}
+        <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
+    {% endif %}
+    
+	{% vertical_form upload_avatar_form 'avatar_add' _('Upload new image') 'accounts_display_profile' %}
+    
+{% endblock %}

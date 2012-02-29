@@ -146,7 +146,8 @@ INSTALLED_APPS = (
                          # forked from https://github.com/justquick/django-activity-stream.git
     'registration',      # Enables registration of new user's, including forms to change mail or password;
                          # installed in virtualenv from https://bitbucket.org/ubernostrum/django-registration
-    'accounts',          # Includes user's profile
+    'accounts',          # Handles profile data for players and clubs
+    'accounts.avatar',   # Handles per-user's avatars. Forked from https://github.com/ericflo/django-avatar.git
     'wiki',              # Wiki module of the site
     'players',           # Help people find other players for playing tennis
     'clubs',             # Keeps clubs data and profiles

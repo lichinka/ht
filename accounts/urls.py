@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import include, patterns, url
 from django.views.generic.simple import direct_to_template
 
 from registration.views import activate
@@ -77,4 +77,8 @@ urlpatterns = patterns ('',
                         url (r'^password/reset/done/$',
                              auth_views.password_reset_done,
                              name='accounts_password_reset_done'),
+                        #
+                        # Avatar related views
+                        #
+                        (r'^avatar/', include ('accounts.avatar.urls')),
                     )

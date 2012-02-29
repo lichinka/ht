@@ -31,7 +31,7 @@ def edit_club_profile (request,
     cp = UserProfile.objects.get_profile (request.user.username)
     if cp.is_club ( ):
         next_url = get_next_url (request,
-                                 reverse ('accounts_display_profile'))
+                                 'accounts_display_profile')
         post_data = request.POST if request.method == 'POST' else None
         form = EditClubProfileForm (post_data,
                                     instance=cp)

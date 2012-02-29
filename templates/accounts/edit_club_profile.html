@@ -1,25 +1,12 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% load url from future %}
+{% extends "accounts/club_profile_base.html" %}
 
 {% load ht_utils_tags %}
 
 
-{% block user_content %}
+{% block profile_data_current %}
+	class="current"
+{% endblock %}
 
-    <ol id="message_menu">
-        <li>
-            <a href="#">
-                {% trans 'Login data' %}
-            </a>
-        </li>
-        <li class="current">
-            <a href="#">
-                {% trans 'Institutional data' %}
-            </a>
-        </li>
-    </ol>
-
-	{% vertical_form form 'accounts_edit_club_profile' next_url %}
-
+{% block tab_content %}
+	{% vertical_form form 'accounts_edit_club_profile' _('Save') next_url %}
 {% endblock %}

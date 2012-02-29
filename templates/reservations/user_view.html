@@ -1,7 +1,9 @@
 {% extends "reservations/search.html" %}
 {% load i18n %}
 {% load url from future %}
+
 {% load court_tags %}
+{% load avatar_tags %}
 {% load vacancy_tags %}
 
 {% block search_results %}
@@ -47,7 +49,7 @@
     	<div id="reservation_panel">
     		<div id="reservation_panel" class="title">
     			<div id="reservation_panel" class="title_avatar">
-    				<img src="{{ STATIC_PREFIX }}img/tennis_club.png">
+					{% avatar club.user %}
     			</div>
     			<div id="reservation_panel" class="title_data">
 			        <h3>

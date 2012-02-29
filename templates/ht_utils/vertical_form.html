@@ -9,7 +9,7 @@
 {% endif %}
 
 <div class="vertical_form">
-	<form method="post" action="{% url action_view %}">
+	<form method="post" enctype="multipart/form-data" action="{% url action_view %}">
 	    {% csrf_token %}
 	
 	          {% for field in form.visible_fields %}

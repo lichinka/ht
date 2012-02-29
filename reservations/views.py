@@ -325,9 +325,9 @@ def search (request, template_name='reservations/search.html'):
             params['club_list'] = club_list.values ( )
 
             for club in params['club_list']:
-                club['name'] = User.objects.get (pk=club['user_id'])
-                club['name'] = "%s %s" % (club['name'].first_name,
-                                          club['name'].last_name)
+                club['user'] = User.objects.get (pk=club['user_id'])
+                club['name'] = "%s %s" % (club['user'].first_name,
+                                          club['user'].last_name)
                 club['city'] = City.objects.get (pk=club['city_id'])
                 cs = CourtSetup.objects.get_active (club)
                 club['court_list'] = Court.objects.get_available(cs).values ( )

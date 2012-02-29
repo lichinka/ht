@@ -35,8 +35,8 @@ urlpatterns = patterns ('',
 #
 if settings.DEBUG:
     urlpatterns += patterns ('',
-        url(r'^upload/(?P<path>.*)$',
-            'django.views.static.serve',
-            {'document_root': '%s/upload/' % settings.MEDIA_ROOT,}),
+        url (r'^media/(?P<path>.*)$',
+             'django.views.static.serve',
+             {'document_root': '%s/' % settings.MEDIA_ROOT,}),
    )
 

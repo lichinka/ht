@@ -26,7 +26,8 @@ def text_only (text, title=None, next_text=None, next_url=None):
 def vertical_form (form, action_view, action_text='Save', next_url=None):
     """
     Renders a form with its fields arranged vertically, using the
-    given 'form', 'action_view' and 'next_url' where needed.-
+    given 'form', 'action_view', 'action_text' and 'next_url' where 
+    needed.-
     """
     return {'form': form,
             'action_view': action_view,
