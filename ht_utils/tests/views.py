@@ -391,6 +391,14 @@ class BaseViewTestCase (TestCase):
         
         resp = self.client.post (reverse (self.view_path), data, follow=True)
         #
+        # check that the view didn't redirect to the login page
+        #
+        for redir in resp.redirect_chain:
+            address, code = redir
+            if code == 302 and 'login' in address:
+                sys.stderr.write ("\n\tWARNING: View '%s' is redirecting to the login page." % self.view_path)
+                sys.stderr.write ("\n\tDid you forget to log a user in?\n")
+        #
         # inspect the form object, if it is available
         #
         try:

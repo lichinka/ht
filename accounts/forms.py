@@ -1,6 +1,4 @@
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from accounts.models import PlayerProfile, ClubProfile
@@ -8,6 +6,33 @@ from accounts.models import PlayerProfile, ClubProfile
 
 
 
+class EditUserLoginData (forms.ModelForm):
+    """
+    A form to edit the user's email address.-
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        A custom constructor to make the 'username' field read-only.-
+        """
+        super (EditUserLoginData, self).__init__ (*args, **kwargs)
+        instance = getattr (self, 'instance', None)
+        if instance and instance.id:
+            self.fields['username'].widget.attrs['readonly'] = True
+            self.fields['username'].widget.attrs['disabled'] = True
+
+    def clean_username (self):
+        """
+        Avoids any possible change in the read-only field 'username',
+        before POST or GET.-
+        """
+        return self.instance.username
+    
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+       
+        
+    
 class EditClubProfileForm (forms.ModelForm):
     """
     A form to edit the club's profile.-

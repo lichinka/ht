@@ -9,7 +9,6 @@ from django.contrib.auth import views
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
@@ -17,9 +16,33 @@ from django.contrib.auth.decorators import login_required
 
 from actstream import action
 from ht_utils.views import get_next_url
-from accounts.forms import (EditPlayerProfileForm, EditClubProfileForm)
+from accounts.forms import (EditPlayerProfileForm, EditClubProfileForm,
+                            EditUserLoginData)
 from accounts.models import UserProfile
 
+
+
+@login_required
+def edit_user_login_data (request,
+                          template_name='accounts/edit_user_login_data.html'):
+    """
+    Displays a form to edit a user's email address.-
+    """
+    next_url = get_next_url (request,
+                             'accounts_display_profile')
+    post_data = request.POST if request.method == 'POST' else None
+    form = EditUserLoginData (post_data, 
+                              instance=request.user)
+    if form.is_valid ( ):
+        form.save ( )
+        #
+        # go back to where 'next_url' points
+        #
+        return redirect (next_url)
+    return render_to_response (template_name,
+                               {'form': form,
+                                'next_url': next_url},
+                               context_instance=RequestContext(request))
 
 
 @login_required

@@ -59,6 +59,13 @@ urlpatterns = patterns ('',
                         url (r'^logout/$',
                              'accounts.views.logout',
                              name='accounts_logout'),
+                        #
+                        # Login data related views
+                        #
+                        url (r'^login/change/$',
+                             'accounts.views.edit_user_login_data',
+                             name='accounts_edit_user_login_data'),
+                        
                         url (r'^password/change/$',
                              auth_views.password_change,
                              name='accounts_password_change'),

@@ -8,7 +8,7 @@
 	{% block tab_menu %}
 	    <ol id="message_menu">
 	        <li {% block login_data_current %}{% endblock %}>
-	            <a href="#">
+	            <a href="{% url 'accounts_edit_user_login_data' %}">
 	                {% trans 'Login data' %}
 	            </a>
 	        </li>
