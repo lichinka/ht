@@ -42,6 +42,21 @@ urlpatterns = patterns ('',
                               'backend':       'registration.backends.default.DefaultBackend'},
                              name='accounts_registration_activate'),
                         #
+                        # Login, logout and password related views
+                        #
+                        url (r'^login/$',
+                             'accounts.views.login',
+                             name='accounts_login'),
+                        url (r'^logout/$',
+                             'accounts.views.logout',
+                             name='accounts_logout'),
+                        url (r'^password/change/$',
+                             'accounts.views.change_password',
+                             name='accounts_change_password'),
+                        url (r'^password/change/done/$',
+                             'accounts.views.change_password_done',
+                             name='accounts_change_password_done'),
+                        #
                         # Profile-related views
                         #
                         url (r'^edit_player_profile/$', 
@@ -53,39 +68,33 @@ urlpatterns = patterns ('',
                         url (r'^profile/$',
                              'accounts.views.display_profile',
                              name='accounts_display_profile'),
-                        url (r'^login/$',
-                             'accounts.views.login',
-                             name='accounts_login'),
-                        url (r'^logout/$',
-                             'accounts.views.logout',
-                             name='accounts_logout'),
                         #
                         # Login data related views
                         #
                         url (r'^login/change/$',
                              'accounts.views.edit_user_login_data',
                              name='accounts_edit_user_login_data'),
-                        
-                        url (r'^password/change/$',
-                             auth_views.password_change,
-                             name='accounts_password_change'),
-                        url (r'^password/change/done/$',
-                             auth_views.password_change_done,
-                             name='accounts_password_change_done'),
-                        url (r'^password/reset/$',
-                             auth_views.password_reset,
-                             name='accounts_password_reset'),
-                        url (r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-                             auth_views.password_reset_confirm,
-                             name='accounts_password_reset_confirm'),
-                        url (r'^password/reset/complete/$',
-                             auth_views.password_reset_complete,
-                             name='accounts_password_reset_complete'),
-                        url (r'^password/reset/done/$',
-                             auth_views.password_reset_done,
-                             name='accounts_password_reset_done'),
                         #
                         # Avatar related views
                         #
                         (r'^avatar/', include ('accounts.avatar.urls')),
                     )
+
+
+"""
+Not yet implemented
+
+
+url (r'^password/reset/$',
+     auth_views.password_reset,
+     name='accounts_password_reset'),
+url (r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+     auth_views.password_reset_confirm,
+     name='accounts_password_reset_confirm'),
+url (r'^password/reset/complete/$',
+     auth_views.password_reset_complete,
+     name='accounts_password_reset_complete'),
+url (r'^password/reset/done/$',
+     auth_views.password_reset_done,
+     name='accounts_password_reset_done'),
+"""

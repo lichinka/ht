@@ -8,18 +8,20 @@ register = template.Library ( )
 
 
 @register.inclusion_tag ('ht_utils/text_only.html')
-def text_only (text, title=None, next_text=None, next_url=None):
+def text_only (text, title=None, next_text=None, next_url=None, with_button=True):
     """
     Renders 'text', which may contain simple HTML, under the given
-    'title'. It displays a button with text 'next_text' and target
-    'next_url'. This value is then translated using 'reverse'.- 
+    'title'. If 'with_button' is True, it displays a button with 
+    text 'next_text' and target 'next_url'. This value is then
+    translated using 'reverse'.- 
     """
     if next_url is None:
         next_url = 'home'
-    return {'text':      text,
-            'title':     title,
-            'next_text': next_text,
-            'next_url':  next_url,}
+    return {'text':        text,
+            'title':       title,
+            'next_text':   next_text,
+            'next_url':    next_url,
+            'with_button': with_button}
 
 
 @register.inclusion_tag ('ht_utils/vertical_form.html')

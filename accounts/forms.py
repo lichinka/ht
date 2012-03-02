@@ -5,7 +5,6 @@ from accounts.models import PlayerProfile, ClubProfile
 
 
 
-
 class EditUserLoginData (forms.ModelForm):
     """
     A form to edit the user's email address.-

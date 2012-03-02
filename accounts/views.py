@@ -2,13 +2,12 @@ import urlparse
 
 from django.conf import settings
 from django.http import HttpResponseRedirect, Http404
-from django.contrib import auth
 from django.shortcuts import redirect, render_to_response
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth import views
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
@@ -22,6 +21,40 @@ from accounts.models import UserProfile
 
 
 
+@login_required
+def change_password (request,
+                     template_name='accounts/change_password.html',
+                     post_change_redirect=None,
+                     password_change_form=PasswordChangeForm):
+    """
+    Displays a page to change the password.-
+    """
+    if post_change_redirect is None:
+        post_change_redirect = reverse ('accounts_change_password_done')
+    if request.method == "POST":
+        form = password_change_form (user=request.user, data=request.POST)
+        if form.is_valid ( ):
+            form.save ( )
+            return HttpResponseRedirect (post_change_redirect)
+    else:
+        form = password_change_form (user=request.user)
+    return render_to_response (template_name,
+                               {'form': form,},
+                               context_instance=RequestContext (request))
+
+
+@login_required
+def change_password_done (request,
+                          template_name='accounts/change_password_done.html'):
+    """
+    Displays a static page informing the user about the password change.
+    It also registers this action in the user's log.-
+    """
+    action.send (request.user, verb='changed password')
+    return render_to_response (template_name,
+                               context_instance=RequestContext (request))
+   
+    
 @login_required
 def edit_user_login_data (request,
                           template_name='accounts/edit_user_login_data.html'):

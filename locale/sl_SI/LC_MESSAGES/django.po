@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-29 16:13+0100\n"
+"POT-Creation-Date: 2012-03-02 20:14+0100\n"
 "PO-Revision-Date: 2011-11-03 21:00+CEST\n"
 "Last-Translator: B+Lu\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgstr ""
 "Trenutno imate %(nb_avatars)d. Ne moremo shraniti več kot %(nb_max_avatars)d "
 "slik."
 
-#: accounts/avatar/models.py:75
+#: accounts/avatar/models.py:76
 #, python-format
 msgid "Avatar for %s"
 msgstr "Avatar uporabnika (%s)"
@@ -488,7 +488,7 @@ msgstr "Pošlji svoj komentar"
 msgid "or make changes"
 msgstr "ali jih uredi"
 
-#: ht_utils/templatetags/ht_utils_tags.py:47
+#: ht_utils/templatetags/ht_utils_tags.py:49
 #: templates/reservations/transfer_or_delete.html:37
 #: templates/user_messages/feedback.html:37
 msgid "Discard"
@@ -765,12 +765,36 @@ msgstr "Dobrodošli!"
 msgid "Login"
 msgstr "Prijava"
 
+#: templates/accounts/change_password.html:9
+msgid "You may change your password in this form."
+msgstr "Uporabite spodnji obrazec za spremembo vašega gesla."
+
+#: templates/accounts/change_password.html:9
+msgid "Password change"
+msgstr "Sprememba gesla"
+
+#: templates/accounts/change_password.html:11
+msgid "Change"
+msgstr "Spremeni"
+
+#: templates/accounts/change_password_done.html:9
+msgid "Your password has been successfully changed."
+msgstr "Vaše geslo je bilo spremenjeno."
+
+#: templates/accounts/change_password_done.html:9
+msgid "Password changed"
+msgstr "Geslo spremenjeno"
+
 #: templates/accounts/club_information.html:10
 #: templates/accounts/club_profile_base.html:17
 msgid "Institutional data"
 msgstr "Osebna izkaznica"
 
 #: templates/accounts/club_information.html:22
+msgid "Change password"
+msgstr "Spremeni geslo"
+
+#: templates/accounts/club_information.html:25
 #: templates/accounts/player_information.html:38 templates/admin/index.html:35
 #: templates/clubs/court_setup.html:56 templates/players/availability.html:45
 msgid "Edit"
@@ -811,6 +835,7 @@ msgstr "Išči"
 
 #: templates/accounts/edit_club_profile.html:11
 #: templates/accounts/edit_player_profile.html:49
+#: templates/accounts/edit_user_login_data.html:11
 #: templates/clubs/edit_court_properties.html:58
 #: templates/clubs/edit_court_setup.html:37
 #: templates/clubs/edit_court_setup.html:97
