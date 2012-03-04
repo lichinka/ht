@@ -9,18 +9,30 @@ from django.contrib.contenttypes.models import ContentType
 
 from reservations.models import Reservation
 from ht_utils.tests.views import BaseViewTestCase
+from accounts.tests.views.change_password import ChangePasswordViewTest
 from accounts.tests.views.edit_club_profile import test_club_profile_saving
 
 
 
 
-class IntegrityTestCase (BaseViewTestCase):
+class AccountsIntegrityTestCase (ChangePasswordViewTest):
     def setUp (self):
-        self._create_player ( )
-        self._add_vacancy_prices ( )
+        super (AccountsIntegrityTestCase, self).setUp ( )
         self.user_type = ContentType.objects.get (app_label="auth",
                                                   model="user")
+        
+    def test_password_change_is_tracked (self):
+        """
+        Checks that changing a user's password is correctly tracked.-
+        """
+        super (AccountsIntegrityTestCase, self).test_club_save ( )
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': self.user_type.pk,
+                                                 'object_id': self.club.user.pk}))
+        self.assertContains (resp, self.T_CLUB['username'])
+        self.assertContains (resp, 'changed password', 1)
 
+   
     def test_player_profile_creation_is_tracked (self):
         """
         Makes sure the player's profile creation is being tracked.-
@@ -61,7 +73,54 @@ class IntegrityTestCase (BaseViewTestCase):
         self.assertContains (resp, self.T_CLUB['username'])
         self.assertContains (resp, 'updated', 1)
         self.assertContains (resp, unicode (self.club))
-
+        
+        
+    def test_user_own_activity (self):
+        #
+        # log the club in via the login page to
+        # generate an action
+        #
+        resp = self.client.post (reverse ('accounts.views.login'),
+                                 {'username': self.T_CLUB['username'],
+                                  'password': self.T_CLUB['password']},
+                                 follow=True)
+        self.assertEqual (resp.status_code, 200)
+        #
+        # check the 'log in' action has been saved
+        #
+        user = get_object_or_404 (User, username=self.T_CLUB['username'])
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': self.user_type.pk,
+                                                 'object_id': user.pk}))
+        self.assertContains (resp, self.T_CLUB['username'])
+        self.assertContains (resp, 'logged in')
+        #
+        # log the club out via the page to
+        # generate an action
+        #
+        resp = self.client.get (reverse ('accounts.views.logout'),
+                                follow=True)
+        self.assertEqual (resp.status_code, 200)
+        #
+        # check the 'log out' action is correctly saved
+        # (any user should be logged id to watch the activities)
+        #
+        self.client.login (username=self.T_PLAYER['username'],
+                           password=self.T_PLAYER['password'])
+        resp = self.client.get (reverse ('actstream_actor',
+                                         kwargs={'content_type_id': self.user_type.pk,
+                                                 'object_id': user.pk}))
+        self.assertContains (resp, self.T_CLUB['username'])
+        self.assertContains (resp, 'logged out')
+   
+   
+    
+class ReservationIntegrityTestCase (BaseViewTestCase):
+    def setUp (self):
+        self._create_player ( )
+        self._add_vacancy_prices ( )
+        self.user_type = ContentType.objects.get (app_label="auth",
+                                                  model="user")
 
     def test_player_booking_is_tracked (self):
         """
@@ -171,41 +230,3 @@ class IntegrityTestCase (BaseViewTestCase):
         self.assertContains (resp, self.T_CLUB['username'])
         self.assertContains (resp, 'updated', 1)
         self.assertContains (resp, unicode (r), 2)
-
-    def test_user_own_activity (self):
-        #
-        # log the club in via the login page to
-        # generate an action
-        #
-        resp = self.client.post (reverse ('accounts.views.login'),
-                                 {'username': self.T_CLUB['username'],
-                                  'password': self.T_CLUB['password']},
-                                 follow=True)
-        self.assertEqual (resp.status_code, 200)
-        #
-        # check the 'log in' action has been saved
-        #
-        user = get_object_or_404 (User, username=self.T_CLUB['username'])
-        resp = self.client.get (reverse ('actstream_actor',
-                                         kwargs={'content_type_id': self.user_type.pk,
-                                                 'object_id': user.pk}))
-        self.assertContains (resp, self.T_CLUB['username'])
-        self.assertContains (resp, 'logged in')
-        #
-        # log the club out via the page to
-        # generate an action
-        #
-        resp = self.client.get (reverse ('accounts.views.logout'),
-                                follow=True)
-        self.assertEqual (resp.status_code, 200)
-        #
-        # check the 'log out' action is correctly saved
-        # (any user should be logged id to watch the activities)
-        #
-        self.client.login (username=self.T_PLAYER['username'],
-                           password=self.T_PLAYER['password'])
-        resp = self.client.get (reverse ('actstream_actor',
-                                         kwargs={'content_type_id': self.user_type.pk,
-                                                 'object_id': user.pk}))
-        self.assertContains (resp, self.T_CLUB['username'])
-        self.assertContains (resp, 'logged out')

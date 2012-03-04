@@ -9,9 +9,9 @@ from accounts.models import PlayerProfile
 from locations.models import City
 from ht_utils.tests.views import BaseViewTestCase
 
+from change_password import *
 from edit_club_profile import *
 from edit_user_login_data import *
-
 
 
 class ViewTest (BaseViewTestCase):

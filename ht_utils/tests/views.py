@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from accounts.models import UserProfile, PlayerProfile
 from locations.models import City
 from reservations.models import Reservation
+from django.db.utils import IntegrityError
 
 
 
@@ -79,9 +80,9 @@ class BaseViewTestCase (TestCase):
         if self.own_transaction:
             super (BaseViewTestCase, self)._fixture_setup ( )
         else:
-            sys.stdout.write ('\n\tSkipping transaction creation\n')
+            sys.stderr.write ('\n\tWARNING: Skipping transaction creation\n')
 
-    def _fixture_teardown(self):
+    def _fixture_teardown (self):
         """
         Rolls the transaction back, to give the next test case
         the same initial state.-
@@ -89,7 +90,7 @@ class BaseViewTestCase (TestCase):
         if self.own_transaction:
             super (BaseViewTestCase, self)._fixture_teardown ( )
         else:
-            sys.stdout.write ('\n\tSkipping transaction creation\n')
+            sys.stderr.write ('\n\tWARNING: Skipping transaction rollback\n')
 
     def _create_superuser (self):
         """
@@ -101,35 +102,47 @@ class BaseViewTestCase (TestCase):
         """
         Creates a club.-
         """
-        c = User.objects.create_user (username=self.T_CLUB['username'],
-                                      email=self.T_CLUB['email'],
-                                      password=self.T_CLUB['password'])
-        #
-        # this cannot happen before, otherwise the 'City'
-        # table does not exist
-        #
-        self.T_CLUB['city'] = random.choice (City.objects.all ( ))
-        self.club = UserProfile.objects.create_club_profile (c,
-                                                             self.T_CLUB['address'],
-                                                             self.T_CLUB['city'],
-                                                             self.T_CLUB['telephone'],
-                                                             self.T_CLUB['company'])
+        try:
+            c = User.objects.create_user (username=self.T_CLUB['username'],
+                                          email=self.T_CLUB['email'],
+                                          password=self.T_CLUB['password'])
+            #
+            # this cannot happen before, otherwise the 'City'
+            # table does not exist
+            #
+            self.T_CLUB['city'] = random.choice (City.objects.all ( ))
+            self.club = UserProfile.objects.create_club_profile (c,
+                                                                 self.T_CLUB['address'],
+                                                                 self.T_CLUB['city'],
+                                                                 self.T_CLUB['telephone'],
+                                                                 self.T_CLUB['company'])
+        except IntegrityError:
+            #
+            # this club already existed, ignore ...
+            #
+            pass
 
     def _create_player (self):
         """
         Creates a player.-
         """
-        p = User.objects.create_user (username=self.T_PLAYER['username'],
-                                      password=self.T_PLAYER['password'],
-                                      email=self.T_PLAYER['email'])
-        p.first_name = self.T_PLAYER['first_name']
-        p.last_name = self.T_PLAYER['last_name']
-        p.save ( )
-        self.player = UserProfile.objects.get_profile (self.T_PLAYER['username'])
-        self.player.level = self.T_PLAYER['level']
-        self.player.male = self.T_PLAYER['male']
-        self.player.right_handed = self.T_PLAYER['right_handed']
-        self.player.save ( )
+        try:
+            p = User.objects.create_user (username=self.T_PLAYER['username'],
+                                          password=self.T_PLAYER['password'],
+                                          email=self.T_PLAYER['email'])
+            p.first_name = self.T_PLAYER['first_name']
+            p.last_name = self.T_PLAYER['last_name']
+            p.save ( )
+            self.player = UserProfile.objects.get_profile (self.T_PLAYER['username'])
+            self.player.level = self.T_PLAYER['level']
+            self.player.male = self.T_PLAYER['male']
+            self.player.right_handed = self.T_PLAYER['right_handed']
+            self.player.save ( )
+        except IntegrityError:
+            #
+            # this player already existed, ignore ...
+            #
+            pass
 
     def _add_court_setups (self):
         """
@@ -442,7 +455,7 @@ class BaseViewTestCase (TestCase):
         return resp
 
 
-        
+
 class HomeViewTest (BaseViewTestCase):
     """
     All the test cases for home page of the site.-
