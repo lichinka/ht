@@ -1,0 +1,37 @@
+2011-11-01 17:23:40: (server.c.1512) server stopped by UID = 2962 PID = 22511 
+2011-11-01 17:24:01: (log.c.166) server started 
+2011-11-02 21:24:00: (server.c.1512) server stopped by UID = 2962 PID = 9686 
+2011-11-02 21:24:16: (log.c.166) server started 
+2011-11-03 22:20:00: (server.c.1512) server stopped by UID = 2962 PID = 3046 
+2011-11-03 22:20:20: (log.c.166) server started 
+2011-11-03 22:29:19: (server.c.1512) server stopped by UID = 2962 PID = 4523 
+2011-11-03 22:29:37: (log.c.166) server started 
+2011-11-04 22:05:02: (server.c.1512) server stopped by UID = 2962 PID = 26318 
+2011-11-04 22:17:21: (log.c.166) server started 
+2011-11-04 22:30:03: (server.c.1512) server stopped by UID = 2962 PID = 29473 
+2011-11-04 22:30:13: (log.c.166) server started 
+2011-11-04 22:31:07: (server.c.1512) server stopped by UID = 2962 PID = 29587 
+2011-11-04 22:31:22: (log.c.166) server started 
+2011-11-04 22:48:16: (server.c.1512) server stopped by UID = 2962 PID = 31663 
+2011-11-04 22:48:25: (log.c.166) server started 
+2011-11-04 22:52:08: (server.c.1512) server stopped by UID = 2962 PID = 32139 
+2011-11-04 22:52:12: (log.c.166) server started 
+2011-11-05 09:18:49: (server.c.1512) server stopped by UID = 2962 PID = 29784 
+2011-11-05 09:18:51: (log.c.166) server started 
+2011-11-05 09:22:10: (server.c.1512) server stopped by UID = 2962 PID = 29983 
+2011-11-05 09:22:11: (log.c.166) server started 
+2011-11-05 15:44:38: (server.c.1512) server stopped by UID = 2962 PID = 21822 
+2011-11-05 15:48:23: (log.c.166) server started 
+2011-11-05 17:17:06: (server.c.1512) server stopped by UID = 2962 PID = 27855 
+2011-11-05 17:17:08: (log.c.166) server started 
+2011-11-05 17:24:51: (server.c.1512) server stopped by UID = 2962 PID = 28293 
+2011-11-05 17:24:53: (log.c.166) server started 
+2011-11-05 17:36:26: (server.c.1512) server stopped by UID = 2962 PID = 29054 
+2011-11-05 17:36:29: (log.c.166) server started 
+2011-11-06 12:01:53: (server.c.1512) server stopped by UID = 2962 PID = 14124 
+2011-11-06 12:02:42: (log.c.166) server started 
+2011-11-07 21:55:27: (server.c.1512) server stopped by UID = 2962 PID = 8265 
+2011-11-07 21:55:29: (log.c.166) server started 
+2011-11-26 00:55:39: (log.c.166) server started 
+2011-11-28 18:18:53: (server.c.1512) server stopped by UID = 2962 PID = 3748 
+2011-11-28 18:19:46: (log.c.166) server started 

@@ -1,0 +1,1318 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language slovene
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Vizija in obseg projekta
+\begin_inset Newline newline
+\end_inset
+
+- hocemtenis.si -
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Zgodovina dokumenta.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Avtor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Spremembe
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Datum
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prvi osnutek dokumenta.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.6.2011
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+B,Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Razporeditev funkcionalnosti po verzijah.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.1.2012
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dodajanje funkcionalnosti v verzijo 1.0 in 2.0.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+28.1.2012
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Razporeditev funkcionalnosti v tri verzije, t.j.
+ 1.0, 1.1 in 1.2.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11.2.2012
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Določiti oceno napora za funkcionalnosti verzij 1.0 in 1.1.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11.2.2012
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dodajanje funkcionalnosti v verzijo 1.0.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12.2.2012
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Opis projekta
+\end_layout
+
+\begin_layout Subsection
+Ozadje
+\end_layout
+
+\begin_layout Standard
+Trenutno v Sloveniji obstajajo nekatere spletne strani na temo tenisa, vendar
+ velika večina predstavlja le trgovine oz.
+ teniške klube, ki potrebujejo spletno stran za samo predstavitev podjetja
+ oz .
+ dejavnosti (t.j.
+ elektronske oz.
+ spletne vizitke).
+ Značilnosti teh spletnih strani so:
+\end_layout
+
+\begin_layout Itemize
+spletna predstavitev dejavnosti organizacije,
+\end_layout
+
+\begin_layout Itemize
+slaba izdelava oz.
+ oblikovanje,
+\end_layout
+
+\begin_layout Itemize
+brez dodatnih storitev za obiskovalce, razen kontakta in nekaj slik,
+\end_layout
+
+\begin_layout Itemize
+brez rednih obiskovalcev, t.j.
+ obiskovalci se redko vračajo.
+\end_layout
+
+\begin_layout Standard
+Izjema je spletni portal tenisportal.si, ki predstavlja največjo spletno
+ skupnost na temo tenisa na slovenskem spletu.
+ To dejstvo je preverjeno z visokim rankingom spletnega iskanja na temo
+ tenisa
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Iskani nizi: 
+\begin_inset Quotes eld
+\end_inset
+
+tenis
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+tenis oprema
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+tenis igralci
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+tenis s kom igrati
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+pravila tenisa
+\begin_inset Quotes erd
+\end_inset
+
+, ...
+\end_layout
+
+\end_inset
+
+ v Google.si in Najdi.si.
+ Ob obisku portala smo našli sledeči opis.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+Smo prvi in največji teniški portal v Sloveniji.
+ Vemo, de je zelo pomemben aspekt spletnega mesta (...)
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Tenisportal.si je največji teniški spletni portal s tovrstno tematiko v Sloveniji
+ in druga najbolj obiskana specifična spletna športna stran.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Na spletu smo se pojavili 1.marca 2008 in sedaj imamo cca.
+ 50,000 obiskovalcev mesečno in več kot 800 registriranih uporabnikov
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Mesečno nas obišče 20,000 unikatnih obiskovalcev s katerimi posredujemo
+ več kot 300,000 prikazov strani
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Na portalu je 95% slovenskih uporabnikov, od tega jih 50% prihaja iz Ljubljane,
+ 12% iz Maribora,...
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Bralci v povprečju na naši strani ostanejo več kot 4 minute, v povprečju
+ pa si ogledajo več kot 4 strani.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Stran uživa relativno majhno odstopanje obiskanosti čez cel dan (izjema
+ je obdobje med 0.00 in 8.00 uro).
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Tenisportal se trudi povezovati tako svetovni kot tudi slovenski tenis in
+ zato ponuja zanimive prispevke prav za vse ljubitelje tenisa s hitrimi
+ in ažurnimi informacijami.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Pregledna vsebina, postavljena na sodoben urejevalnik.
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Vir: Spletni portal http://www.tenisportal.si/oglasevanje, dostop 8.6.2011
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ob branju zgornjega opisa se je pojavilo vprašanje, katera je najbolj obiskana
+ specifična spletna športna stran v Sloveniji???
+\end_layout
+
+\begin_layout Standard
+Kljub ponujeni vsebini je spletni portal tenisportal.si po našem mnenju precej
+ pomanjkljiv.
+ To dejstvo lahko preverimo v forumih, kjer registrirani uporabniki razpravljajo
+ o temah, za katere spletni portal tenisportal.si ne ponuja standardizirane
+ oblike komuniciranja.
+ Namreč, v njihovih forumih
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Vir: Spletni portal http://www.tenisportal.si/forum, dostop 8.6.2011
+\end_layout
+
+\end_inset
+
+ lahko vidimo po katerih temah je največ povpraševanja.
+ V nadaljevanju prikazujemo lestvico najbolj aktivnih tem na forumih tenisportal.
+si na dan 8.6.2011 in sicer:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Prodam...
+
+\series default
+ Prostor za male teniške oglase.
+ Zadnja objava 7.6.2011.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Teniški stiki
+\series default
+ Za vse, ki iščete soigralca/ko za tenis.
+ Zadnja objava 3.6.2011.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Loparji
+\series default
+ Vse o teniških loparjih.
+ Tu najdemo največ objav na temo nasvetov pri nakupu novega loparja.
+ Zadnja objava 3.6.2011.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Kupim...
+
+\series default
+ Prostor za male teniške oglase.
+ Zadnja objava 28.5.2011.
+\end_layout
+
+\begin_layout Standard
+Prepričani smo, da sodobnejši teniški portal, ki uporabnikom ponuja standardizir
+ano obliko za prodajo/nakup rabljene opreme in iskanje soigralcev ter nasvete
+ o najprimernejši opremi, kratke novice o tenisu, ...
+ bo zagotovo privabil k obisku večje število uporabnikov, ki se s tenisom
+ rekreativno ukvarjajo.
+ 
+\end_layout
+
+\begin_layout Standard
+Glede na to, da je spletni portal tenisportal.si pomankljiv zaradi prej opisanih
+ dejstev, obstaja priložnost zaslužka s spletnim oglaševanjem in partnerstvom
+ s teniškimi klubi ter specialicirani trgovinami.
+\end_layout
+
+\begin_layout Subsection
+Interesne skupine
+\end_layout
+
+\begin_layout Itemize
+Lastnik portala, katerega zaslužek temelji na oglaševanju in partnerstvu
+ s teniškimi klubi ter specialicirani trgovinami.
+\end_layout
+
+\begin_layout Itemize
+Specializirane trgovine, ki se ukvarjajo s prodajo teniške opreme (tengo.si,
+ ...) in ponudbo storitev (napajanje loparjev).
+ Te lahko dosežejo specifično skupino strank z oglaševanjem na spletnem
+ portalu.
+\end_layout
+
+\begin_layout Itemize
+Teniški klubi, ki želijo zasedenost igrišč prikazovati na portalu.
+ V naslednji fazi pa tudi rezervacije le-teh opraviti preko spleta.
+ Prednosti so:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+povečane možnosti prihoda novih igralcev oz.
+ strank, ki zaradi zasedenosti igrišč v 
+\begin_inset Quotes eld
+\end_inset
+
+svojem klubu
+\begin_inset Quotes erd
+\end_inset
+
+ iščejo alternative drugje;
+\end_layout
+
+\begin_layout Itemize
+brezplačni spletni sistem za vodenje rezervacij lastnih igrišč.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Igralci, trgovine in klubi, ki želijo organizirati odprti turnir in pri
+ tem privabiti čim večje število igralcev.
+\end_layout
+
+\begin_layout Subsection
+Uporabniki
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki bodo lahko hitro in brezplačno iskali prosto
+ teniško igrišče.
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki želijo najti (novega) partnerja za igro.
+ V določeni okolici ali z določenim nivojem igre.
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki potrebujejo nasvete (članke, slike in posnetke)
+ o tehniki igre.
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki potrebujejo nasvete (članke, slike in posnetke)
+ o nakupu primernega loparja.
+\end_layout
+
+\begin_layout Itemize
+Teniški klubi, ki želijo prikazovati zasedenost igrišč na portalu.
+ V naslednji fazi pa tudi rezervacije le-teh opraviti preko spleta.
+\end_layout
+
+\begin_layout Itemize
+Teniški klubi, ki imajo težave z varnostjo: prodali bi jim kamere za video
+ nadzor; obenem bi lahko plačali svojo naložbo s prodajo posnetkov dvobojev???
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki si želijo pomeriti z drugimi igralci in nato
+ videti, kako visoko so v rankingu registriranih uporabnikov.
+\end_layout
+
+\begin_layout Itemize
+Rekreativni igralci tenisa, ki želijo prodati/kupiti rabljeno teniško opremo.
+\end_layout
+
+\begin_layout Standard
+S stališča spletnega portala so obiskovalci tisti, ki občasno obiskujejo
+ portal in njegovo vsebino.
+ Obiskovalci so spletnemu portalu anonimni in le-temu predstavljajo zgolj
+ promet.
+ Iz tega razloga lahko le brskajo po vsebini portala, čeprav ne morejo uporablja
+ti storitve oglasov za prodajo in nakup rabljene opreme, saj so za njeno
+ uporabo potrebni osebni podatki uporabnika.
+ Iz podobnih razlogov ne smejo kontaktirati registriranih uporabnikov kot
+ partenerja za igro; lahko pa izvajajo iskanje.
+ Po drugi strani pa so uporabniki registrirani obiskovalci, ki so ustvarili
+ svoj profil na spletnem portalu in lahko uporabljajo vse storitve spletnega
+ portala.
+\end_layout
+
+\begin_layout Subsection
+Tveganja
+\end_layout
+
+\begin_layout Standard
+Največje tveganje je zagotovo možnost, da vsebina spletnega portala -hocemtenis.s
+i- ne privabi pričakovanega števila obiskovalcev oz.
+ uporabnikov, saj s tem odpadejo vse priložnosti zaslužka na podlagi oglaševanja.
+\end_layout
+
+\begin_layout Standard
+Drugi vir tveganja predstavlja obstoječi spletni portal tenisportal.si, ki
+ bi ob prvi novici portala -hocemtenis.si- lahko svojim uporabnikom ponujal
+ iste oz.
+ podobne storitve kot -hocemtenis.si-.
+ S tem bi potencialno lahko obdržal, če ne celo povečal, lastno število
+ uporabnikov in obiskovalcev.
+\end_layout
+
+\begin_layout Standard
+Obstajajo tudi tveganja v zvezi z zlorabo storitev, npr.
+ lažne rezervacije igrišč in napredovanje v ranking registriranih uporabnikov
+ na podlagi dvobojev z neobstoječim igralcem.
+ To lahko storijo tako, da ena oseba registrira dva uporabnika in vnaša
+ lažne rezultate neigranih dvobojev.
+\end_layout
+
+\begin_layout Standard
+Pri storitvi 
+\begin_inset Quotes eld
+\end_inset
+
+najdi partnerja
+\begin_inset Quotes erd
+\end_inset
+
+ tvegamo, da bo spletna storitev dobila slab ugled v primeru, da registrirani
+ uporabniki, ki bodo izbrani kot partenerje za igro, se ne bodo odzovali
+ na povabila.
+ Za uporabnika, ki ne ve, kaj se v ozadju dogaja, bo izgledalo kot da spletni
+ portal 
+\begin_inset Quotes eld
+\end_inset
+
+ne deluje
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+...???
+\end_layout
+
+\begin_layout Subsection
+Predpostavke
+\end_layout
+
+\begin_layout Standard
+Predpostavljamo, da bo ena oseba skrbela za razvoj, implementacijo in vzdrževanj
+e spletnega portala -hocemtenis.si-.
+ Druga oseba bo vodila vse komercialno prodajne aktivnosti v zvezi s portalom.
+ Poleg oglaševanja samega portala bo skrbela tudi za vodjenje oglaševanja
+ zunanjih strank.
+ Obe osebi bosta vključeni v razprave o vseh aktivnostih, povezanih s spletnim
+ portalom -hocemtenis.si-.
+\end_layout
+
+\begin_layout Section
+Vizija rešitve
+\end_layout
+
+\begin_layout Standard
+Spletni portal -hocemtenis.si- ponuja rekreativnim igralcem tenisa 
+\begin_inset Quotes eld
+\end_inset
+
+prostor
+\begin_inset Quotes erd
+\end_inset
+
+ za srečanje, oglase, debate in novice o tenisu.
+ V luči velikega uspeha socialnih omrežij, spletni portal -hocemtenis.si-
+ predstavlja družabno omrežje, prilagojeno ljubiteljem tenisa.
+ Glavni cilj portala -hocemtenis.si- je ustvariti spletno mesto, katerega
+ bodo rekreativni igralci tenisa obiskovali, kadar bodo razmišljali o igri
+ tenisa (partnerjih, rezervacijah igrišč, rankingu uporabnikov, ...), prodaji
+ in nakupu opreme, aktualnih novicah na področju tenisa, nasvetih o izbiri
+ opreme oz.
+ tehniki igre itd.
+\end_layout
+
+\begin_layout Standard
+Naložbe časa in denarja, ki so potrebne za uresničevanje projekta, so upravičene
+ zaradi pričakovanih prihodkov iz naslova spletnega oglaševanja.
+\end_layout
+
+\begin_layout Standard
+Z namenom ustvarjanja prometa v čimkrajšem času bomo v prvi fazi teniškim
+ klubom ponudili storitev za spletno vodenje objavo zasedenosti igrišč.
+ Storitev bomo brezplačno ponudili v zameni za link z njihove spletni strani
+ v portal -hocemtenis.si- in plakat velikosti A1 oz.
+ A2 na vidnem mestu v prostorih zainteresiranega teniškega kluba.
+\end_layout
+
+\begin_layout Standard
+Cilj uspeha spletnega portala -hocemtenis.si- je doseči 20000 mesečnih obiskov
+ in 100 registriranih uporabnikov v prvih 3 mesecih od prve objave na spletu.
+ V prvih 6 mesecih obstoja portala pa 50000 mesečnih obiskov in 350 registrirani
+h uporabnikov.
+ Glede oglaševanja pa so cilji ...???
+\end_layout
+
+\begin_layout Section
+Funkcionalnosti 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Funkcionalnosti"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Verzija 1.0 - go
+\end_layout
+
+\begin_layout Enumerate
+Spletni portal mora biti pregleden in dostopen na brskalnikih namiznih računalni
+kov
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Za prepoznavanje ciljnih brskalnikov poglej http://marketshare.hitslink.com/browse
+r-market-share.aspx?spider=1&qprid=0
+\end_layout
+
+\end_inset
+
+ (npr.
+ Firefox, Chrome, Internet Explorer 7+, Safari, Opera, ...).
+ [2]
+\end_layout
+
+\begin_layout Enumerate
+Prilagoditi oblikovanje portala celostni grafični podobi.
+ [3]
+\end_layout
+
+\begin_layout Enumerate
+Vzpostavitev 'home' strani za klube.
+ [3]
+\end_layout
+
+\begin_layout Enumerate
+Vzpostavitev 'home' strani za igralce.
+ [2]
+\end_layout
+
+\begin_layout Enumerate
+Implementacijo elektronskega formularja za vpis novih klubov.
+ [7]
+\end_layout
+
+\begin_layout Enumerate
+Implementacijo elektronskega formularja za vpis novih igralcev, s pripradajočimi
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Terms of service
+\begin_inset Quotes erd
+\end_inset
+
+ in 
+\begin_inset Quotes eld
+\end_inset
+
+Privacy policy
+\begin_inset Quotes erd
+\end_inset
+
+.
+ [3]
+\end_layout
+
+\begin_layout Enumerate
+Implementacijo sistema za vodenje oglasov (npr.
+ background, banner, textual ad, ...):
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+prikazovanje na podlagi zakupljenih količin;
+\end_layout
+
+\begin_layout Enumerate
+vodenje statistik prikazovanja;
+\end_layout
+
+\begin_layout Enumerate
+samodejno sestavo poročil in faktur;
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Beleženje vsakega dogodka v portalu, katerega je član ustvaril.
+ [ok]
+\end_layout
+
+\begin_layout Enumerate
+Vzpostativi sistem za podporo uporabnikom, t.j.
+ klubom in igralcem.
+ [2]
+\end_layout
+
+\begin_layout Enumerate
+Vzpostaviti notranji sistem pošiljanja sporočil med vsemi člani portala,
+ katerega lahko vsak član posreduje na zunanji elektronski naslov, preko
+ nastavitev v lastnem profilu.
+ [5]
+\end_layout
+
+\begin_layout Enumerate
+Teniškim klubom omogočiti objavo in urejanje zasedenosti igrišč na portalu.
+ To vključuje lastne in uporabniške rezervacije.
+ [6]
+\end_layout
+
+\begin_layout Enumerate
+Uporabniške rezervacije:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+uporabnikom omogočiti rezervacijo igrišča preko portala, o kateri je klub
+ takoj obveščen; [3]
+\end_layout
+
+\begin_layout Enumerate
+klub ima možnost rezervacijo preklicati oz.
+ jo prestaviti na drugi termin; [3]
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Obiskovalcem omogočiti brskanje po celotnem portalu v 
+\begin_inset Quotes eld
+\end_inset
+
+read-only
+\begin_inset Quotes erd
+\end_inset
+
+ načinu, npr.
+ da neregistrirani uporabnik lahko poišče prosto igrišče, vendar ga ne more
+ rezervirati.
+ S tem pričakujemo povečano število registriranih uporabnikov.
+ [ok]
+\end_layout
+
+\begin_layout Subsection
+Verzija 1.1 - go go
+\end_layout
+
+\begin_layout Enumerate
+Vzpostaviti notranji sistem zaračunavanja klubom:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+mesečni izračun; [3]
+\end_layout
+
+\begin_layout Enumerate
+izračun na podlagi dejansko izvedenih rezervacij; [5]
+\end_layout
+
+\begin_layout Enumerate
+teniškim klubom omogočiti vploged v stanje računa oz.
+ fakture, ki mora biti jasno in enostavno prikazano.
+ [4]
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Navodila za uporabo:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+namenjena klubom;
+\end_layout
+
+\begin_layout Enumerate
+v obliki dokumenta (PDF format); [5]
+\end_layout
+
+\begin_layout Enumerate
+kot '?' v ključnih mestih na samem portalu.
+ [4]
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Uporabniške rezervacije:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+pošiljanje sporočila oz.
+ opomin soigralcem, preko email-a ali notranjega sistema, s podatki o rezervacij
+i.
+ To nam bo, v prvi fazi, veliko pomagalo pri pridobivanju čimvečje število
+ uporabnikom.
+ [3]
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Vsakemu registriranemu uporabniku določiti merilo 
+\begin_inset Quotes eld
+\end_inset
+
+zaupnosti
+\begin_inset Quotes erd
+\end_inset
+
+, kar je osnova za verodostojnost rezervacij pred klubi.
+ To merilo temelji na dveh kriterjih: [10]
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+kriterji 
+\begin_inset Quotes eld
+\end_inset
+
+veredostojnosti
+\begin_inset Quotes erd
+\end_inset
+
+, deluje na osnovi veredostojnosti računa.
+ Uporabnik lahko svojo veredostojnost dokaže na dva načina.
+ Prvič, s povezavo svojega HT računa z Facebook oz.
+ Google+ profilom, veredostojnost katerega preverja administrator portala.
+ Drugič, s prikazovanjem osebnega dokumenta, pri katerem od včlanjenih klubov;
+\end_layout
+
+\begin_layout Enumerate
+kriterji 
+\begin_inset Quotes eld
+\end_inset
+
+kazenske točke
+\begin_inset Quotes erd
+\end_inset
+
+, deluje na osnovi neizvršenih rezervacij, t.j.
+ uporabnik je igrišče rezerviral, a se ni javil ob dogovorjeni uri brez,
+ da bi rezervacijo prej preklical.
+ Kazenske točke delujejo na enak način kot pri voznikih.
+ Za kazenske točke predalagamo Fibonaccijevo zaporedje.
+\end_layout
+
+\begin_layout Enumerate
+Bistvo delovanja teh dveh kriterjev je prednost pri rezervacijah.
+ Uporabnik z veredostojnjim računom in brez kazenskih točk ima najvišjo
+ možno prioriteto za rezervacije.
+ To pomeni, da lahko 
+\begin_inset Quotes eld
+\end_inset
+
+odvzame
+\begin_inset Quotes erd
+\end_inset
+
+ rezervacijo od uporabnika brez veredostojnega računa oz.
+ z njim, a s kazenskimi točkami.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Oba kriterija sta dostopna preko uporabniškega profila, tako da jih lahko
+ le uporabnik vidi.
+ Klubom pa le takrat, ko uporabnik rezervira pri njih, administratorju portala
+ pa vedno.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Vzpostaviti strukturo elektronskih vizitk za klube in jih povezati na strani
+ iskanja prostih terminov.
+ [8]
+\end_layout
+
+\begin_layout Enumerate
+Wiki strani
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+o tehniki igre, z možnostjo dodajanja besedila, slik in posnetkov.
+ Le registrirani uporabniki smejo urejati vsebino člankov Wiki; [7]
+\end_layout
+
+\begin_layout Enumerate
+o svetovanju za nakup naslednjega loparja, z možnostjo dodajanja besedila,
+ slik in posnetkov.
+ Le registrirani uporabniki smejo urejati vsebino člankov Wiki.
+ [7]
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Zagotoviti pretok novic o tenisu na samodejnem načinu.
+ To pomeni, da se besedilo in morebitnih slik določene novice se samodejno
+ posodabljajo iz različnih virov (npr.
+ http://www.rsi.si/sport/tenis/rss/, Twitter, portalov o športnih novicah
+ in podobno).
+ [6]
+\end_layout
+
+\begin_layout Subsection
+Verzija 1.2 - go go go
+\end_layout
+
+\begin_layout Enumerate
+Klubom omogočiti povezavo sistema rezervacij z lastne spletne strani.
+ [15]
+\end_layout
+
+\begin_layout Subsection
+Verzija 2.0 - go social
+\end_layout
+
+\begin_layout Description
+Povezava
+\begin_inset space ~
+\end_inset
+
+z
+\begin_inset space ~
+\end_inset
+
+družabnimi
+\begin_inset space ~
+\end_inset
+
+omrežji Omogočiti povezavo oz.
+ uporabo obstoječih uporabniških računov, npr.
+ OpenID, Facebook, Twitter, GMail oz.
+ Google+, saj je za obiskovalca zelo moteče si zapomniti novo oz.
+ še eno uporabniško ime in geslo.
+ Dodatna prednost tega pristopa je, da lahko potencialno preverimo identiteto
+ uporabnika in se tako izognemo morebitnim 
+\begin_inset Quotes eld
+\end_inset
+
+spoof
+\begin_inset Quotes erd
+\end_inset
+
+ uporabnikom.
+ [7]
+\end_layout
+
+\begin_layout Description
+Povezava
+\begin_inset space ~
+\end_inset
+
+z
+\begin_inset space ~
+\end_inset
+
+družabnimi
+\begin_inset space ~
+\end_inset
+
+omrežji Omogočiti objavo dogodkov portala (npr.
+ povabila za igro, rezultate dvobojev, spremembe v rankingu, prijave za
+ turnirje in druge posebne dogodke), z uporabo zunanjih knjižnic, na Twitter,
+ Facebook ali Google+ račun uporabnika oz.
+ kluba (poglej komentarje na Clarin.com in LaNacion.com.ar, povezane s pluginom
+ Facebook-a).
+\end_layout
+
+\begin_layout Description
+Mali
+\begin_inset space ~
+\end_inset
+
+oglasi Uporabnikom omogočiti ustvarjanje oglasov za prodajo, nakup, zamenjavo
+ in podarjanje teniške opreme.
+ Oglasi morajo podpirati dodajanje besedila in slik.
+\end_layout
+
+\begin_layout Description
+Iskanje
+\begin_inset space ~
+\end_inset
+
+partnerja Uporabnikom omogočiti iskanje partnerja za igro.
+ Ob tem pa možnost naključnega iskanja partnerja, ki preskoči celoten seznam
+ potencialnih partnerjev in pokaže le najbolj primernega
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+To je podobno gumbu 
+\begin_inset Quotes eld
+\end_inset
+
+I'm feeling lucky
+\begin_inset Quotes erd
+\end_inset
+
+ v Google.
+\end_layout
+
+\end_inset
+
+.
+ Primernost partnerja se določi glede na točke, ki so potencialnim partnerjem
+ dodeljene med iskanjem.
+ Točke se dodelijo med iskanjem glede na: lokacijo, proste termine za igro,
+ nivo igre, desničar/levičar, ...
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Več o tem na http://tenistas.org/quienes_somos/conquienjugar.asp
+\end_layout
+
+\end_inset
+
+.
+ Ko bo vnešenih dovolj rezultatov dvobojev za vodenje rankinga uporabnikov,
+ bodo registrirani uporabniki dobili točke med iskanjem tudi glede na njihovo
+ mesto v tem rankingu.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Za zmanjšanje tveganja o igralcih, ki se ne odzovejo na povabila, bo zraven
+ vsakega uporabnika prikazovan 
+\begin_inset Quotes eld
+\end_inset
+
+poprevčni odzivni čas
+\begin_inset Quotes erd
+\end_inset
+
+, ki ga sistem izračuna na podlagi preteklih povabil in odgovorov le-teh.
+ Na ta način ima uporabnik, ki išče partnerja, še eno možnost za filtriranje
+ oz.
+ iskanje soigralca.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+SMS Posredovanje internih sporočil v mobilne telefone preko SMS-a.
+\end_layout
+
+\begin_layout Description
+Vnos
+\begin_inset space ~
+\end_inset
+
+rezultatov Uporabnikom omogočiti vnos rezultatov dvobojev, ki so osnova
+ za izdelavo rankinga registriranih uporabnikov portala -hocemtenis.si-.
+ Rezultat dvoboja morata potrditi vsaj dva nasprotna igralca, tudi v primeru
+ dvojic.
+ Ob vnosu rezultata dvoboja tudi omogočiti vnos morebitnih komentarjev,
+ slik in posnetkov.
+\end_layout
+
+\begin_layout Description
+Turnirji
+\begin_inset space ~
+\end_inset
+
+in
+\begin_inset space ~
+\end_inset
+
+lige Klubom omogočiti vodenje turnirjev in lig za svoje člane.
+\end_layout
+
+\begin_layout Subsection
+Verzija 3.0 - go mobile
+\end_layout
+
+\begin_layout Enumerate
+Spletni portal mora biti pregleden in dostopen na mobilnih napravah 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Za obrazložitev poglej http://marketshare.hitslink.com/report.aspx?qprid=61
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Poenostaviti proces iskanja partnerjev za igro in pregled rezervacij igrišč
+ s pomočjo mobilne aplikacije za telefone in tablice Android.
+ Nalaganje aplikacije je brezplačno, iz portala -hocemtenis.si-.
+\end_layout
+
+\begin_layout Enumerate
+Posredovanje internih sporočil v mobilne telefone preko mobilne aplikacije.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,196 @@
+#LyX 1.6.10 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language slovene
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Plan projekta
+\begin_inset Newline newline
+\end_inset
+
+- hocemtenis.si -
+\end_layout
+
+\begin_layout Section
+Projektni izdelki
+\end_layout
+
+\begin_layout Subsection
+Statična spletna stran
+\end_layout
+
+\begin_layout Subsubsection
+Rezultat
+\end_layout
+
+\begin_layout Standard
+Statična spletna stran, s kratkim sporočilom o -hocemtenis.si-, je dosegljiva
+ na naslovu http://www.hocemtenis.si in je jasno vidna iz namiznih računalnikov
+ in mobilnih naprav.
+\end_layout
+
+\begin_layout Subsubsection
+Postopek
+\end_layout
+
+\begin_layout Itemize
+Registracija domene -hocemtenis.si-.
+\end_layout
+
+\begin_layout Itemize
+Izbira Python framework-a za implementacijo.
+\end_layout
+
+\begin_layout Itemize
+Izbira podatkovne baze.
+\end_layout
+
+\begin_layout Itemize
+Izbira firme za gostovanje, ki podpira izbrana Python framework in podatkovno
+ bazo.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Izdelava manjšega testnega primera pred začetkom implementacije za potrditev
+ podpore gostovanja.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Primeri uporabe 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Primeri-uporabe"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Na podlagi zahtevanih funkcionalnosti v dokumentu 
+\begin_inset Quotes eld
+\end_inset
+
+Vizija in obseg ...
+\begin_inset Quotes erd
+\end_inset
+
+, izdelati diagram primerov uporabe spletnega portala -hocemtenis.si-.
+\end_layout
+
+\begin_layout Subsubsection
+Rezultat
+\end_layout
+
+\begin_layout Standard
+Diagrami s primeri uporabe spletnega portala v formatu SVG, ki pokrijejo
+ vse zahtevane funkcionalnosti.
+\end_layout
+
+\begin_layout Subsection
+Komponente in entitete
+\end_layout
+
+\begin_layout Standard
+Na podlagi primerov uporabe določiti, katere entitete (t.j.
+ razrede oz.
+ objekte) sestavijo vsako komponento ter kakšne so povezave med njimi.
+\end_layout
+
+\begin_layout Subsubsection
+Rezultat
+\end_layout
+
+\begin_layout Standard
+Diagrami komponent, v katerem so razvidne vse sestavne entitete vsake komponente
+ in medsebojne povezave (read-only in read-write).
+ Diagrami naj bodo v formatu SVG.
+\end_layout
+
+\begin_layout Subsection
+Podatkovni model
+\end_layout
+
+\begin_layout Standard
+Sestaviti podatkovni model, na podlagi entitet v diagramu komponent in primerov
+ uporabe.
+\end_layout
+
+\begin_layout Subsubsection
+Rezultat
+\end_layout
+
+\begin_layout Standard
+ER diagram podatkovnega modela v formatu SVG.
+\end_layout
+
+\begin_layout Subsection
+Testni primeri
+\end_layout
+
+\begin_layout Standard
+Določiti testne primere na podlagi vsakega primera uporabe iz diagramov
+ pod točko 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Primeri-uporabe"
+
+\end_inset
+
+.
+ Nek primer uporabe lahko vsebuje več testnih primerov za preizkus celotne
+ funkcionalnosti le-tega.
+\end_layout
+
+\begin_layout Subsubsection
+Rezultat
+\end_layout
+
+\begin_layout Standard
+Dokument, v katerem so združeni vsi testni primeri.
+ Vsak naj opredeljuje: pričakovan vhod, odziv sistema in pričakovan izhod.
+\end_layout
+
+\end_body
+\end_document
