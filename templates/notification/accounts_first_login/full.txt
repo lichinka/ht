@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load url from future %}
+
+{% trans 'Welcome!' %}
+
+{% blocktrans %}
+About the site ...
+{% endblocktrans %}
+
+{% url 'accounts_registration_activate' activation_key %}
+
+{% blocktrans with site.name as site_name %}
+Enjoy!
+{{ site_name }} team.
+{% endblocktrans %}
+

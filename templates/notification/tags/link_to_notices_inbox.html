@@ -1,0 +1,9 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% load url from future %}
+
+<a href="#">
+    {{ unseen_count }}
+    &nbsp;
+    <img src="{{ STATIC_PREFIX }}img/inbox.png" />
+</a>
